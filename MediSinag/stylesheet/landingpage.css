@@ -1,0 +1,327 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #F0F5F9;
+    padding: 15px 30px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.navlinkwrap {
+    display: flex;
+    gap: 50px; 
+    margin-right: 0 auto;
+}
+
+.logo{
+    margin-right: 10px;
+}
+
+.projname{
+    margin-right: auto;
+}
+
+.buttonwrap {
+    margin-left: auto; /* stick to the right */
+    display: flex;
+    gap: 10px;
+}
+
+button {
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.SignIn {
+    background-color: #F0F5F9;
+    color: #1E2022;
+}
+
+.LogIn {
+    background-color: #1E2022;
+    color: #F0F5F9;
+}
+
+.LogIn:hover {
+    background-color: #365486;
+}
+
+/* for responsiveness */
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 10px;
+        align-items: flex-start; 
+    }
+
+    .navlinkwrap {
+        margin: 10px 0;
+        gap: 20px; 
+    }
+
+    .buttonwrap {
+        margin-left: 0; 
+        width: 100%; 
+        justify-content: flex-end; 
+    }
+
+    button {
+        width: 100px; 
+        font-size: 14px; 
+    }
+}
+
+
+/* First page section */
+.firstpage {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 100px 30px;
+    height: 100vh;
+    background-color: #0F1035;
+}
+
+.content {
+    max-width: 45%;
+    text-align: center;
+}
+
+.content h1 {
+    font-size: 60px;
+    color: #F0F5F9;
+    margin-bottom: 20px;
+    text-align:initial;
+}
+
+.btnStarted {
+    padding: 12px 24px;
+    background-color: #365486;
+    color: #F0F5F9;
+    border: none;
+    cursor: pointer;
+    font-size: 15px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+    display: inline-block; 
+}
+
+.btnStarted:hover {
+    background-color: #1e2022;
+}
+
+.image {
+    max-width: 55%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+@media (max-width: 768px) {
+    .firstpage {
+        flex-direction: column;
+        padding: 80px 20px;
+        height: auto;
+        gap: 40px;
+    }
+
+    .content {
+        max-width: 100%;
+        text-align: center;
+    }
+
+    .image {
+        max-width: 100%;
+    }
+}
+
+/* Second page section */
+.secondpage {
+    background-color: #0F1035;
+    padding: 100px 30px;
+}
+
+.MediCoTitle h1 {
+    font-size: 48px;
+    color: #F0F5F9;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.MediCoContentWrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: baseline;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.MediCoContent {
+    flex: 1;
+    min-width: 250px;
+    max-width: 300px;
+    padding: 20px;
+    background-color: #0F1035;
+    border-radius: 10px;
+    color: #F0F5F9;
+}
+
+.MediCoContent h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    text-align:baseline;
+
+}
+
+.MediCoContent p {
+    font-size: 20px;
+    line-height: 1.6;
+    text-align: start;
+}
+
+/* Third page section */
+.thirdpage {
+    background-color: #F0F5F9; 
+    padding: 80px 30px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.container2 {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; 
+    gap: 40px;
+    max-width: 1200px;
+    width: 100%; 
+    flex-wrap: wrap; 
+    margin: 0 auto; 
+}
+
+.About, .Product, .Help {
+    flex: 1;
+    min-width: 250px; 
+    max-width: 350px; 
+    color: #1E2022;
+    text-align: center; 
+}
+
+.About h1, .Product h1, .Help h1 {
+    font-size: 24px; 
+    margin-bottom: 20px;
+    color: #1E2022;
+}
+
+.About .navlink, .Product .navlink, .Help .navlink {
+    display: block;
+    margin-bottom: 10px; 
+    font-size: 18px;
+    color: #1E2022;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.About .navlink:hover, .Product .navlink:hover, .Help .navlink:hover {
+    color: #365486; 
+}
+
+/* footer */
+footer {
+    background-color: #0F1035;
+    padding: 20px 30px;
+    text-align: center;
+}
+
+.Footer {
+    display: flex;
+    justify-content: flex-start; 
+    align-items: center;
+    gap: 20px;
+    color: #F0F5F9;
+}
+
+.Footer p {
+    margin-right: 20px; 
+    font-size: 16px;
+}
+
+.Footer .navlink {
+    color: #F0F5F9;
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    padding: 0 10px;
+}
+
+.Footer .navlink:hover {
+    color: #365486;
+}
+
+.Footer .navlink:not(:first-child) {
+    border-left: 1px solid #F0F5F9;
+    padding-left: 15px;
+    margin-left: 15px;
+}
+
+
+
+@media (max-width: 768px) {
+    .MediCoTitle h1 {
+        font-size: 36px;
+    }
+
+    .MediCoContentWrapper {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .MediContent {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .container2 {
+        flex-direction: column; 
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .About, .Product, .Help {
+        text-align: center; 
+        max-width: 100%;
+    }
+
+    .About .navlink, .Product .navlink, .Help .navlink {
+        text-align: center;
+    }
+}
