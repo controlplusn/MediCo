@@ -1,7 +1,9 @@
-const AuthButton = ({ classText, buttonText }) => {
+const AuthButton = ({ classText, buttonText, onClick }) => {
     return (
         <div className="authButton">
-            <button className={classText}>{buttonText}</button>
+            <button className={classText} onClick={onClick}>
+                {buttonText}
+            </button>
         </div>
     )
 }

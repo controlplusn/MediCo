@@ -3,7 +3,7 @@ import AuthInput from "../../UI/AuthInput";
 
 const Login = () => {
     return (
-        <div className="login-container login">
+        <div className="form-container login">
             <form>
                 <h1>Log In</h1>
 
@@ -12,16 +12,6 @@ const Login = () => {
 
                 <AuthButton buttonText={"LOGIN"}/>
             </form>
-
-            <div className="toggle-container">
-                <div className="toggle">
-                    <div className="toggle-panel">
-                        {/* img icon */}
-                        <p>Start your journey with us and sign up now</p>
-                        <AuthButton className={"hidden"} buttonText={"SIGN IN"}/>
-                    </div>
-                </div>
-            </div>
         </div>
     )
 }
