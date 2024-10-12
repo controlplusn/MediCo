@@ -1,0 +1,83 @@
+:root {
+    --white: #F0F5F9;
+    --black: #1E2022; 
+    --dark-blue: #0F1035; 
+    --blue: #365486;
+}
+
+nav{
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--white);
+    height: 100px;
+    top:0;
+    left: 0;
+    right: 0;
+    min-width: 600px;
+    margin: 0;
+}
+
+
+.left{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 20%;
+}
+
+.left h3{
+    font-size: 16px;
+    font-family: 'Inter',sans-serif;
+}
+
+.logo{
+    margin:10px 30px;
+}
+
+.middle{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 30%;
+}
+.btnMid{
+    border-style: none;
+    background-color: var(--white);
+    cursor: pointer;
+    margin: 10px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    font-style: italic;
+}
+
+.right{
+    display: flex;
+    flex-direction: row;
+    width: 20%;
+}
+.signUp{
+    border-style: none;
+    background-color: var(--white);
+    cursor: pointer;
+    margin: 0px 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 11px;
+    width: 50%;
+    min-width: 50px;    
+}
+
+.login{
+    margin:0px 10px;
+    width: 50%;
+    min-width: 50px;
+    background-color: var(--black);
+    border-radius: 3px;
+    color: var(--white);
+    font-size: 11px;
+    padding: 5% 5%;
+    border-style:none ;
+    cursor: pointer;
+}
