@@ -2,6 +2,7 @@ import './App.css';
 import AuthContainer from './Components/AuthContainer';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Homepage from './Components/Homepage';
+import HomepageAuthTest from './Components/HomepageAuthTest';
 
 function App() {
   const router = createBrowserRouter([
@@ -16,6 +17,10 @@ function App() {
     {
       path: '/signup',
       element: <AuthContainer isLogin={false} activateContainer={true} />
+    },
+    {
+      path: '/homepage',
+      element: <HomepageAuthTest />
     }
   ]);
 

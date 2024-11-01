@@ -1,6 +1,6 @@
-const AuthInput = ({ type, placeholder }) => {
+const AuthInput = ({ type, placeholder, onChange }) => {
     return (
-        <input type={type} placeholder={placeholder}></input>
+        <input type={type} placeholder={placeholder} onChange={onChange} ></input>
     )
 }
 
