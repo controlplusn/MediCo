@@ -3,10 +3,16 @@ import '../styles/authcontainer.css'
 import Signup from "./Signup/Signup";
 import ToggleButton from "./ToggleButton";
 
-import React, {useState} from 'react';
+import React, { useState, useEffect } from 'react';
 
-const AuthContainer = () => {
+const AuthContainer = ({ isLogin, activateContainer }) => {
     const[isActive, setIsActive] = useState(false);
+
+    useEffect(() => {
+        if (activateContainer) {
+            setIsActive(true);
+        }
+    }, [activateContainer]);
 
     const handleToggle = () => {
        setIsActive(!isActive);
@@ -14,8 +20,7 @@ const AuthContainer = () => {
 
     return (
         <div className={`container ${isActive ? 'active' : ''}`} id="container">
-            <Login />
-            <Signup />
+            {isLogin ? <Login /> : <Signup />}
             <ToggleButton isActive={isActive} handleToggle={handleToggle} />
         </div>
     )

@@ -1,5 +1,6 @@
 import AuthButton from "../../UI/AuthButton";
 import AuthInput from "../../UI/AuthInput";
+import '../../styles/authcontainer.css';
 
 const Login = () => {
     return (
@@ -9,7 +10,7 @@ const Login = () => {
 
                 <AuthInput type={"text"} placeholder={"Username"}/>
                 <AuthInput type={"password"} placeholder={"Password"}/>
-
+                
                 <AuthButton buttonText={"LOGIN"}/>
             </form>
         </div>

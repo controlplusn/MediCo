@@ -1,6 +1,17 @@
 import AuthButton from "../UI/AuthButton";
+import { useNavigate } from 'react-router-dom';
 
 const ToggleButton = ({ isActive, handleToggle }) => {
+    const navigate = useNavigate();
+
+    const handleLoginNav = () => {
+        navigate('/login');
+    }
+
+    const handleSignupNav = () => {
+        navigate('/signup');
+    }
+
     return (
         <div className="toggle-container">
             <div className="toggle">
@@ -9,8 +20,11 @@ const ToggleButton = ({ isActive, handleToggle }) => {
                     <p>Start your journey with us and sign up now</p>
                     <AuthButton 
                         className={"hidden"} 
-                        buttonText={"SIGN IN"}
-                        onClick={() => handleToggle()}
+                        buttonText={"SIGN UP"}
+                        onClick={() => {
+                            handleToggle();
+                            handleSignupNav();
+                        }}
                     />
                 </div>
                 <div className="toggle-panel toggle-left">
@@ -19,7 +33,10 @@ const ToggleButton = ({ isActive, handleToggle }) => {
                     <AuthButton 
                         className={"hidden"} 
                         buttonText={"LOG IN"}
-                        onClick={() => handleToggle()}
+                        onClick={() => {
+                            handleToggle();
+                            handleLoginNav();
+                        }}
                     />
                 </div>
             </div>
