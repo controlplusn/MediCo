@@ -12,7 +12,6 @@
     align-items: center;
     padding: 30px 50px;
     justify-content: space-around;
-    border-bottom: var(--light-blue) solid 1px;
     margin: 20px 20px;
 }
 
