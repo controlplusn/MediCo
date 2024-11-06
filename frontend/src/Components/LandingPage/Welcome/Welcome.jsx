@@ -13,7 +13,7 @@ const Welcome = () => {
                 </button>
             </div>
             <div className={styles.left}>
-                <img className={styles.welcomeImg} src={wc} alt='Welcome Image'></img>
+                <img className={styles.welcomeImg} src={"https://placehold.co/500x500/000000/FFFFFF/png"} alt='Welcome Image'></img>
             </div>
         </section>
     );
