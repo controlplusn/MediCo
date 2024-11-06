@@ -1,5 +1,5 @@
 import styles from './FeatInfo.module.css'
-function FeatInfo() {
+const FeatInfo = () => {
     return (
         <section className={styles.body}>
             <h1>All the tools for learning success</h1>

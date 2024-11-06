@@ -5,7 +5,7 @@
     --blue: #365486;
 }
 
-nav{
+.navbar {
     display:flex;
     flex-direction: row;
     justify-content: space-between;
@@ -28,12 +28,14 @@ nav{
 }
 
 .left h3{
-    font-size: 16px;
+    font-size: 24px;
     font-family: 'Inter',sans-serif;
 }
 
 .logo{
     margin:10px 30px;
+    height: 70px;
+    width: 70px;
 }
 
 .middle{
@@ -49,35 +51,40 @@ nav{
     cursor: pointer;
     margin: 10px 20px;
     font-family: 'Inter', sans-serif;
-    font-size: 12px;
+    font-size: 22px;
     font-style: italic;
 }
 
 .right{
     display: flex;
     flex-direction: row;
-    width: 20%;
+    justify-content: space-around;
+    align-items: center;
+    width: 15%;
+    margin-right: 20px;
 }
+
 .signUp{
     border-style: none;
     background-color: var(--white);
     cursor: pointer;
     margin: 0px 10px;
     font-family: 'Inter', sans-serif;
-    font-size: 11px;
-    width: 50%;
+    font-size: 16px;
+    width: 100%;
     min-width: 50px;    
 }
 
+
 .login{
-    margin:0px 10px;
-    width: 50%;
+    margin: 0px 10px;
+    width: 100%;
     min-width: 50px;
     background-color: var(--black);
     border-radius: 3px;
     color: var(--white);
-    font-size: 11px;
-    padding: 5% 5%;
+    font-size: 16px;
+    padding: 10px 10px;
     border-style:none ;
     cursor: pointer;
 }

@@ -1,8 +1,10 @@
 import styles from './NavBar.module.css'
 import logo from './Image/logo.png';
-function NavBar(){
+import { Link } from 'react-router-dom';
+
+const NavBar = () => {
     return(
-        <nav>
+        <nav className={styles.navbar}>
             <div className={styles.left}>
                 <img className={styles.logo} src={logo} alt='MediCo'></img>
                 <h3>MediCo</h3>
@@ -21,13 +23,17 @@ function NavBar(){
                 </button>
             </div>
             <div className={styles.right}>
-                <button className={styles.signUp}>
-                    Sign In
-                </button>
+                <Link to="/signup">
+                    <button className={styles.signUp}>
+                        Sign Up
+                    </button>
+                </Link>
 
-                <button className={styles.login}>
-                    Log In
-                </button>
+                <Link to="/login">
+                    <button className={styles.login}>
+                        Log In
+                    </button>
+                </Link>
             </div>
 
         </nav>

@@ -1,7 +1,7 @@
 import styles from './Welcome.module.css'
 import wc from './Image/wc.png';
 
-function Welcome(){
+const Welcome = () => {
     return(
         <section className={styles.wc}>
             <div className={styles.right}>

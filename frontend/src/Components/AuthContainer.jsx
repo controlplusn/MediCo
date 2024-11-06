@@ -19,9 +19,11 @@ const AuthContainer = ({ isLogin, activateContainer }) => {
     }
 
     return (
-        <div className={`container ${isActive ? 'active' : ''}`} id="container">
-            {isLogin ? <Login /> : <Signup />}
-            <ToggleButton isActive={isActive} handleToggle={handleToggle} />
+        <div className="userContainer-wrapper">
+            <div className={`container ${isActive ? 'active' : ''}`} id="container">
+                {isLogin ? <Login /> : <Signup />}
+                <ToggleButton isActive={isActive} handleToggle={handleToggle} />
+            </div>
         </div>
     )
 }

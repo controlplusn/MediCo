@@ -3,7 +3,7 @@
     --black: #1E2022; 
 }
 
-footer{
+.footer {
     background-color: var(--white);
 }
 
@@ -11,6 +11,8 @@ footer{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
+    padding-top: 20px;
+    padding-bottom: 30px;
 }
 
 .info div{
@@ -23,6 +25,7 @@ footer{
     font-size: 24px;
     font-family: 'Inter', sans-serif;
     color: var(--black);
+    margin-bottom: 5px;
 }
 
 .info button{

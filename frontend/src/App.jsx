@@ -3,16 +3,13 @@ import AuthContainer from './Components/AuthContainer';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Homepage from './Components/Homepage';
 import HomepageAuthTest from './Components/HomepageAuthTest';
-import NavBar from './Components/NavBar/NavBar';
-import Footer from './Components/Footer/Footer';
-import Welcome from './Components/Welcome/Welcome';
-import FeatInfo from './Components/FeatInfo/FeatInfo';
+import LandingPage from './Components/LandingPage/LandingPage';
 
 function App() {
   const router = createBrowserRouter([
     {
       path: '/',
-      element: <Homepage />
+      element: <LandingPage />
     },
     {
       path: '/login',

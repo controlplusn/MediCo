@@ -28,6 +28,7 @@
     color: var(--white);
     font-size: 65px;
     font-family: 'Inter', sans-serif;
+    text-align: left;
 }
 
 .btn{
@@ -38,7 +39,8 @@
     font-family: 'Inter', sans-serif;
     background-color: var(--blue);
     border-style: none;
-    color: var(--white);
+    margin-top:30px;
+    color: var(--white);    
     cursor: pointer;
 }
 
