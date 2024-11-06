@@ -1,8 +1,11 @@
 import { Icon } from '@iconify/react/dist/iconify.js';
 import React from 'react';
+import {CircularProgressbar} from 'react-circular-progressbar'
 import '../assets/styles/studylist.css'
 
 const StudyList = () => {
+    const percentage = 66;
+    
     return (
     <fieldset>
         <legend>Study List</legend>
@@ -23,7 +26,7 @@ const StudyList = () => {
                     <td>Human Anatomy</td>
                     <td>Exam</td>
                     <td>Flashcards</td>
-                    <td><Icon icon = "raphael:piechart"/></td>
+                    <td><CircularProgressbar value={percentage} text={'&{percentage}%'}/></td>
                     <td>On Going</td>
                 </tr>
                 <tr>
