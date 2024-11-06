@@ -6,6 +6,8 @@ import Content from './Content'
 const Dashboard = () => {
   return (
     <div>
+        <Sidebar />
+        <Content />
         <Profile />
     </div>
   )
