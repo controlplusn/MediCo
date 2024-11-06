@@ -1,6 +1,6 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
-import ae1fb1f23fb01d78d031e5a5aaf92ee0 from '../assets/images/ae1fb1f23fb01d78d031e5a5aaf92ee0.jpg';
+import profileImg from '../../assets/ae1fb1f23fb01d78d031e5a5aaf92ee0.jpg';
 import '../../styles/user.css';
 
 const User = () => {
@@ -11,7 +11,7 @@ const User = () => {
                 <Icon icon="basil:edit-outline" className="icon" />
             </h2>
             <div className="profile--user">
-                <img src={ae1fb1f23fb01d78d031e5a5aaf92ee0} alt="User" />
+                <img src={profileImg} alt="User" />
                 <h5>@John_Doe</h5>
                 <h6>Student</h6>
             </div>

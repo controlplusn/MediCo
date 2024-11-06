@@ -1,10 +1,8 @@
 import './App.css';
 import AuthContainer from './Components/AuthContainer';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import Homepage from './Components/Homepage';
-import HomepageAuthTest from './Components/HomepageAuthTest';
 import LandingPage from './Components/LandingPage/LandingPage';
-import Content from './Components/Dashboard/Content';
+import Dashboard from './Components/Dashboard/Dashboard';
 
 function App() {
   const router = createBrowserRouter([
@@ -22,7 +20,7 @@ function App() {
     },
     {
       path: '/dashboard',
-      element: <Content />
+      element: <Dashboard />
     }
   ]);
 

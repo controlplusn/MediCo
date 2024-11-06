@@ -1,6 +1,6 @@
 import React from 'react';
 import {Icon} from '@iconify/react';
-import '../../styles/Sidebar.css';
+import '../../styles/sidebar.css';
 
 
 const Sidebar = () => {
