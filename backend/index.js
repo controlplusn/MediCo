@@ -8,9 +8,7 @@ app.use(express.json());
 app.use(cors());
 const PORT = 3001;
 
-mongoose.connect("mongodb+srv://admin:adminuser123@cluster0.4408g.mongodb.net/MediCo?retryWrites=true&w=majority")
-    .then(() => console.log("MongoDB connected"))
-    .catch(err => console.error("MongoDB connection error:", err));
+mongoose.connect("mongodb+srv://admin:adminuser123@cluster0.4408g.mongodb.net/MediCo?retryWrites=true&w=majority");
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
