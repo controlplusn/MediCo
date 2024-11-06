@@ -1,0 +1,48 @@
+.dashboard-container {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;  
+}
+  
+.dashboard {
+  display: flex;
+  gap: 10px;
+  height: 100vh;  
+  width: 100vw;  
+  position: fixed; 
+  top: 0;
+  left: 0;
+}
+
+
+.dashboard--content {
+  display: flex;
+  background: #F0F5F9;
+  flex: 1;
+  border-radius: 20px;
+  gap: 1.5rem;
+  justify-content: space-between;
+  overflow: hidden;  
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.content {
+  flex-grow: 1;
+  background-color: #F0F5F9;
+  padding: 20px;
+  border-radius: 20px;
+}
+
+.profile {
+  flex-basis: 300px; 
+  background-color: #F0F5F9;
+  padding: 0 10px 0;
+  border-radius: 10px;
+}
