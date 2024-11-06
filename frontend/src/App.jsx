@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Homepage from './Components/Homepage';
 import HomepageAuthTest from './Components/HomepageAuthTest';
 import LandingPage from './Components/LandingPage/LandingPage';
+import Content from './Components/Dashboard/Content';
 
 function App() {
   const router = createBrowserRouter([
@@ -20,8 +21,8 @@ function App() {
       element: <AuthContainer isLogin={false} activateContainer={true} />
     },
     {
-      path: '/homepage',
-      element: <HomepageAuthTest />
+      path: '/dashboard',
+      element: <Content />
     }
   ]);
 
