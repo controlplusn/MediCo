@@ -7,7 +7,9 @@ const ToDoList = () => {
         bioAssignment: false,
         wagICram: false,
         createIndexCard: false,
-        reviewChem: false
+        reviewChem: false,
+        reviewBio: false,
+        newtask: false
     });
 
     
@@ -55,6 +57,30 @@ const ToDoList = () => {
                             onChange={(e) => handleCheckboxChange(e, 'reviewChem')} 
                         />
                         <h5>Review 4 chem</h5>
+                    </label>
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={checkedItems.reviewBio}   
+                            onChange={(e) => handleCheckboxChange(e, 'reviewBio')} 
+                        />
+                        <h5>Review 4 Bio</h5>
+                    </label>
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={checkedItems.newtask}   
+                            onChange={(e) => handleCheckboxChange(e, 'newtask')} 
+                        />
+                        <h6>Add a new task...</h6>
+                    </label>
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={checkedItems.newtask}   
+                            onChange={(e) => handleCheckboxChange(e, 'newtask')} 
+                        />
+                        <h6>Add a new task...</h6>
                     </label>
                 </div>
             </div>
