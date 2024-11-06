@@ -1,0 +1,56 @@
+.tdl {
+    width: 100%;
+    max-width: 400px;
+    margin: 20px auto;
+    font-family: 'Arial', sans-serif;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #0F1035;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+.tdl h4 {
+    font-size: 1.6em;
+    color: #F0F5F9;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.list--container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; 
+}
+
+label {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    color: #F0F5F9;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+label:hover {
+    color: #365486; 
+}
+
+input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px; 
+    cursor: pointer;
+    accent-color: #365486;
+    transition: background-color 0.2s ease;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #365486;
+}
+
+input[type="checkbox"]:focus {
+    outline: 2px solid #365486;
+    outline-offset: 2px;
+}

@@ -1,0 +1,41 @@
+.menu{
+    display: flex;
+    flex-direction: column;
+    gap: 2.3rem;
+    height: 100vh;
+    background-color: #0F1035;
+
+}
+
+
+.logo{
+    display: flex;
+    text-align: center;
+    padding: 20px;
+    align-items: center;
+    gap: 20px;
+    color:#F0F5F9;
+}
+
+
+
+.sidenavbar{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+}
+
+.sidenavbar .item{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1rem;
+    text-decoration:none;
+    font-weight: 400;
+    padding: 15px;
+    border-radius: 10px;
+    transition: 0.3s ease-in-out;
+    color: #F0F5F9;
+}
+
