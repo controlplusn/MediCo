@@ -1,47 +1,79 @@
-import React from 'react';
-import {Icon} from '@iconify/react';
-import '../assets/styles/Sidebar.css'
-
+import React, { useState } from 'react';
+import { Icon } from '@iconify/react';
+import '../assets/styles/Sidebar.css';
 
 const Sidebar = () => {
-    return(
-        <div className="menu">
-            <div className="logo">
-            <img src="https://via.placeholder.com/50" alt="image-icon"/>
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [activeItem, setActiveItem] = useState(null);
+
+    const toggleSidebar = () => {
+        setIsCollapsed(!isCollapsed);
+    };
+
+    const handleItemClick = (item) => {
+        setActiveItem(item);
+    };
+
+    return (
+        <div className={`menu ${isCollapsed ? 'collapsed' : ''}`}>
+            <div className="logo" onClick={toggleSidebar}>
+                <Icon icon="icon-park-outline:hamburger-button" />
+                <img src="https://via.placeholder.com/50" alt="image-icon" />
             </div>
 
-            <li className="sidenavbar">
-                <ul className="item">
-                <Icon icon ="mage:dashboard-fill"/>
-                Dashboard
+            <div className={`sidenavbar ${isCollapsed ? 'collapsed' : ''}`}>
+                <ul
+                    className={`item ${activeItem === 'dashboard' ? 'active' : ''}`}
+                    onClick={() => handleItemClick('dashboard')}
+                >
+                    <Icon icon="mage:dashboard-fill" />
+                    {!isCollapsed && 'Dashboard'}
                 </ul>
-                <ul className="item">
-                <Icon icon ="ph:cards-fill"/>
-                Flash Cards
+                <ul
+                    className={`item ${activeItem === 'flashcards' ? 'active' : ''}`}
+                    onClick={() => handleItemClick('flashcards')}
+                >
+                    <Icon icon="ph:cards-fill" />
+                    {!isCollapsed && 'Flash Cards'}
                 </ul>
-                <ul className="item">
-                <Icon icon ="fluent:quiz-new-20-filled"/>
-                Quiz
+                <ul
+                    className={`item ${activeItem === 'quiz' ? 'active' : ''}`}
+                    onClick={() => handleItemClick('quiz')}
+                >
+                    <Icon icon="fluent:quiz-new-20-filled" />
+                    {!isCollapsed && 'Quiz'}
                 </ul>
-                <ul className="item">
-                <Icon icon ="oui:index-edit"/>
-                Notes
+                <ul
+                    className={`item ${activeItem === 'notes' ? 'active' : ''}`}
+                    onClick={() => handleItemClick('notes')}
+                >
+                    <Icon icon="oui:index-edit" />
+                    {!isCollapsed && 'Notes'}
                 </ul>
-                <ul className="item">
-                <Icon icon ="game-icons:anatomy"/>
-                Graphs
+                <ul
+                    className={`item ${activeItem === 'graphs' ? 'active' : ''}`}
+                    onClick={() => handleItemClick('graphs')}
+                >
+                    <Icon icon="game-icons:anatomy" />
+                    {!isCollapsed && 'Graphs'}
                 </ul>
-                <ul className="item">
-                <Icon icon ="fluent:people-community-24-filled"/>
-                Community
+                <ul
+                    className={`item ${activeItem === 'community' ? 'active' : ''}`}
+                    onClick={() => handleItemClick('community')}
+                >
+                    <Icon icon="fluent:people-community-24-filled" />
+                    {!isCollapsed && 'Community'}
                 </ul>
-                <ul className="item">
-                <Icon icon ="streamline:class-lesson-solid"/>
-                Class
+                <ul
+                    className={`item ${activeItem === 'class' ? 'active' : ''}`}
+                    onClick={() => handleItemClick('class')}
+                >
+                    <Icon icon="streamline:class-lesson-solid" />
+                    {!isCollapsed && 'Class'}
                 </ul>
-            </li>
+            </div>
         </div>
-    ) 
+    );
 };
 
 export default Sidebar;

@@ -1,41 +1,99 @@
-.menu{
+.menu {
     display: flex;
     flex-direction: column;
     gap: 2.3rem;
     height: 100vh;
     background-color: #0F1035;
-
+    transition: width 0.3s ease-in-out; 
 }
 
-
-.logo{
+.logo {
     display: flex;
     text-align: center;
     padding: 20px;
     align-items: center;
     gap: 20px;
-    color:#F0F5F9;
+    color: #F0F5F9;
+    cursor: pointer; 
+    position: relative;
 }
 
+.logo img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
 
-
-.sidenavbar{
+.sidenavbar {
     display: flex;
     flex-direction: column;
     gap: 20px;
-
+    transition: opacity 0.3s ease-in-out;
 }
 
-.sidenavbar .item{
+.sidenavbar .item {
     display: flex;
     align-items: center;
     gap: 15px;
     font-size: 1rem;
-    text-decoration:none;
+    text-decoration: none;
     font-weight: 400;
     padding: 15px;
     border-radius: 10px;
     transition: 0.3s ease-in-out;
     color: #F0F5F9;
+    overflow: hidden; 
 }
 
+.menu.collapsed {
+    width: 60px; 
+}
+
+.sidenavbar.collapsed {
+    display: flex; 
+    gap: 0px; 
+}
+
+.sidenavbar .item svg {
+    width: 20px;
+    height: 20px;
+}
+
+.sidenavbar .item span {
+    display: inline;
+}
+
+.sidenavbar.collapsed .item span {
+    display: none;
+}
+
+.menu.collapsed .logo img {
+    display: none; 
+}
+
+.menu.collapsed .logo .hamburger-icon {
+    display: inline-block; 
+}
+
+.sidenavbar .item:hover, .sidenavbar .item.active {
+    background-color: #1e2439;
+    cursor: pointer;
+}
+
+.sidenavbar .item.active {
+    border: 4px solid #F0F5F9;
+}
+
+@media (max-width: 768px) {
+    .menu {
+        width: 250px; 
+    }
+
+    .menu.collapsed {
+        width: 60px; 
+    }
+
+    .sidenavbar {
+        gap: 15px; 
+    }
+}
