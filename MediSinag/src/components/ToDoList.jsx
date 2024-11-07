@@ -1,24 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../assets/styles/tdlist.css';
 
 const ToDoList = () => {
-    
-    const [checkedItems, setCheckedItems] = useState({
-        bioAssignment: false,
-        wagICram: false,
-        createIndexCard: false,
-        reviewChem: false,
-        reviewBio: false,
-        newtask: false
-    });
+    const [tasks, setTasks] = useState([]);
 
-    
-    const handleCheckboxChange = (event, item) => {
+    useEffect(() => {
+        axios.get('http://localhost:3001/todos')
+            .then(response => {
+                console.log('Fetched tasks:', response.data);
+                setTasks(response.data);  // Set tasks from the fetched data
+            })
+            .catch(error => {
+                console.error('There was an error fetching the ToDo data:', error);
+            });
+    }, []);
+
+    const handleCheckboxChange = (event, index) => {
         const { checked } = event.target;
-        setCheckedItems(prevState => ({
-            ...prevState,
-            [item]: checked 
-        }));
+        setTasks(prevTasks => {
+            const updatedTasks = [...prevTasks];
+            updatedTasks[index].IsDone = checked; // Update IsDone instead of isChecked
+            return updatedTasks;
+        });
     };
 
     return (
@@ -26,62 +30,18 @@ const ToDoList = () => {
             <h5>To Do List</h5>
             <div className="tdl">
                 <div className="list--container">
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={checkedItems.bioAssignment}  
-                            onChange={(e) => handleCheckboxChange(e, 'bioAssignment')} 
-                        />
-                        <h5>Assignment in Bio!?!?</h5>
-                    </label>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={checkedItems.wagICram}   // Controlled checkbox
-                            onChange={(e) => handleCheckboxChange(e, 'wagICram')}  // Handle checkbox change
-                        />
-                        <h5>Wag i-cram retdem</h5>
-                    </label>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={checkedItems.createIndexCard}   
-                            onChange={(e) => handleCheckboxChange(e, 'createIndexCard')}  
-                        />
-                        <h5>Create index card for physio</h5>
-                    </label>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={checkedItems.reviewChem}   
-                            onChange={(e) => handleCheckboxChange(e, 'reviewChem')} 
-                        />
-                        <h5>Review 4 chem</h5>
-                    </label>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={checkedItems.reviewBio}   
-                            onChange={(e) => handleCheckboxChange(e, 'reviewBio')} 
-                        />
-                        <h5>Review 4 Bio</h5>
-                    </label>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={checkedItems.newtask}   
-                            onChange={(e) => handleCheckboxChange(e, 'newtask')} 
-                        />
-                        <h6>Add a new task...</h6>
-                    </label>
-                    <label>
-                        <input
-                            type="checkbox"
-                            checked={checkedItems.newtask}   
-                            onChange={(e) => handleCheckboxChange(e, 'newtask')} 
-                        />
-                        <h6>Add a new task...</h6>
-                    </label>
+                    {tasks.map((taskItem, index) => (
+                        <label key={index}>
+                            <input
+                                type="checkbox"
+                                checked={taskItem.IsDone}  // Bind IsDone to checkbox checked
+                                onChange={(e) => handleCheckboxChange(e, index)}
+                            />
+                            <h5 className={taskItem.IsDone ? 'checked' : ''}>
+                                {taskItem.Task}
+                            </h5>
+                        </label>
+                    ))}
                 </div>
             </div>
         </div>
