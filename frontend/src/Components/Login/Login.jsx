@@ -12,14 +12,15 @@ const Login = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        axios.post('http://localhost:3001/login', {username, password})
-        .then(result => {
-            console.log(result)
-            if (result.data === "Success") {
+        axios.post('http://localhost:3001/api/auth/login', {username, password})
+            .then(result => {
+                console.log(result)
                 navigate('/dashboard');
-            }
-        })
-        .catch(err => console.log(err));
+            })
+            .catch(err => {
+                console.log(err);
+                console.log('Login failed. Please try again');
+            });
     }
 
     return (
