@@ -29,23 +29,23 @@
     padding: 15px;
     border-radius: 15px;
     background-color: #0F1035;
-    width: 208px; 
-    height: 130px; 
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    width: 280px; 
+    height: 180px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .images--icon {
     display: flex;
-    gap: 5px; 
-    margin-bottom: 5px;
+    gap: 0; 
+    margin-bottom: 0px;
 }
 
-.card--item h3 {
+.card--item h2 {
     margin: 5px ;
     color: #F0F5F9;
 }
 
-.card--item h6 {
+.card--item h5 {
     display: flex;
     align-items: baseline;
     color: #F0F5F9;

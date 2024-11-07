@@ -29,6 +29,7 @@
     flex-direction: column;
     gap: 20px;
     transition: opacity 0.3s ease-in-out;
+    margin: 0;
 }
 
 .sidenavbar .item {
@@ -43,15 +44,16 @@
     transition: 0.3s ease-in-out;
     color: #F0F5F9;
     overflow: hidden; 
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 .menu.collapsed {
-    width: 60px; 
+    width: 60px;
 }
 
 .sidenavbar.collapsed {
     display: flex; 
-    gap: 0px; 
 }
 
 .sidenavbar .item svg {

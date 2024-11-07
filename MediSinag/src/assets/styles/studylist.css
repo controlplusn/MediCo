@@ -2,6 +2,7 @@ table {
     width: 100%;
     border-collapse: collapse; 
     margin-top: 5px;
+    overflow-y: auto;
 }
 
 thead {
@@ -22,6 +23,7 @@ fieldset {
     border-radius: 8px;
     margin-bottom: 20px;
     margin-top: 10px;;
+
 }
 
 legend {
