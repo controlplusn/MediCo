@@ -1,14 +1,16 @@
 import express from 'express';
+import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import UserModel from './model/User.js';
+import connectDB from './db/connectDB.js';
+
+dotenv.config();
 
 const app = express();
 app.use(express.json());
 app.use(cors());
-const PORT = 3001;
-
-mongoose.connect("mongodb+srv://admin:adminuser123@cluster0.4408g.mongodb.net/MediCo?retryWrites=true&w=majority");
+const PORT = 3001; 
 
 app.post('/login', (req, res) => {
     const { username, password } = req.body;
@@ -32,7 +34,7 @@ app.post('/signup', (req, res) => {
     .catch(err => res.json(err));
 });
 
-app.listen(
-    PORT,
-    () => {console.log("Server running")} 
-)
+app.listen(PORT, () => {
+    connectDB();
+    console.log("Server running");
+});
