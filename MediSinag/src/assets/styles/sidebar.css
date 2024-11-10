@@ -1,20 +1,19 @@
 .menu {
     display: flex;
     flex-direction: column;
-    gap: 2.3rem;
     height: 100vh;
     background-color: #0F1035;
     transition: width 0.3s ease-in-out; 
+    width: 250px; 
 }
 
 .logo {
     display: flex;
-    text-align: center;
-    padding: 20px;
     align-items: center;
     gap: 20px;
     color: #F0F5F9;
-    cursor: pointer; 
+    cursor: pointer;
+    padding: 20px;
     position: relative;
 }
 
@@ -27,8 +26,8 @@
 .sidenavbar {
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    transition: opacity 0.3s ease-in-out;
+    gap: 15px;
+    transition: opacity 0.3s ease-in-out; 
     margin: 0;
 }
 
@@ -41,32 +40,23 @@
     font-weight: 400;
     padding: 15px;
     border-radius: 10px;
-    transition: 0.3s ease-in-out;
     color: #F0F5F9;
-    overflow: hidden; 
+    overflow: hidden;
+    transition: background-color 0.3s ease-in-out; 
     margin-right: 5px;
     margin-left: 5px;
 }
 
 .menu.collapsed {
-    width: 60px;
+    width: 60px; 
 }
 
 .sidenavbar.collapsed {
-    display: flex; 
-}
-
-.sidenavbar .item svg {
-    width: 20px;
-    height: 20px;
-}
-
-.sidenavbar .item span {
-    display: inline;
+    display: inline-block; 
 }
 
 .sidenavbar.collapsed .item span {
-    display: none;
+    display: none; 
 }
 
 .menu.collapsed .logo img {
@@ -77,13 +67,58 @@
     display: inline-block; 
 }
 
+.hamburger-icon {
+    font-size: 30px; 
+    color: #F0F5F9;
+    cursor: pointer;
+}
+
+.sidenavbar{
+    font-size: 20px;
+}
+
 .sidenavbar .item:hover, .sidenavbar .item.active {
-    background-color: #1e2439;
+    background-color: #1e2439; 
     cursor: pointer;
 }
 
 .sidenavbar .item.active {
     border: 4px solid #F0F5F9;
+}
+
+.user--sidebar {
+    display: flex;
+    align-items: center; 
+    justify-content: flex-start; 
+    gap: 0; 
+    border-radius: 15px;
+    margin-top: auto; 
+    margin-right: 5px;
+    padding: 5px;
+
+}   
+
+.user--sidebar img {
+    width: 30px;
+    height: 30px; 
+    border-radius: 50%; 
+    object-fit: cover;
+    border: 2px solid #F0F5F9; 
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.user--sidebar h6 {
+    color: #F0F5F9;
+    font-size: 1rem;
+    font-weight: 100;
+    margin: 11px;
+    text-align:left;
+}
+
+.user--sidebar:hover {
+    background-color: #283142; 
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -92,10 +127,23 @@
     }
 
     .menu.collapsed {
-        width: 60px; 
+        width: 60px;
     }
 
     .sidenavbar {
-        gap: 15px; 
+        gap: 15px;
+    }
+
+    .user--sidebar {
+        padding: 0;
+    }
+
+    .user--sidebar img {
+        width: 20%;
+        height: 20px;
+    }
+
+    .user--sidebar h6 {
+        font-size: 0.9rem;
     }
 }

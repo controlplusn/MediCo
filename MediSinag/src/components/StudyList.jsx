@@ -1,6 +1,7 @@
 import React from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar'; 
 import 'react-circular-progressbar/dist/styles.css'; 
+import { Icon } from '@iconify/react';
 import '../assets/styles/studylist.css';
 
 const StudyList = () => {
@@ -41,7 +42,8 @@ const StudyList = () => {
 
     return (
         <fieldset>
-            <legend>Study List</legend>
+            <legend> Study List </legend>
+            <button>Edit</button>
             <table>
                 <thead>
                     <tr>

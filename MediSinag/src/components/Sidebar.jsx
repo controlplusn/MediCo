@@ -17,8 +17,8 @@ const Sidebar = () => {
     return (
         <div className={`menu ${isCollapsed ? 'collapsed' : ''}`}>
             <div className="logo" onClick={toggleSidebar}>
-                <Icon icon="icon-park-outline:hamburger-button" />
                 <img src="https://via.placeholder.com/50" alt="image-icon" />
+                <Icon icon="icon-park-outline:hamburger-button" />
             </div>
 
             <div className={`sidenavbar ${isCollapsed ? 'collapsed' : ''}`}>
@@ -71,6 +71,11 @@ const Sidebar = () => {
                     <Icon icon="streamline:class-lesson-solid" />
                     {!isCollapsed && 'Class'}
                 </ul>
+            </div>
+
+            <div className="user--sidebar">
+            <img src="https://via.placeholder.com/50" alt="User" />
+            <h6>John Doe</h6>
             </div>
         </div>
     );
