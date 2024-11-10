@@ -1,0 +1,12 @@
+npm install express mongoose cors
+
+express:    Web framework for Node.js.
+mongoose:   MongoDB object modeling tool.
+cors:       Middleware for handling Cross-Origin Resource Sharing (CORS), so your frontend can access your backend.
+
+npm install --save-dev nodemon
+for automatically update
+
+npm install cors
+
+
