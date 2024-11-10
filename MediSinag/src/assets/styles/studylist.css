@@ -2,7 +2,13 @@ table {
     width: 100%;
     border-collapse: collapse; 
     margin-top: 5px;
-    overflow-y: auto;
+}
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto; 
+    border: 1px solid #1E2022; 
+    border-radius: 8px; 
 }
 
 thead {
@@ -41,8 +47,6 @@ tbody tr {
     background-color: #0F1035; 
 }
 
-
-
 td svg {
     width: 20px;
     height: 20px;
@@ -64,6 +68,31 @@ td .circular-progress-wrapper {
     margin: 0 auto;
 }
 
+select {
+    background-color: #0F1035; 
+    color: #F0F5F9; 
+    border: 1px solid #1E2022; 
+    padding: 8px 12px; 
+    border-radius: 5px;
+    font-size: 14px; 
+    appearance:initial; 
+
+}
+
+select:focus {
+    outline: none; 
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
+}
+
+
+select::after {
+    content: '▼'; 
+    color: #F0F5F9; 
+    position: absolute; 
+    right: 10px; 
+    pointer-events: none; 
+}
+
 fieldset button {
     background-color: #C9D6DF; 
     color: #1E2022; 
@@ -72,11 +101,14 @@ fieldset button {
     font-size: 14px; 
     border-radius: 5px; 
     cursor: pointer; 
-    display: flex; 
-    align-items:baseline; 
-    justify-content:flex-start; 
+    display: inline-block; 
+    margin-right: 10px; 
     transition: background-color 0.3s ease, border-color 0.3s ease; 
 }  
+
+fieldset button:last-child {
+    margin-right: 0; 
+}
 
 fieldset button:hover {
     background-color: #F0F5F9; 
@@ -96,8 +128,6 @@ fieldset button:focus {
     outline: none; 
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
 }
-
-
 
 
 @media (max-width: 768px) {

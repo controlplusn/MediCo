@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../assets/styles/tdlist.css';
+import { Icon } from '@iconify/react';
 
 const ToDoList = ({ userId }) => {
-  const [tasks, setTasks] = useState([]); // State to hold the tasks
+  const [tasks, setTasks] = useState([]);
+  const [newTask, setNewTask] = useState(''); 
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -21,10 +23,9 @@ const ToDoList = ({ userId }) => {
     }
   }, [userId]);
 
-  // Function to sort tasks
   const sortTasks = (tasks) => {
     return tasks.sort((a, b) => {
-      return a.done === b.done ? 0 : a.done ? 1 : -1; // Sort 'done' tasks to the bottom
+      return a.done === b.done ? 0 : a.done ? 1 : -1; 
     });
   };
 
@@ -39,12 +40,10 @@ const ToDoList = ({ userId }) => {
         done: updatedDoneStatus
       });
 
-      // Optimistically update the task in the frontend state
       const updatedTasks = tasks.map(t =>
         t.task === taskItem.task ? { ...t, done: updatedDoneStatus } : t
       );
 
-      // Sort the updated tasks
       setTasks(sortTasks(updatedTasks));
     } catch (err) {
       console.error('Error updating task:', err);
@@ -62,10 +61,28 @@ const ToDoList = ({ userId }) => {
         },
       });
 
-      // Remove the task from the local state
       setTasks(prevTasks => prevTasks.filter(t => t.task !== taskItem.task));
     } catch (err) {
       console.error('Error deleting task:', err);
+    }
+  };
+
+  const handleAddTask = async (e) => {
+    e.preventDefault(); 
+
+    if (!newTask.trim()) return; 
+
+    try {
+      const response = await axios.post('http://localhost:5000/todos/add', {
+        userId: userId,
+        task: newTask,
+        done: false, 
+      });
+
+      setTasks(prevTasks => [...prevTasks, response.data]);
+      setNewTask(''); 
+    } catch (err) {
+      console.error('Error adding task:', err);
     }
   };
 
@@ -74,19 +91,28 @@ const ToDoList = ({ userId }) => {
       <h5>To Do List</h5>
       <div className="tdl">
         <div className="list--container">
+        <form onSubmit={handleAddTask} className="add-task-form">
+        <input
+          type="text"
+          value={newTask}
+          onChange={(e) => setNewTask(e.target.value)}
+          placeholder="Add a new task"
+        />
+        <button type="submit">Add</button>
+      </form>
           {tasks.length > 0 ? tasks.map((taskItem) => (
             <label key={taskItem._id}>
-            
               <input
                 type="checkbox"
                 checked={taskItem.done}
-                onChange={(e) => handleCheckboxChange(e, taskItem)} // Pass the entire taskItem
+                onChange={(e) => handleCheckboxChange(e, taskItem)} 
               />
               <h5 className={taskItem.done ? 'checked' : ''}>
                 {taskItem.task}
               </h5>
-              <button className={'delete'} onClick={() => handleDelete(taskItem)}>#</button>
+              <button className={'delete'} onClick={() => handleDelete(taskItem)}><Icon icon="streamline:recycle-bin-2" /></button>
             </label>
+         
           )) : <p>No tasks available.</p>}
         </div>
       </div>

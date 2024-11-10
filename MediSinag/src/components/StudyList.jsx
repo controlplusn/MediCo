@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { CircularProgressbar } from 'react-circular-progressbar'; 
 import 'react-circular-progressbar/dist/styles.css'; 
-import { Icon } from '@iconify/react';
 import '../assets/styles/studylist.css';
 
-const StudyList = () => {
-    const data = [
+const StudyList = () => {   
+    const [data, setData] = useState([
         {
             date: '10/14/2024',
             subject: 'Human Anatomy',
@@ -38,12 +37,21 @@ const StudyList = () => {
             progress: 40, 
             status: 'On Going',
         }
-    ];
+    ]);
+
+    const statusOptions = ['On Going', 'Done', 'Pending', 'Cancelled','Not Progress'];
+
+    const handleStatusChange = (index, newStatus) => {
+        const updatedData = [...data];
+        updatedData[index].status = newStatus;
+        setData(updatedData);
+    };
 
     return (
         <fieldset>
             <legend> Study List </legend>
-            <button>Edit</button>
+            <button className="editbtn">Edit</button>
+            <button className="addbtn">Add</button>
             <table>
                 <thead>
                     <tr>
@@ -70,7 +78,18 @@ const StudyList = () => {
                                     />
                                 </div>
                             </td>
-                            <td>{item.status}</td>
+                            <td>
+                                <select 
+                                    value={item.status} 
+                                    onChange={(e) => handleStatusChange(index, e.target.value)}
+                                >
+                                    {statusOptions.map((status) => (
+                                        <option key={status} value={status}>
+                                            {status}
+                                        </option>
+                                    ))}
+                                </select>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
