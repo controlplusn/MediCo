@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Icon } from '@iconify/react';
 import { CircularProgressbar } from 'react-circular-progressbar'; 
 import 'react-circular-progressbar/dist/styles.css'; 
 import '../assets/styles/studylist.css';
@@ -47,6 +48,11 @@ const StudyList = () => {
         setData(updatedData);
     };
 
+    const handleDelete = (index) => {
+        const updatedData = data.filter((_, i) => i !== index); // Remove the item from the list
+        setData(updatedData);
+    };
+
     return (
         <fieldset>
             <legend> Study List </legend>
@@ -89,6 +95,14 @@ const StudyList = () => {
                                         </option>
                                     ))}
                                 </select>
+                            </td>
+                            <td>
+                                <button 
+                                    className="delete-btn" 
+                                    onClick={() => handleDelete(index)} 
+                                >
+                                    <Icon icon ="streamline:recycle-bin-2"/>
+                                </button>
                             </td>
                         </tr>
                     ))}
