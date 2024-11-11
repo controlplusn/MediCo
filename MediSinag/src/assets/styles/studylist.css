@@ -1,23 +1,23 @@
 table {
     width: 100%;
-    border-collapse: collapse; 
+    border-collapse: collapse;
     margin-top: 5px;
+    max-height: 150px; /* Reduce max height of table */
+    overflow-y: scroll;
 }
 
 .table-container {
-    max-height: 300px;
-    overflow-y: auto; 
     border: 1px solid #1E2022; 
     border-radius: 8px; 
 }
 
 thead {
-    background-color: #F0F5F9;; 
+    background-color: #F0F5F9;
 }
 
 th, td {
-    padding: 12px 15px; 
-    text-align: left; 
+    padding: 8px 10px; /* Reduced padding */
+    text-align: left;
     border-bottom: 1px solid #1E2022; 
     font-size: 14px;
     color: #F0F5F9;
@@ -25,17 +25,19 @@ th, td {
 
 fieldset {
     border: 1px solid #1E2022;
-    padding: 10px 20px;
+    padding: 5px 8px; /* Reduced padding */
     border-radius: 8px;
-    margin-bottom: 20px;
-    margin-top: 10px;;
-
+    margin-top: 10px;
+    max-height: 300px; /* Reduced max-height */
+    width: auto; /* Ensure the fieldset is responsive */
+    min-width: 300px; /* Set a minimum width */
+    overflow: hidden; /* Hide overflow */
 }
 
 legend {
-    font-size: 18px;
+    font-size: 14px; /* Reduced font size */
     font-weight: bold;
-    color: #1E2022; 
+    color: #1E2022;
 }
 
 th {
@@ -48,9 +50,9 @@ tbody tr {
 }
 
 td svg {
-    width: 20px;
-    height: 20px;
-    fill: #F0F5F9; 
+    width: 18px; /* Smaller icon size */
+    height: 18px;
+    fill: #F0F5F9;
 }
 
 td:last-child {
@@ -63,8 +65,8 @@ td:last-child::before {
 }
 
 td .circular-progress-wrapper {
-    width: 50%;
-    height: 50%;
+    width: 40%; /* Smaller progress bar */
+    height: 40%; 
     margin: 0 auto;
 }
 
@@ -72,11 +74,10 @@ select {
     background-color: #0F1035; 
     color: #F0F5F9; 
     border: 1px solid #1E2022; 
-    padding: 8px 12px; 
+    padding: 6px 10px; /* Smaller padding */
     border-radius: 5px;
-    font-size: 14px; 
-    appearance:initial; 
-
+    font-size: 13px; /* Smaller font size */
+    appearance: initial;
 }
 
 select:focus {
@@ -84,25 +85,16 @@ select:focus {
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
 }
 
-
-select::after {
-    content: '▼'; 
-    color: #F0F5F9; 
-    position: absolute; 
-    right: 10px; 
-    pointer-events: none; 
-}
-
 fieldset button {
     background-color: #C9D6DF; 
     color: #1E2022; 
     border: 2px solid #F0F5F9; 
-    padding: 5px 10px;
-    font-size: 14px; 
+    padding: 4px 8px; /* Reduced padding */
+    font-size: 12px; /* Smaller font size */
     border-radius: 5px; 
     cursor: pointer; 
     display: inline-block; 
-    margin-right: 10px; 
+    margin-right: 8px; /* Reduced margin */
     transition: background-color 0.3s ease, border-color 0.3s ease; 
 }  
 
@@ -116,19 +108,16 @@ fieldset button:hover {
     border-color: #1E2022; 
 }
 
-
 fieldset button svg {
-    width: 20px; 
-    height: 20px; 
+    width: 18px; 
+    height: 18px; 
     fill: #F0F5F9; 
 }
-
 
 fieldset button:focus {
     outline: none; 
     box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); 
 }
-
 
 @media (max-width: 768px) {
     table, thead, tbody, th, td, tr {
