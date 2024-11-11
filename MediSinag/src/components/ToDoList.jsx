@@ -68,23 +68,26 @@ const ToDoList = ({ userId }) => {
   };
 
   const handleAddTask = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault(); // Prevent the default form submission behavior
 
-    if (!newTask.trim()) return; 
+    if (!newTask.trim()) return; // Check if the input is empty
 
     try {
-      const response = await axios.post('http://localhost:5000/todos/add', {
-        userId: userId,
-        task: newTask,
-        done: false, 
-      });
+        const response = await axios.post('http://localhost:5000/todos/add', {
+            userId: userId,
+            task: newTask, // This is where the task value is sent
+            done: false, // Set done to false for new tasks
+        });
 
-      setTasks(prevTasks => [...prevTasks, response.data]);
-      setNewTask(''); 
+        // Add the new task to the state and sort the tasks
+        const updatedTasks = [...tasks, response.data];
+        setTasks(sortTasks(updatedTasks)); // Sort the tasks after adding the new one
+        setNewTask(''); // Clear the input field
+       
     } catch (err) {
-      console.error('Error adding task:', err);
+        console.error('Error adding task:', err); // Handle any errors
     }
-  };
+};
 
   return (
     <div className="tdlist--header">
@@ -113,7 +116,7 @@ const ToDoList = ({ userId }) => {
               <button className={'delete'} onClick={() => handleDelete(taskItem)}><Icon icon="streamline:recycle-bin-2" /></button>
             </label>
          
-          )) : <p>No tasks available.</p>}
+          )) : <p style={{color:"white"}}>No tasks available.</p>}
         </div>
       </div>
     </div>

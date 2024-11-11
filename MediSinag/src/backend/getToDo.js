@@ -115,6 +115,35 @@ app.get('/todos/:userId', async (req, res) => {
         res.status(500).json({ message: 'Server error while deleting task' });
     }
 });
+
+app.post('/todos/add', async (req, res) => {
+  const { userId, task, done } = req.body; // Expecting task and done in the request body
+  
+  try {
+      // Ensure userId is a valid ObjectId
+      if (!mongoose.isValidObjectId(userId)) {
+          return res.status(400).json({ error: 'Invalid userId format' });
+      }
+
+      const userObjectId = new mongoose.Types.ObjectId(userId);
+
+      // Find the user and update their ToDo list
+      const result = await ToDoModel.findOneAndUpdate(
+          { userId: userObjectId },
+          { $push: { ToDo: { task, done } } }, // Push the new task into the ToDo array
+          { new: true, useFindAndModify: false } // Return the updated document
+      );
+
+      if (!result) {
+          return res.status(404).json({ message: 'User  not found' });
+      }
+
+      res.status(201).json({ task, done }); // Respond with the new task
+  } catch (err) {
+      console.error('Error adding task:', err);
+      res.status(500).json({ error: 'Failed to create ToDo' });
+  }
+});
   
 
 // Start the Express server
