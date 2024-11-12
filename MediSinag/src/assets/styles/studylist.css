@@ -161,3 +161,70 @@ fieldset button:focus {
         color: #1E2022;
     }
 }
+
+dialog[data-modal] {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #FFF; /* Adjust modal background color */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* Stay above all elements */
+    width: 30vw; /* Modal width */
+    max-width: 90%; /* Adjust for responsiveness */
+    max-height: 90%; /* To avoid overflow on small screens */
+    overflow-y: auto; /* Scroll if content exceeds the height */
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    z-index: 999; /* Ensure it covers the screen */
+}
+
+
+/* Centering modal content */
+dialog .modal-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Style close button inside the modal */
+dialog button[data-close-modal] {
+    background-color: #FF4D4D;
+    color: #FFF;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+dialog button[data-close-modal]:hover {
+    background-color: #D43F3F;
+}
+
+/* Add padding to modal content */
+dialog[data-modal] .modal-content {
+    padding: 10px;
+}
+
+.modal-content label{
+    color:#0F1035;
+    margin-bottom: 1vh;
+}
+
+.modal-content form{
+    width: 100%;
+    
+}
+
+

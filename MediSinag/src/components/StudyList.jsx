@@ -40,7 +40,16 @@ const StudyList = () => {
         }
     ]);
 
-    const statusOptions = ['On Going', 'Done', 'Pending', 'Cancelled','Not Progress'];
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    const [formData, setFormData] = useState({
+        date: '',
+        subject: '',
+        type: 'Quiz',
+        flashcards: 'Flashcards',
+    });
+
+    const statusOptions = ['On Going', 'Done', 'Pending', 'Cancelled', 'Not Progress'];
 
     const handleStatusChange = (index, newStatus) => {
         const updatedData = [...data];
@@ -48,16 +57,98 @@ const StudyList = () => {
         setData(updatedData);
     };
 
+    const typeOptions = ['Quiz', 'Exam', 'Activity', 'Others'];
+    const flashcardOptions = ['Flashcards', 'No Flashcards'];
     const handleDelete = (index) => {
         const updatedData = data.filter((_, i) => i !== index); // Remove the item from the list
         setData(updatedData);
     };
 
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleFormSubmit = (e) => {
+        e.preventDefault();
+        setData([...data, formData]);
+        setFormData({ date: '', subject: '', type: 'Quiz', flashcards: 'Flashcards' });
+        handleCloseModal();
+    };
+
+    const handleOpenModal = () => {
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
+
     return (
         <fieldset>
-            <legend> Study List </legend>
-            <button className="editbtn">Edit</button>
-            <button className="addbtn">Add</button>
+            <legend>Study List</legend>
+            <button className="addbtn" onClick={handleOpenModal}>Add</button>
+            {isModalOpen && (
+                <>
+                    <div className="backdrop" onClick={handleCloseModal}></div>
+                    <dialog open data-modal className="input--study">
+                        <div className="modal-content">
+                        <form onSubmit={handleFormSubmit}>
+                                <label>
+                                    Date (dd/mm/yyyy):
+                                    <input 
+                                        type="text" 
+                                        name="date" 
+                                        value={formData.date} 
+                                        onChange={handleInputChange} 
+                                        required 
+                                    />
+                                </label>
+                                <label>
+                                    Subject:
+                                    <input 
+                                        type="text" 
+                                        name="subject" 
+                                        value={formData.subject} 
+                                        onChange={handleInputChange} 
+                                        required 
+                                    />
+                                </label>
+                                <label>
+                                    Type:
+                                    <select 
+                                        name="type" 
+                                        value={formData.type} 
+                                        onChange={handleInputChange}
+                                    >
+                                        {typeOptions.map((type) => (
+                                            <option key={type} value={type}>
+                                                {type}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </label>
+                                <label>
+                                    Flashcard:
+                                    <select 
+                                        name="flashcards" 
+                                        value={formData.flashcards} 
+                                        onChange={handleInputChange}
+                                    >
+                                        {flashcardOptions.map((flashcard) => (
+                                            <option key={flashcard} value={flashcard}>
+                                                {flashcard}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </label>
+                                <button type="submit">Add</button>
+                                <button data-close-modal onClick={handleCloseModal}>Close</button>
+                            </form>
+                        </div>
+                    </dialog>
+                </>
+            )}
             <table>
                 <thead>
                     <tr>
@@ -101,7 +192,7 @@ const StudyList = () => {
                                     className="delete-btn" 
                                     onClick={() => handleDelete(index)} 
                                 >
-                                    <Icon icon ="streamline:recycle-bin-2"/>
+                                    <Icon icon="streamline:recycle-bin-2"/>
                                 </button>
                             </td>
                         </tr>

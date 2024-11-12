@@ -1,12 +1,7 @@
 .content{
     width: 60%;
-    overflow: scroll;
-  
 }
 
-.content::-webkit-scrollbar {
-    display: none; 
-}
 
 .content--header{
     display: flex;
