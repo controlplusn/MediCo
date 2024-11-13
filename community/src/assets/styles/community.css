@@ -1,0 +1,196 @@
+/* General reset for consistent box model across browsers */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Container for the entire Community component */
+.community-container {
+    display: block;
+    flex-direction: column;
+    gap: 15px;
+    width: 100vw;
+    max-width: 100vw; /* Limit width for better readability */
+    height: 100vh;
+    padding: 15px;
+    background-color: #F0F5F9;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+}
+
+/* Search Box Styling */
+.search-box {
+    display: flex;
+    align-items: center;
+    background: #C9D6DF;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 28px;
+    width: 100%; /* Adjusted to 100% width of the parent container */
+    max-width: 600px; /* Adjust max-width for better flexibility */
+}
+
+.search-box input {
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 5px;
+    margin-left: 8px;
+    width: 100%;
+    font-size: 16px;
+}
+
+.search-box input::placeholder {
+    color: #52616B;
+}
+
+.search-box .icon {
+    font-size: 20px;
+    color: #007bff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.search-box .icon:hover {
+    color: #0056b3;
+}
+
+/* Thread Input Styling */
+.thread {
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Space between input and icon */
+    background: #FFFFFF;
+    padding: 10px;
+    margin-bottom: 30px;
+    border-radius: 20px;
+    width: 100%;
+    max-width: 1300px; /* Ensures the thread input is not too wide */
+}
+
+.thread input {
+    border: none;
+    outline: none;
+    background: transparent;
+    padding: 3px;
+    width: 90%;
+    font-size: 15px;
+}
+
+.thread input::placeholder {
+    color: #C9D6DF;
+}
+
+.thread .icon {
+    font-size: 25px;
+    color: #007bff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.thread .icon:hover {
+    color: #0056b3;
+}
+
+/* Community Thread Styling */
+.community--thread {
+    background-color: #C9D6DF;
+    padding: 30px;
+    border-radius: 30px;
+    width: 100%;
+    max-width: 1300px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+/* Thread Header */
+.communityheader--thread h5 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1E2022;
+    margin-bottom: 10px;
+}
+
+/* User Information Styling */
+.communityuser--thread {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+}
+
+.communityuser--thread img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.community--userinfo .username {
+    font-size: 15px;
+    color: #1E2022;
+    margin-bottom: 5px;
+}
+
+.community--userinfo .userinfo--time {
+    font-size: 10px;
+    color: #52616B;
+}
+
+
+/* Label Styling */
+.community--label h6 {
+    font-size: 12px;
+    position:relative;
+    color: #1E2022;
+    background-color: #7FC7D9;
+    padding: 8px;
+    border-radius: 8px;
+    border-style: solid;
+    border-color:#F0F5F9;
+    margin-bottom: 5px;
+    margin-left: 1000px;
+
+}
+
+/* Thread Content Styling */
+.thread--content h6 {
+    font-size: 14px;
+    color: #1E2022;
+    line-height: 1.5;
+    margin-bottom: 5px;
+}
+
+/* Icon Container */
+.community--icon {
+    display: flex;  
+    gap: 50px;
+    font-size: 20px;
+    margin-top: 30px;
+    align-items: center;
+}
+
+.community--icon .icon {
+    color: #007bff;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+@media (max-width: 768px) {
+    .search-box,
+    .thread {
+        max-width: 100%;
+    }
+
+    .community--thread {
+        max-width: 100%;
+    }
+
+    .community-container {
+        padding: 10px;
+    }
+
+    .communityuser--thread img {
+        width: 25px;
+        height: 25px;
+    }
+}
