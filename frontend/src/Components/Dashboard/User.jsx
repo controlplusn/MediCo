@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from '@iconify/react';
 import profileImg from '../../assets/ae1fb1f23fb01d78d031e5a5aaf92ee0.jpg';
-import '../../styles/user.css';
+import '../../styles/user.css'
 
 const User = () => {
     return (

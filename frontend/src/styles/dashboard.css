@@ -1,13 +1,13 @@
-.dashboard-container {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;  
+:root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;  
 }
-  
+
 .dashboard {
   display: flex;
-  gap: 10px;
+  
   height: 100vh;  
   width: 100vw;  
   position: fixed; 
@@ -21,8 +21,9 @@
   background: #F0F5F9;
   flex: 1;
   border-radius: 20px;
+  padding: 0;
   gap: 1.5rem;
-  justify-content: space-between;
+  justify-content: space-around;
   overflow: hidden;  
 }
 
@@ -43,6 +44,6 @@
 .profile {
   flex-basis: 300px; 
   background-color: #F0F5F9;
-  padding: 0 10px 0;
+  padding: 30px;
   border-radius: 10px;
 }

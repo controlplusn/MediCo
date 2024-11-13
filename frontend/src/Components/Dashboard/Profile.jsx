@@ -8,7 +8,7 @@ const Profile = () => {
     return <div className="profile"> 
         <User />
         <Calendar  />
-        <ToDoList />
+        <ToDoList userId="672cb19af16ce3b2613900d5" />
     </div>;
 
 };
