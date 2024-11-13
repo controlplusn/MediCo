@@ -1,0 +1,41 @@
+
+* {
+    margin: 0;
+    padding: 0; 
+  }
+  
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9; 
+    color: #333;            
+    height: 100vh;            
+    display: flex;
+    justify-content: center;  
+    align-items: center;      
+  }
+  
+  .notes--system {
+    width: 100%;
+    max-width: 1200px;         
+    padding: 20px;             
+    background-color: white;  
+    border-radius: 8px;       
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
+    overflow: hidden;         
+  }
+  
+  @media (max-width: 768px) {
+    body {
+      padding: 10px; 
+    }
+  
+    .notes-system {
+      padding: 15px;   
+      max-width: 100vw; 
+    }
+  }
+    .notes-system .notes,
+  .notes-system .content-notes {
+    margin-bottom: 20px;
+  }
+    
