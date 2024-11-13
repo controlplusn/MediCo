@@ -1,6 +1,7 @@
 import express from 'express';
 import UserModel from '../model/User.js';
 import { generateToken } from '../utils/generateToken.js'; 
+import { verifyToken } from '../middleware/verifyToken.js';
 import bcrypt from 'bcryptjs';
 
 const router = express.Router();
@@ -70,9 +71,32 @@ router.post('/login', async (req, res) => {
                 password: undefined
             }
         });
-
+ 
     } catch (error) {
         console.log("Error in login: " + error);
+        res.status(400).json({ success: false, message: error.message });
+    }
+});
+
+router.get('/logout', async (req, res) => {
+    res.clearCookie("token");
+    res.status(200).json({ success: true, message: "Logged out successfully" });
+});
+
+
+// JWT auth
+router.get('/check-auth', verifyToken, async (req, res) => {
+    try {
+        const user = await UserModel.findById(req.userId).select("-password") // does not display the password
+
+        if (!user) {
+            return res.status(400).json({ success: false, message: "User not found" });
+        }
+
+        res.status(200).json({ success: true, user });
+
+    } catch (err) {
+        console.log("Error in checkAuth", err);
         res.status(400).json({ success: false, message: error.message });
     }
 });

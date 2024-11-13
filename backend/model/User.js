@@ -18,14 +18,10 @@ const UserSchema = new mongoose.Schema({
     lastLogin: {
         type: Date,
         default: Date.now()
-    },
-    isVerifies: {
-        type: Boolean,
-        default: false
     }
 }, {
     timestamps: true,
 });
 
-const UserModel = new mongoose.model("user", UserSchema)
+const UserModel = new mongoose.model("User", UserSchema)
 export default UserModel;
