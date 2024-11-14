@@ -2,7 +2,7 @@ import React from 'react';
 import ContentHeader from './ContentHeader';
 import Greetings from './Greetings';
 import Card from './Card';
-import StudyList from './StudyList';
+// import StudyList from './StudyList';
 import '../../styles/content.css';
 
 const Content = () => {
@@ -11,7 +11,7 @@ const Content = () => {
         <ContentHeader />
         <Greetings />
         <Card />
-        <StudyList />
+        {/* <StudyList /> */}
     </div>
     );
 };
