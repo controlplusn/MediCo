@@ -1,16 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { jwtDecode } from 'jwt-decode';
 import '../../styles/tdlist.css'
 import { Icon } from '@iconify/react';
 
-const ToDoList = ({ userId }) => {
+const ToDoList = () => {
   const [tasks, setTasks] = useState([]);
   const [newTask, setNewTask] = useState(''); 
+
+  //Decode token and get User Id
+  const token = localStorage.getItem('token');
+  const decoded = token ? jwtDecode(token) : null;
+  const userId = decoded ? decoded.userId : null;
 
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/todos/${userId}`);
+        const response = await axios.get('http://localhost:3001/api/todos/todo', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        });
         const sortedTasks = sortTasks(response.data.ToDo);
         setTasks(sortedTasks);
       } catch (err) {
@@ -21,7 +32,7 @@ const ToDoList = ({ userId }) => {
     if (userId) {
       fetchTasks();
     }
-  }, [userId]);
+  }, [userId, token]);
 
   const sortTasks = (tasks) => {
     return tasks.sort((a, b) => {
@@ -34,10 +45,14 @@ const ToDoList = ({ userId }) => {
     console.log(`Updating task "${taskItem.task}" for user ${userId} to done: ${updatedDoneStatus}`);
 
     try {
-      await axios.put('http://localhost:5000/todos/update', {
-        userId: userId,
+      await axios.put('http://localhost:3001/api/todos/update', {
         taskValue: taskItem.task,
         done: updatedDoneStatus
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        withCredentials: true,
       });
 
       const updatedTasks = tasks.map(t =>
@@ -54,14 +69,15 @@ const ToDoList = ({ userId }) => {
     console.log(`Deleting task "${taskItem.task}" for user ${userId}`);
 
     try {
-      await axios.delete(`http://localhost:5000/todos/delete`, {
-        data: {
-          userId: userId,
-          taskValue: taskItem.task,
+      await axios.delete(`http://localhost:3001/api/todos/delete`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
+        withCredentials: true,
+        data: { taskValue: taskItem.task }
       });
 
-      setTasks(prevTasks => prevTasks.filter(t => t.task !== taskItem.task));
+      setTasks(tasks.filter(t => t.task !== taskItem.task));
     } catch (err) {
       console.error('Error deleting task:', err);
     }
@@ -73,10 +89,15 @@ const ToDoList = ({ userId }) => {
     if (!newTask.trim()) return; // Check if the input is empty
 
     try {
-        const response = await axios.post('http://localhost:5000/todos/add', {
-            userId: userId,
+        console.log("Adding task for userId:", userId);
+        const response = await axios.post('http://localhost:3001/api/todos/add', {
+            userId: userId, 
             task: newTask, // This is where the task value is sent
-            done: false, // Set done to false for new tasks
+            done: false // Set done to false for new tasks
+        }, {
+          headers: {
+            Authorization: token
+          }
         });
 
         // Add the new task to the state and sort the tasks
