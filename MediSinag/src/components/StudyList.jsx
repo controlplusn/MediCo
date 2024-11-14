@@ -165,7 +165,7 @@ const StudyList = () => {
                         <div className="modal-content">
                         <form onSubmit={handleFormSubmit}>
                             <label>
-                                Date (dd/mm/yyyy):
+                                Date (mm-dd-yyyy):
                                 <input
                                 type="text"
                                 name="date"
