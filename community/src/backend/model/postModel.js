@@ -13,6 +13,10 @@ const postSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  label: {
+    type: String,
+    required: true
+  },
   commentId: {
     type: mongoose.Schema.Types.ObjectId, 
     auto: true

@@ -18,6 +18,16 @@ mongoose.connect(uri)
 .catch((err) => console.log(err));
 
 
+app.get("/", async (req,res) => {
+    try{
+        const data = await Post.find({});
+        res.json({ data: data });
+    }catch(e){
+        console.error('Error displaying data:', e);
+        res.status(404).send({ success: false, message: "Error displaying data" });
+    }
+});
+
 app.post("/add", async (req, res) => {
     try {
       const { Content, Subject, username } = req.body;

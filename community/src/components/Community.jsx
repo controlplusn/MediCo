@@ -1,31 +1,59 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react'; // Import useEffect and useState
+import axios from 'axios'; // Ensure axios is imported
 import '../assets/styles/community.css';
 import { Icon } from '@iconify/react';
 
 export const Community = () => {
   // Array of community threads
-  const threads = [
-    {
-      id: 1,
-      title: 'Lecture Rescheduling',
-      username: 'Lou',
-      time: '6h ago',
-      label: 'Source',
-      content: 'Hi medocommunity! I would love to share a webinar I found for the upcoming medical students. Hope this could help.',
-      image: 'https://via.placeholder.com/30',
-      postImage: null,
-    },
-    {
-      id: 2,
-      title: 'Ask for Notes',
-      username: 'Gian',
-      time: '12h ago',
-      label: 'Motivation',
-      content: 'After years of hard work, I finally made it!! #Dr.Gian #Thanks2Medico',
-      image: 'https://via.placeholder.com/30',
-      postImage: 'https://via.placeholder.com/500',
-    },
-  ];
+  const [threads, setThreads] = useState([]);
+
+  useEffect(() => {
+    // Fetch data from API
+    axios
+      .get('http://localhost:6969/')
+      .then((response) => {
+        const data = response.data.data; // Access data property
+
+        // Map over the data and calculate time difference for each thread
+        const formattedThreads = data.map((item) => {
+          const timeAgo = calculateTimeAgo(item.PostedAt);
+          return {
+            id: item._id, // Use _id from the API response
+            title: item.Subject,
+            username: item.username,
+            time: timeAgo, // Time difference from current time
+            label: item.label, // Add a default label or customize as needed
+            content: item.Content, // Use Content from the API response
+          };
+        });
+
+        setThreads(formattedThreads);
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
+  }, []);
+
+  // Function to calculate time difference from the current time
+  const calculateTimeAgo = (postedAt) => {
+    const now = new Date();
+    const postedDate = new Date(postedAt);
+    const diffInSeconds = Math.floor((now - postedDate) / 1000);
+    
+    const minutes = Math.floor(diffInSeconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+      return `${days} day(s) ago`;
+    } else if (hours > 0) {
+      return `${hours} hour(s) ago`;
+    } else if (minutes > 0) {
+      return `${minutes} minute(s) ago`;
+    } else {
+      return `${diffInSeconds} second(s) ago`;
+    }
+  };
 
   return (
     <div className="community-container">
@@ -51,7 +79,7 @@ export const Community = () => {
 
           {/* User Info and Label */}
           <div className="communityuser--thread">
-            <img src={thread.image} alt="User" />
+            <img src={"https://via.placeholder.com/30"} alt="User " />
             <div className="community--userinfo">
               <h6 className="username">{thread.username}</h6>
               <h6 className="userinfo--time">{thread.time}</h6>
@@ -64,7 +92,6 @@ export const Community = () => {
           {/* Thread Content */}
           <div className="thread--content">
             <h6>{thread.content}</h6>
-            {thread.postImage && <img src={thread.postImage} alt="Post Content" />}
           </div>
 
           {/* Icons */}
