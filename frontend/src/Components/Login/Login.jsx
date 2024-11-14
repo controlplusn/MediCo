@@ -3,24 +3,20 @@ import AuthInput from "../../UI/AuthInput";
 import '../../styles/authcontainer.css';
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useAuthStore } from "../../store/authStore";
 
 const Login = () => {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const navigate = useNavigate();
 
-    const handleSubmit = (e) => {
+    const { login, error } = useAuthStore();
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post('http://localhost:3001/api/auth/login', {username, password})
-            .then(result => {
-                console.log(result)
-                navigate('/dashboard');
-            })
-            .catch(err => {
-                console.log(err);
-                console.log('Login failed. Please try again');
-            });
+        
+        await login(username, password);
+        navigate('/dashboard');
     }
 
     return (
@@ -32,6 +28,7 @@ const Login = () => {
                 <AuthInput type={"password"} placeholder={"Password"} onChange={(e) => setPassword(e.target.value)} />
                 
                 <AuthButton buttonText={"LOGIN"}/>
+                {error && <p className="error">{error}</p>}
             </form>
         </div>
     )

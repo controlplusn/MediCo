@@ -2,7 +2,7 @@ import { useState } from "react";
 import AuthButton from "../../UI/AuthButton";
 import AuthInput from "../../UI/AuthInput";
 import '../../styles/authcontainer.css';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from "../../store/authStore";
 
 const Signup = () => {
@@ -35,7 +35,6 @@ const Signup = () => {
         <div className="form-container signup">
             <form onSubmit={handleSubmit}>
                 <h1>Sign Up</h1>
-                {error && <p className="error">{error}</p>}
 
                 <AuthInput type={"email"} placeholder={"Email"} onChange={(e) => setEmail(e.target.value)} />
                 <AuthInput type={"text"} placeholder={"Username"} onChange={(e) => setUsername(e.target.value)} />
@@ -43,6 +42,7 @@ const Signup = () => {
                 <AuthInput type={"password"} placeholder={"Confirm Password"} onChange={(e) => setConfirmPassword(e.target.value)} />
              
                 <AuthButton buttonText={"SIGN UP"}/>
+                {error && <p className="error">{error}</p>}
             </form>
         </div>
     )
