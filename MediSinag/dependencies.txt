@@ -1,4 +1,4 @@
-npm install express mongoose cors
+npm install express mongoose cors axios
 
 express:    Web framework for Node.js.
 mongoose:   MongoDB object modeling tool.
