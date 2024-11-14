@@ -1,24 +1,21 @@
-/* General reset for consistent box model across browsers */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Container for the entire Community component */
 .community-container {
     display: block;
     flex-direction: column;
     gap: 15px;
     width: 100vw;
-    max-width: 100vw; /* Limit width for better readability */
+    max-width: 100vw; 
     height: 100vh;
     padding: 15px;
     background-color: #F0F5F9;
-    overflow-y: auto; /* Allow scrolling if content overflows */
+    overflow-y: auto; 
 }
 
-/* Search Box Styling */
 .search-box {
     display: flex;
     align-items: center;
@@ -26,8 +23,8 @@
     padding: 10px;
     margin-bottom: 15px;
     border-radius: 28px;
-    width: 100%; /* Adjusted to 100% width of the parent container */
-    max-width: 600px; /* Adjust max-width for better flexibility */
+    width: 100%; 
+    max-width: 600px; 
 }
 
 .search-box input {
@@ -55,17 +52,16 @@
     color: #0056b3;
 }
 
-/* Thread Input Styling */
 .thread {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Space between input and icon */
-    background: #FFFFFF;
+    justify-content: space-between; 
+    background: #F0F5F9;
     padding: 10px;
     margin-bottom: 30px;
     border-radius: 20px;
     width: 100%;
-    max-width: 1300px; /* Ensures the thread input is not too wide */
+    max-width: 1300px; 
 }
 
 .thread input {
@@ -92,7 +88,6 @@
     color: #0056b3;
 }
 
-/* Community Thread Styling */
 .community--thread {
     background-color: #C9D6DF;
     padding: 30px;
@@ -103,7 +98,6 @@
     margin-bottom: 20px;
 }
 
-/* Thread Header */
 .communityheader--thread h5 {
     font-size: 16px;
     font-weight: bold;
@@ -111,7 +105,6 @@
     margin-bottom: 10px;
 }
 
-/* User Information Styling */
 .communityuser--thread {
     display: flex;
     align-items: center;
@@ -136,23 +129,18 @@
     color: #52616B;
 }
 
-
-/* Label Styling */
-.community--label h6 {
-    font-size: 12px;
-    position:relative;
-    color: #1E2022;
-    background-color: #7FC7D9;
+.community--label {
+    display: inline-block; 
+    margin-top: 10px; 
     padding: 8px;
+    background-color: #7FC7D9;
     border-radius: 8px;
-    border-style: solid;
-    border-color:#F0F5F9;
-    margin-bottom: 5px;
-    margin-left: 1000px;
-
+    font-size: 12px;
+    color: #1E2022;
+    border: 1px solid #F0F5F9;
+    white-space: nowrap; 
 }
 
-/* Thread Content Styling */
 .thread--content h6 {
     font-size: 14px;
     color: #1E2022;
@@ -160,10 +148,9 @@
     margin-bottom: 5px;
 }
 
-/* Icon Container */
 .community--icon {
     display: flex;  
-    gap: 50px;
+    gap: 20px; 
     font-size: 20px;
     margin-top: 30px;
     align-items: center;
@@ -192,5 +179,14 @@
     .communityuser--thread img {
         width: 25px;
         height: 25px;
+    }
+
+    .community--label {
+        font-size: 10px; 
+        padding: 6px; 
+    }
+
+    .community--icon {
+        gap: 15px; 
     }
 }

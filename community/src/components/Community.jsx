@@ -3,6 +3,30 @@ import '../assets/styles/community.css';
 import { Icon } from '@iconify/react';
 
 export const Community = () => {
+  // Array of community threads
+  const threads = [
+    {
+      id: 1,
+      title: 'Lecture Rescheduling',
+      username: 'Lou',
+      time: '6h ago',
+      label: 'Source',
+      content: 'Hi medocommunity! I would love to share a webinar I found for the upcoming medical students. Hope this could help.',
+      image: 'https://via.placeholder.com/30',
+      postImage: null,
+    },
+    {
+      id: 2,
+      title: 'Ask for Notes',
+      username: 'Gian',
+      time: '12h ago',
+      label: 'Motivation',
+      content: 'After years of hard work, I finally made it!! #Dr.Gian #Thanks2Medico',
+      image: 'https://via.placeholder.com/30',
+      postImage: 'https://via.placeholder.com/500',
+    },
+  ];
+
   return (
     <div className="community-container">
       {/* Search Box */}
@@ -17,63 +41,40 @@ export const Community = () => {
         <Icon icon="mingcute:add-fill" />
       </div>
 
-      {/* First Community Thread */}
-      <div className="community--thread">
-        <div className="communityheader--thread">
-          <h5>Lecture Rescheduling</h5>
-        </div>
-        <div className="communityuser--thread">
-          <img src="https://via.placeholder.com/30" alt="User" />
-          <div className="community--userinfo">
-            <h6 className="username">Lou</h6>
-            <h6 className="userinfo--time">6h ago</h6>
+      {/* Map over threads array */}
+      {threads.map((thread) => (
+        <div key={thread.id} className="community--thread">
+          {/* Thread Header */}
+          <div className="communityheader--thread">
+            <h5>{thread.title}</h5>
           </div>
-          <div className="community--label">
-          <h6>Source</h6>
-        </div>
-        </div>
 
-        <div className="thread--content">
-          <h6>
-            Hi medocommunity! I would love to share a webinar I found for the
-            upcoming medical students. Hope this could help.
-          </h6>
-        </div>
-        <div className="community--icon">
-          <Icon icon="fluent-mdl2:heart" />
-          <Icon icon="meteor-icons:message-dots" />
-          <Icon icon="stash:share" />
-        </div>
-      </div>
-
-      {/* Second Community Thread */}
-      <div className="community--thread">
-        <div className="communityheader--thread">
-          <h5>Ask for Notes</h5>
-        </div>
-        <div className="communityuser--thread">
-          <img src="https://via.placeholder.com/30" alt="User" />
-          <div className="community--userinfo">
-            <h6 className="username">Gian</h6>
-            <h6 className="userinfo--time">12h ago</h6>
+          {/* User Info and Label */}
+          <div className="communityuser--thread">
+            <img src={thread.image} alt="User" />
+            <div className="community--userinfo">
+              <h6 className="username">{thread.username}</h6>
+              <h6 className="userinfo--time">{thread.time}</h6>
+            </div>
+            <div className="community--label">
+              <h6>{thread.label}</h6>
+            </div>
           </div>
-          <div className="community--label">
-          <h6>Motivation</h6>
-        </div>
-        </div>
 
-        <div className="thread--content">
-          <h6>
-            After years of hard work, I finally made it!! #Dr.Gian #Thanks2Medico
-          </h6>
-          <img src="https://via.placeholder.com/500" alt="Celebration" />
+          {/* Thread Content */}
+          <div className="thread--content">
+            <h6>{thread.content}</h6>
+            {thread.postImage && <img src={thread.postImage} alt="Post Content" />}
+          </div>
+
+          {/* Icons */}
+          <div className="community--icon">
+            <Icon icon="fluent-mdl2:heart" />
+            <Icon icon="meteor-icons:message-dots" />
+            <Icon icon="stash:share" />
+          </div>
         </div>
-        <div className="community--icon">
-          <Icon icon="fluent-mdl2:heart" />
-          <Icon icon="meteor-icons:message-dots" />
-          <Icon icon="stash:share" />
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
