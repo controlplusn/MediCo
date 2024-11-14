@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 
 import { connectDB } from './db/connectDB.js';
 import authRoutes from './routes/auth.route.js';
+import todosRoutes from './routes/todos.route.js';
 
 dotenv.config();
 
@@ -16,8 +17,14 @@ app.use(cookieParser()); // Parse incoming cookies
 app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/todos", todosRoutes);
 
 app.listen(PORT, async () => {
-    connectDB();
-    console.log("Server running");
+    try {
+        await connectDB();
+        console.log("Server running");
+    } catch (error) {
+        console.error("Error connecting to the database", error);
+        process.exit(1);
+    }
 });
