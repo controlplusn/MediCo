@@ -7,7 +7,7 @@ const toDoSchema = new mongoose.Schema({
       done: { type: Boolean, required: true },
     },
   ],
-  userId: { type: mongoose.Schema.Types.ObjectId, required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, required: true, unique: true },
 });
 
 const ToDoModel = mongoose.model('ToDo', toDoSchema);

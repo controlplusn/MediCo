@@ -1,5 +1,4 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import studList from '../model/studylist.js'; 
 import { verifyToken } from '../middleware/verifyToken.js';
 import ToDoModel from '../model/todoModel.js';
@@ -10,11 +9,17 @@ const router = express.Router();
 
 router.get("/todo", verifyToken, async (req, res) => {
     try {
-        const todos = await ToDoModel.findOne({ userId: req.userId })
-        
-        if (!todos) return res.status(404).json({ error: "Not tasks found from the user" });
+        const userId = req.userId;
 
-        res.status(200).json(todos);
+        // find tassk for logged in user
+        const result = await ToDoModel.findOne({ userId });
+        
+        // If user or tasks are not found
+        if (!result || !result.ToDo) {
+            return res.status(404).json({ success: false, message: "No tasks found for this user" });
+        }
+
+        res.status(200).json({ success: true, ToDo: result.ToDo });
     } catch (e) {
         console.error('Error displaying data:', e);
         res.status(404).send({ success: false, message: "Error displaying data" });
@@ -24,13 +29,29 @@ router.get("/todo", verifyToken, async (req, res) => {
 
 router.post("/add", verifyToken, async (req, res) => {
     const { task, done } = req.body;
+    const userId = req.userId; // Extracted from verified token
+
+    if (!userId || !task) {
+        console.log("Missing userId or task");
+        return res.status(400).json({ message: "Invalid request. Missing userId or task." });
+    }
 
     try {
-        const result = await ToDoModel.findOneAndUpdate(
-            { userId: req.userId },
+        let result = await ToDoModel.findOneAndUpdate(
+            { userId }, // userId from token
             { $push: { ToDo: { task, done } } },
             { new: true, useFindAndModify: false }
         );
+
+        // If no document is found, create a new one
+        if (!result) {
+            const newToDo = new ToDoModel({
+                userId,
+                ToDo: [{ task, done }]
+            });
+            result = await newToDo.save();
+            console.log("New task document saved:", result);
+        }
 
         if (!result) return res.status(400).json({ message: "User not found" });
 

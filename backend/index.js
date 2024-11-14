@@ -12,9 +12,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json()); // Parse incoming requests:req.body
 app.use(cookieParser()); // Parse incoming cookies
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 app.use("/api/auth", authRoutes);
 app.use("/api/todos", todosRoutes);

@@ -1,28 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { jwtDecode } from 'jwt-decode';
 import '../../styles/tdlist.css'
 import { Icon } from '@iconify/react';
 
 const ToDoList = () => {
   const [tasks, setTasks] = useState([]);
-  const [newTask, setNewTask] = useState(''); 
+  const [newTask, setNewTask] = useState('');
+  const [userId, setUserId] = useState(null);
 
-  //Decode token and get User Id
-  const token = localStorage.getItem('token');
-  const decoded = token ? jwtDecode(token) : null;
-  const userId = decoded ? decoded.userId : null;
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/api/auth/check-auth', {
+          withCredentials: true,
+        });
+        if (response.data.user) {
+          setUserId(response.data.user._id);
+        }
+      } catch (err) {
+        console.error('Error checking authentication:', err);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
 
   useEffect(() => {
     const fetchTasks = async () => {
+
+      if (!userId) {
+        console.error('No userId available');
+        return;
+      }
+
       try {
         const response = await axios.get('http://localhost:3001/api/todos/todo', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
           withCredentials: true,
         });
-        const sortedTasks = sortTasks(response.data.ToDo);
+
+
+        const sortedTasks = sortTasks(response.data.ToDo || []);
         setTasks(sortedTasks);
       } catch (err) {
         console.error('Error fetching tasks:', err);
@@ -32,12 +50,40 @@ const ToDoList = () => {
     if (userId) {
       fetchTasks();
     }
-  }, [userId, token]);
+  }, [userId]);
 
   const sortTasks = (tasks) => {
     return tasks.sort((a, b) => {
       return a.done === b.done ? 0 : a.done ? 1 : -1; 
     });
+  };
+
+  const handleAddTask = async (e) => {
+    e.preventDefault(); 
+
+    if (!newTask.trim()) return; // Check if the input is empty
+    if (!userId) {
+      console.error('No user ID available. Cannot add task.');
+      return; // Prevent adding task if userId is not available
+    }
+
+    try {
+        console.log("Adding task for userId:", userId);
+        const response = await axios.post('http://localhost:3001/api/todos/add', {
+            task: newTask, // This is where the task value is sent
+            done: false // Set done to false for new tasks
+        }, {
+          withCredentials: true
+        });
+
+        // Add the new task to the state and sort the tasks
+        const updatedTasks = [...tasks, response.data];
+        setTasks(sortTasks(updatedTasks)); // Sort the tasks after adding the new one
+        setNewTask(''); // Clear the input field
+       
+    } catch (err) {
+        console.error('Error adding task:', err); // Handle any errors
+    }
   };
 
   const handleCheckboxChange = async (e, taskItem) => {
@@ -49,9 +95,6 @@ const ToDoList = () => {
         taskValue: taskItem.task,
         done: updatedDoneStatus
       }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         withCredentials: true,
       });
 
@@ -70,9 +113,6 @@ const ToDoList = () => {
 
     try {
       await axios.delete(`http://localhost:3001/api/todos/delete`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
         withCredentials: true,
         data: { taskValue: taskItem.task }
       });
@@ -83,32 +123,6 @@ const ToDoList = () => {
     }
   };
 
-  const handleAddTask = async (e) => {
-    e.preventDefault(); // Prevent the default form submission behavior
-
-    if (!newTask.trim()) return; // Check if the input is empty
-
-    try {
-        console.log("Adding task for userId:", userId);
-        const response = await axios.post('http://localhost:3001/api/todos/add', {
-            userId: userId, 
-            task: newTask, // This is where the task value is sent
-            done: false // Set done to false for new tasks
-        }, {
-          headers: {
-            Authorization: token
-          }
-        });
-
-        // Add the new task to the state and sort the tasks
-        const updatedTasks = [...tasks, response.data];
-        setTasks(sortTasks(updatedTasks)); // Sort the tasks after adding the new one
-        setNewTask(''); // Clear the input field
-       
-    } catch (err) {
-        console.error('Error adding task:', err); // Handle any errors
-    }
-};
 
   return (
     <div className="tdlist--header">
