@@ -91,16 +91,14 @@ const ToDoList = () => {
     console.log(`Updating task "${taskItem.task}" for user ${userId} to done: ${updatedDoneStatus}`);
 
     try {
-      await axios.put('http://localhost:3001/api/todos/update', {
+      const response = await axios.put('http://localhost:3001/api/todos/update', {
         taskValue: taskItem.task,
         done: updatedDoneStatus
-      }, {
-        withCredentials: true,
-      });
+      }, { withCredentials: true });
 
       const updatedTasks = tasks.map(t =>
         t.task === taskItem.task ? { ...t, done: updatedDoneStatus } : t
-      );
+      );  // mapping -> DSA
 
       setTasks(sortTasks(updatedTasks));
     } catch (err) {
@@ -113,8 +111,8 @@ const ToDoList = () => {
 
     try {
       await axios.delete(`http://localhost:3001/api/todos/delete`, {
-        withCredentials: true,
-        data: { taskValue: taskItem.task }
+        data: { taskValue: taskItem.task },
+        withCredentials: true
       });
 
       setTasks(tasks.filter(t => t.task !== taskItem.task));

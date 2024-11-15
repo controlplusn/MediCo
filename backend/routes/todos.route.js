@@ -50,7 +50,6 @@ router.post("/add", verifyToken, async (req, res) => {
                 ToDo: [{ task, done }]
             });
             result = await newToDo.save();
-            console.log("New task document saved:", result);
         }
 
         if (!result) return res.status(400).json({ message: "User not found" });
@@ -62,21 +61,26 @@ router.post("/add", verifyToken, async (req, res) => {
     }
 });
 
-router.put("/update", async (req, res) => {
+router.put("/update", verifyToken, async (req, res) => {
+    const { taskValue, done } = req.body;
+    const userId = req.userId;
+
+    if (!taskValue || done == null) {
+        return res.status(400).json({ success: false, message: "Invalid input data" });
+    }
+
     try {
-        const { id, progress } = req.body;
+        const result = await ToDoModel.findOneAndUpdate(
+            { userId, "ToDo.task": taskValue },
+            { $set: { "ToDo.$.done": done } },
+            { new: true }
+        );
         
-        if (!id || progress == null) {
-            return res.status(400).send({ success: false, message: "Invalid input data" });
+        if (!result) {
+            return res.status(404).send({ success: false, message: "Task not found to update" });
         }
 
-        const result = await studList.updateOne({ _id: id }, { $set: { progress } });
-
-        if (result.nModified === 0) {
-            return res.status(404).send({ success: false, message: "No record found to update" });
-        }
-
-        res.send({ success: true, message: "Progress updated successfully" });
+        res.send({ success: true, message: "Task updated successfully", updatedTask: result });
     } catch (e) {
         console.error('Error updating data:', e);
         res.status(500).send({ success: false, message: "Error updating data" });
@@ -84,17 +88,26 @@ router.put("/update", async (req, res) => {
 });
 
 
-router.delete("/delete/:id", async (req,res) =>{
-    const id = req.params.id;
-    try{
-        const result = await studList.deleteOne({ _id: id });
+router.delete("/delete", verifyToken, async (req,res) =>{
+    const { taskValue } = req.body;
+    const userId =  req.userId;
 
-        // Check if any document was deleted
+    try{
+        const result = await ToDoModel.findOneAndUpdate(
+            { userId },
+            { $pull: { ToDo: { task: taskValue } } },
+            { new: true }
+        );
+
         if (result.deletedCount === 0) {
             return res.status(404).send({ success: false, message: "No record found to delete" });
         }
 
-        res.send({ success: true, message: "Data deleted successfully" });
+        if (!result) {
+            return res.status(404).send({ success: false, message: "Task not found to delete" });
+        }
+
+        res.send({ success: true, message: "Data deleted successfully", updatedTask: result.ToDo });
     }catch (e) {
         console.error('Error deleting data:', e);
         res.status(101).send({ success: false, message: "Error deleting data" });
