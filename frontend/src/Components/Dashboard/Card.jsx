@@ -4,7 +4,6 @@ import '../../styles/card.css';
 const Card = () => {
     const handleCardClick = (subject) => {
         console.log(`${subject} card clicked`);
-        // You can add further actions, like navigation or state updates here
     };
 
     return (

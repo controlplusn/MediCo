@@ -7,14 +7,12 @@
 
 .dashboard {
   display: flex;
-  
   height: 100vh;  
   width: 100vw;  
   position: fixed; 
   top: 0;
   left: 0;
 }
-
 
 .dashboard--content {
   display: flex;
@@ -24,7 +22,7 @@
   padding: 0;
   gap: 1.5rem;
   justify-content: space-around;
-  overflow: hidden;  
+  overflow-y: scroll; 
 }
 
 .sidebar {
