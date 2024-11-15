@@ -27,7 +27,7 @@ fieldset {
     border: 1px solid #1E2022;
     padding: 5px 8px;
     border-radius: 8px;
-    margin-top: 10px;
+    margin-top: 30px;
     max-height: 300px; 
     width: auto; 
     min-width: 300px; 
@@ -35,7 +35,7 @@ fieldset {
 }
 
 legend {
-    font-size: 14px; 
+    font-size: 18px; 
     font-weight: bold;
     color: #1E2022;
 }
