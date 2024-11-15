@@ -4,7 +4,7 @@
     height: 100vh;
     background-color: #0F1035;
     transition: width 0.3s ease-in-out; 
-    width: 250px; 
+    width: 230px; 
 }
 
 .logo {
@@ -36,7 +36,7 @@
 }
 
 .menu-icon {
-    margin-left: 50px;
+    margin-left: 30px;
     font-size: 25px; 
     color: #F0F5F9;
     cursor: pointer;
