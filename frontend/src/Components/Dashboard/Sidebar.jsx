@@ -41,13 +41,6 @@ const Sidebar = () => {
                     {!isCollapsed && 'Flash Cards'}
                 </ul>
                 <ul
-                    className={`item ${activeItem === 'quiz' ? 'active' : ''}`}
-                    onClick={() => handleItemClick('quiz')}
-                >
-                    <Icon icon="fluent:quiz-new-20-filled" />
-                    {!isCollapsed && 'Quiz'}
-                </ul>
-                <ul
                     className={`item ${activeItem === 'notes' ? 'active' : ''}`}
                     onClick={() => handleItemClick('notes')}
                 >
