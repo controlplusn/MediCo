@@ -30,12 +30,49 @@ export const Community = ({ username }) => {
           postedAt: new Date(item.PostedAt),
           label: item.label,
           content: item.Content,
+          heartId: item.heartId,
+          heartCount: 0, // Initialize heart count
+          isLiked: false, // Track if current user has liked the post
         }));
 
         setThreads(formattedThreads.sort((a, b) => b.postedAt - a.postedAt));
+        // Fetch heart counts and user likes for each thread
+        formattedThreads.forEach((thread) => {
+          fetchHeartCount(thread.heartId);
+          checkIfUserLiked(thread.heartId, username);
+        });
       })
       .catch((error) => console.error('Error fetching data:', error));
   };
+
+  const fetchHeartCount = (heartId) => {
+    axios
+      .get(`http://localhost:6969/load-heart/${heartId}`)
+      .then((response) => {
+        const heartCount = response.data.data.length; // Assuming the response data is an array of hearts
+        setThreads((prevThreads) =>
+          prevThreads.map((thread) =>
+            thread.heartId === heartId ? { ...thread, heartCount } : thread
+          )
+        );
+      })
+      .catch((error) => console.error('Error fetching heart count:', error));
+  };
+
+  const checkIfUserLiked = (heartId, username) => {
+    axios
+      .get(`http://localhost:6969/isHeart/${heartId}/${username}`)
+      .then((response) => {
+        const userLiked = response.data.data.length > 0;
+        setThreads((prevThreads) =>
+          prevThreads.map((thread) =>
+            thread.heartId === heartId ? { ...thread, isLiked: userLiked } : thread
+          )
+        );
+      })
+      .catch((error) => console.error('Error checking if user liked:', error));
+  };
+
 
   const calculateTimeAgo = (postedAt) => {
     const now = new Date();
@@ -64,25 +101,21 @@ export const Community = ({ username }) => {
   };
 
   const handleFormSubmit = () => {
-    // Check if all fields are filled
     if (!newThread.label || !newThread.Subject || !newThread.Content) {
       alert('All fields must be filled');
       return;
     }
 
-    // Proceed with submission if fields are valid
     axios
       .post('http://localhost:6969/add', newThread)
-      .then((response) => {
+      .then(() => {
         setIsDialogOpen(false);
-        // Reset the form after successful submission
         setNewThread({
           label: '',
           Content: '',
           Subject: '',
           username,
         });
-        // Fetch updated list of threads
         fetchThreads();
       })
       .catch((error) => {
@@ -90,6 +123,50 @@ export const Community = ({ username }) => {
         alert('Failed to add new thread: ' + error.response.data.error);
       });
   };
+
+  const toggleHeart = (heartId, isLiked) => {
+    if (isLiked) {
+      // If the user has liked, send DELETE request to remove the heart
+      axios
+        .delete(`http://localhost:6969/deleteHeart/${heartId}/${username}`)
+        .then((response) => {
+          console.log('Heart removed:', response.data);
+          // Update the heart count and isLiked status in the UI
+          setThreads((prevThreads) =>
+            prevThreads.map((thread) =>
+              thread.heartId === heartId
+                ? { ...thread, isLiked: false, heartCount: thread.heartCount - 1 }
+                : thread
+            )
+          );
+        })
+        .catch((error) => {
+          console.error('Error removing heart:', error);
+        });
+    } else {
+      // If the user hasn't liked, send POST request to add the heart
+      axios
+        .post('http://localhost:6969/addHeart', {
+          heartId,
+          username,
+        })
+        .then((response) => {
+          console.log('Heart added:', response.data);
+          // Update the heart count and isLiked status in the UI
+          setThreads((prevThreads) =>
+            prevThreads.map((thread) =>
+              thread.heartId === heartId
+                ? { ...thread, isLiked: true, heartCount: thread.heartCount + 1 }
+                : thread
+            )
+          );
+        })
+        .catch((error) => {
+          console.error('Error adding heart:', error);
+        });
+    }
+  };
+  
 
   return (
     <div className="community-container">
@@ -157,8 +234,19 @@ export const Community = ({ username }) => {
             <h6>{thread.content}</h6>
           </div>
           <div className="community--icon">
-            <button><Icon icon="fluent-mdl2:heart" /></button>
-            <button><Icon icon="meteor-icons:message-dots" /></button>
+            <button
+              className="heartBtn"
+              onClick={() => toggleHeart(thread.heartId, thread.isLiked)} // Call the toggleHeart function
+            >
+              <Icon
+                icon="fluent-mdl2:heart"
+                style={{ backgroundColor: thread.isLiked ? 'red' : 'transparent' }}
+              />
+            </button>
+            <h6 className="heart-count">{thread.heartCount}</h6>
+            <button>
+              <Icon icon="meteor-icons:message-dots" />
+            </button>
           </div>
         </div>
       ))}
