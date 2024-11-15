@@ -9,11 +9,11 @@
     flex-direction: column;
     gap: 15px;
     width: 100vw;
-    max-width: 100vw; 
+    max-width: 100vw;
     height: 100vh;
     padding: 15px;
     background-color: #F0F5F9;
-    overflow-y: auto; 
+    overflow-y: auto;
 }
 
 .search-box {
@@ -23,8 +23,8 @@
     padding: 10px;
     margin-bottom: 15px;
     border-radius: 28px;
-    width: 100%; 
-    max-width: 600px; 
+    width: 100%;
+    max-width: 600px;
 }
 
 .search-box input {
@@ -53,49 +53,32 @@
 }
 
 .thread {
-    display: flex;
-    align-items: center;
-    justify-content: space-between; 
-    background: #F0F5F9;
-    padding: 10px;
-    margin-bottom: 30px;
-    border-radius: 20px;
     width: 100%;
-    max-width: 1300px; 
+    max-width: 1300px;
+    background: #F0F5F9;
+    margin-bottom: 30px;
 }
 
-.thread input {
-    outline: none;
-    background: transparent;
-    padding: 3px;
-    width: 90%;
-    font-size: 15px;
-    color: #1E2022;
-}
-
-.thread input::placeholder {
+.thread button {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
     color: #52616B;
-}
-
-.thread .icon {
-    font-size: 25px;
-    color: #007bff;
-    cursor: pointer;
-    transition: color 0.3s ease;
-}
-
-.thread .icon:hover {
-    color: #0056b3;
+    border-radius: 10px;
+    border-color: #52616B;
 }
 
 .community--thread {
     background-color: #C9D6DF;
-    padding: 30px;
+    padding: 20px; 
     border-radius: 30px;
     width: 100%;
     max-width: 1300px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px; 
 }
 
 .communityheader--thread h5 {
@@ -103,13 +86,15 @@
     font-weight: bold;
     color: #1E2022;
     margin-bottom: 10px;
+    word-wrap: break-word;
 }
 
 .communityuser--thread {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
+    flex-wrap: nowrap;
 }
 
 .communityuser--thread img {
@@ -121,7 +106,8 @@
 .community--userinfo .username {
     font-size: 15px;
     color: #1E2022;
-    margin-bottom: 5px;
+    margin-bottom: 3px;
+    white-space: nowrap;
 }
 
 .community--userinfo .userinfo--time {
@@ -130,15 +116,25 @@
 }
 
 .community--label {
-    display: inline-block; 
-    margin-top: 10px; 
-    padding: 8px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%; 
+}
+
+.community--label h6 {
+    padding: 6px 10px;  
     background-color: #7FC7D9;
     border-radius: 8px;
     font-size: 12px;
     color: #1E2022;
     border: 1px solid #F0F5F9;
-    white-space: nowrap; 
+    white-space: nowrap;
+    word-wrap: break-word;  
+    max-width: 100%;  
+    overflow-wrap: break-word; 
+    margin-left: auto; 
 }
 
 .thread--content h6 {
@@ -146,14 +142,26 @@
     color: #1E2022;
     line-height: 1.5;
     margin-bottom: 5px;
+    word-wrap: break-word;
 }
 
 .community--icon {
-    display: flex;  
-    gap: 20px; 
+    display: flex;
+    gap: 20px;
     font-size: 20px;
     margin-top: 30px;
     align-items: center;
+}
+
+.community--icon button {
+    background: transparent;
+    border: none;
+    padding: 3px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
 }
 
 .community--icon .icon {
@@ -162,18 +170,39 @@
     transition: color 0.3s ease;
 }
 
+.community--icon button:hover {
+    background-color: transparent;
+    border-radius: 50%;
+    transform: scale(1.1);
+}
+
+.community--icon button:focus {
+    outline: none;
+}
+
+
+
 @media (max-width: 768px) {
-    .search-box,
-    .thread {
+    .search-box {
         max-width: 100%;
+        padding: 8px;
+    }
+
+    .search-box input {
+        font-size: 14px;
+    }
+
+    .thread {
+        margin: 15px 0;
     }
 
     .community--thread {
-        max-width: 100%;
+        padding: 20px;
+        margin-bottom: 15px;
     }
 
-    .community-container {
-        padding: 10px;
+    .communityheader--thread h5 {
+        font-size: 14px;
     }
 
     .communityuser--thread img {
@@ -181,16 +210,72 @@
         height: 25px;
     }
 
-    .community--label {
-        font-size: 10px; 
-        padding: 6px; 
+    .community--label h6 {
+        font-size: 10px;
+        padding: 5px 8px;
     }
 
     .community--icon {
-        gap: 15px; 
+        gap: 15px;
+        font-size: 18px;
+    }
+
+    .community--icon button {
+        padding: 8px;
+    }
+
+    .community--userinfo .username {
+        font-size: 13px;
+    }
+
+    .community--userinfo .userinfo--time {
+        font-size: 9px;
+    }
+
+    .thread--content h6 {
+        font-size: 12px;
     }
 }
 
+@media (max-width: 480px) {
+    .search-box input {
+        font-size: 12px;
+    }
+
+    .community--label h6 {
+        font-size: 9px;
+        padding: 4px 6px;
+    }
+
+    .community--icon {
+        font-size: 16px;
+        gap: 10px;
+    }
+
+    .community--icon button {
+        padding: 6px;
+    }
+
+    .community--userinfo .username {
+        font-size: 12px;
+    }
+
+    .thread--content h6 {
+        font-size: 11px;
+    }
+
+    .community--thread {
+        padding: 12px;
+    }
+
+    .communityheader--thread h5 {
+        font-size: 13px;
+    }
+
+    .communityuser--thread {
+        gap: 5px; 
+    }
+}
 
 .dialog {
     z-index: 1000;
@@ -203,33 +288,32 @@
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-  
-  
-  .dialog-content {
+}
+
+.dialog-content {
     background: #fff;
     padding: 20px;
     border-radius: 8px;
     width: 400px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .dialog-content label {
+}
+
+.dialog-content label {
     display: block;
     margin-bottom: 8px;
     color: #1E2022;
-  }
-  
-  .dialog-content input,
-  .dialog-content textarea {
+}
+
+.dialog-content input,
+.dialog-content textarea {
     width: 100%;
     padding: 8px;
     margin-bottom: 16px;
     border-radius: 4px;
     border: 1px solid #ccc;
-  }
-  
-  .dialog-content button {
+}
+
+.dialog-content button {
     padding: 10px 20px;
     margin-right: 10px;
     border: none;
@@ -237,9 +321,8 @@
     color: white;
     cursor: pointer;
     border-radius: 4px;
-  }
-  
-  .dialog-content button:hover {
-    background-color: #333;
-  }
-  
+}
+
+.dialog-content button:hover {
+    background-color: #52616B;
+}

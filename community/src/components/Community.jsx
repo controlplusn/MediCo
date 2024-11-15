@@ -100,7 +100,6 @@ export const Community = ({ username }) => {
 
       <div className="thread">
         <button onClick={handleAddThreadClick}>Add Thread</button>
-        <Icon icon="mingcute:add-fill" style={{ backgroundColor: '#1E2022' }} />
       </div>
 
       {isDialogOpen && (
@@ -158,8 +157,8 @@ export const Community = ({ username }) => {
             <h6>{thread.content}</h6>
           </div>
           <div className="community--icon">
-            <Icon icon="fluent-mdl2:heart" />
-            <Icon icon="meteor-icons:message-dots" />
+            <button><Icon icon="fluent-mdl2:heart" /></button>
+            <button><Icon icon="meteor-icons:message-dots" /></button>
           </div>
         </div>
       ))}
