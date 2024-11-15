@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
+import logo from '../../assets/logo.png';
 import '../../styles/sidebar.css'
 
 const Sidebar = () => {
@@ -17,8 +18,11 @@ const Sidebar = () => {
     return (
         <div className={`menu ${isCollapsed ? 'collapsed' : ''}`}>
             <div className="logo" onClick={toggleSidebar}>
-                <img src="https://via.placeholder.com/50" alt="image-icon" />
-                <Icon icon="icon-park-outline:hamburger-button" />
+                <img src={logo} alt="image-icon" />
+                <p className='logoName'>MediCo</p>
+                <div className="menu-icon">
+                    <Icon icon="icon-park-outline:hamburger-button" />
+                </div>
             </div>
 
             <div className={`sidenavbar ${isCollapsed ? 'collapsed' : ''}`}>

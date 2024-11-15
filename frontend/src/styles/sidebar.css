@@ -10,17 +10,40 @@
 .logo {
     display: flex;
     align-items: center;
-    gap: 20px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 25px;
+    gap: 10px;
     color: #F0F5F9;
+    font-size: 20px;
     cursor: pointer;
-    padding: 20px;
-    position: relative;
 }
 
 .logo img {
-    max-width: 100%;
+    width: 40px;
     height: auto;
-    display: block;
+    object-fit: contain;
+    margin: 0;
+    padding: 0;
+}
+
+.logo p.logoName {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 0;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.menu-icon {
+    margin-left: 50px;
+    font-size: 25px; 
+    color: #F0F5F9;
+    cursor: pointer;
+}
+
+.menu.collapsed .menu-icon {
+    margin: 0;
 }
 
 .sidenavbar {
@@ -51,6 +74,10 @@
     width: 60px; 
 }
 
+.menu.collapsed .logo {
+    justify-content: center;
+}
+
 .sidenavbar.collapsed {
     display: inline-block; 
 }
@@ -67,7 +94,11 @@
     display: inline-block; 
 }
 
-.hamburger-icon {
+.menu.collapsed .logo p.logoName {
+    display: none;
+}
+
+.hamburger-icon .menu-icon {
     font-size: 30px; 
     color: #F0F5F9;
     cursor: pointer;
