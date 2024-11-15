@@ -2,22 +2,20 @@
     margin-right: 10px;
 }
 
-
 .react-calendar {
     border-radius: 10px;
     width: 100%;
     max-width: 320px; 
-    margin-bottom: 10px;  
+    margin-top: 20px;
+    margin-bottom: 20px;  
     margin-left:10px;
 }
 
-
-
 .react-calendar__tile {
     font-family: Arial, sans-serif;
-    font-size: 14px;
+    font-size: 12px;
     background-color: #F0F5F9;
-    padding: 10px;
+    padding: 8px;
     transition: background-color 0.3s ease;
 }
 
@@ -32,7 +30,7 @@
 }
 
 .react-calendar__navigation__label {
-    font-size: 16px;
+    font-size: 12px;
     font-weight: bold;
     color: #1E2022;
     visibility: visible;
@@ -43,7 +41,6 @@
 .react-calendar__navigation button {
     background-color: transparent;
     border: none;
-    font-size: 18px;
-    
-
+    font-size: 15px;
+    margin-bottom: 5px;
 }
