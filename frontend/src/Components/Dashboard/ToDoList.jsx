@@ -124,7 +124,7 @@ const ToDoList = () => {
 
   return (
     <div className="tdlist--header">
-      <h5>To Do List</h5>
+      <h3 className='tdlist-headerTitle'>To Do List</h3>
       <div className="tdl">
         <div className="list--container">
         <form onSubmit={handleAddTask} className="add-task-form">
