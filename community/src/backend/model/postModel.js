@@ -15,7 +15,8 @@ const postSchema = new mongoose.Schema({
   },
   label: {
     type: String,
-    required: true
+    required: true,
+    default: "General"
   },
   commentId: {
     type: mongoose.Schema.Types.ObjectId, 

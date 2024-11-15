@@ -30,16 +30,17 @@ app.get("/", async (req,res) => {
 
 app.post("/add", async (req, res) => {
     try {
-      const { Content, Subject, username } = req.body;
+      const { Content, Subject, username, label } = req.body;
   
       // Validate the required fields
-      if (!Content || !Subject || !username) {
+      if (!Content || !Subject || !username || !label) {
         return res.status(400).json({ error: 'Content, Subject, and Username are required.' });
       }
   
       // Create a new Post document
       const newPost = new Post({
         Content,
+        label,
         Subject,
         username
       });

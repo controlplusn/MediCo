@@ -5,7 +5,7 @@ import './assets/styles/community.css';
 export const App = () => {
   return (
     <div className="community-container">
-      <Community />
+      <Community username={"helloWorld"}/>
     </div>
   );
 };
