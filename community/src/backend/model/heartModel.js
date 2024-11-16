@@ -3,7 +3,8 @@ import mongoose from "mongoose";
 const heartSchema = new mongoose.Schema({
     heartId: {
         type: mongoose.Schema.Types.ObjectId, 
-        auto: true 
+        auto: true,
+        ref: 'posts'
       },
       username: {
         type: String,
