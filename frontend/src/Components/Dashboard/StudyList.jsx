@@ -81,10 +81,9 @@ const StudyList = () => {
 
     const handleDelete = async (id) => {
         try {
-            const response = await axios.delete(`http://localhost:8080/delete/${id}`); // Send the correct id to delete
+            const response = await axios.delete(`http://localhost:3001/api/studylists/delete/${id}`); // Send the correct id to delete
             if (response.data.success) {
-                // Optionally refetch or update the local state
-                setStudyList(studyList.filter(item => item.id !== id)); // Remove the item locally
+                setStudyList(studyList.filter(item => item._id !== id)); // Remove the item locally
             } else {
                 alert(response.data.message);
             }
@@ -280,7 +279,7 @@ const StudyList = () => {
                             <td>
                                 <button 
                                     className="delete-btn" 
-                                    onClick={() => handleDelete(item.id)}  // Pass the id of the item
+                                    onClick={() => handleDelete(item._id)}  // Pass the id of the item
                                 >
                                     <Icon icon="streamline:recycle-bin-2"/>
                                 </button>

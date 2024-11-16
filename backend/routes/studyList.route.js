@@ -8,10 +8,8 @@ const router = express.Router();
 router.get("/studylist", verifyToken, async (req, res) => {
     try {
         const userId = req.userId  // get userId token
-        console.log("User ID from token:", userId);
 
         const data = await studList.find({ userId });
-        console.log('Found user id:', data);
 
         if (!data.length) {
             return res.status(404).json({ success: false, message: "No data found for this user" });
@@ -98,6 +96,36 @@ router.put("/update", verifyToken, async (req, res) => {
         res.status(500).json({ success: false, message: "Server error" });
     }
     
+});
+
+router.delete("/delete/:id", verifyToken, async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        if (!mongoose.Types.ObjectId.isValid(id)) {
+            return res.status(400).json({ success: false, message: "Invalid ID format" });
+        }
+
+
+        const studyItem = await studList.findById(id);
+        if (!studyItem) {
+            return res.status(404).json({ success: false, message: "Study item not found" });
+        }
+
+        // if loggeed in user is the same as the user who created the study item
+        if (studyItem.userId.toString() !== req.userId) {
+            return res.status(403).json({ success: false, message: "You are not authorized to delete this item" });
+        }
+
+        // delete the study item
+        await studyItem.deleteOne({ _id: id });
+
+        res.status(200).json({ success: true, message: "Study item deleted successfully" });
+
+    } catch (error) {
+        console.error('Error deleting study item:', error);
+        res.status(500).json({ success: false, message: "Server error while deleting study item" });
+    }
 });
 
 
