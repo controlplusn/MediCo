@@ -6,33 +6,59 @@ import '../../styles/studylist.css';
 import axios from 'axios';
 
 const StudyList = () => {   
-    const [data, setData] = useState([]);
+    const [studyList, setStudyList] = useState([]); 
+    const [userId, setUserId] = useState(null); // Store user id once user is authenticated
+
+    // fetch userId
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/api/auth/check-auth', {
+                    withCredentials: true,
+                });
+                console.log(response);
+
+                if (response.data.user) {
+                    setUserId(response.data.user._id);
+                }
+
+            } catch (error) {
+                console.error('Error checking authentication', error);
+            }
+        };
+
+        fetchUser();
+    }, []);
 
     // Function to fetch data from the API
-    const getData = () => {
-        axios.get('http://localhost:8080/672ca9b1572b8a9dad197f4c') // Pass the correct userId in the URL
-          .then(response => {
-            const transformedData = response.data.data.map(item => ({
-              id: item._id,
-              date: new Date(item.date).toLocaleDateString(), // Convert to 'MM/DD/YYYY' format
-              subject: item.subject,
-              type: item.type,
-              flashcards: item.FlashCard,  // Mapping 'FlashCard' to 'flashcards'
-              progress: item.progress,
-              status: item.status,
-            }));
-            setData(transformedData);
-          })
-          .catch(error => {
-            console.error('Error fetching data:', error);
-            alert('Failed to load study list. Please try again later.');
-          });
+    const fetchStudyList = async () => {
+        if (!userId) {
+            console.error('No userId available');
+            return;
+        }
+
+        try {
+            const response = await axios.get(`http://localhost:3001/api/studylists/studylist`, {
+                withCredentials: true,
+            });
+            console.log('Fetch study response:', response);
+
+            if (response.data.success) {
+                setStudyList(response.data.data); 
+            } else {
+                console.error('Failed to fetch study list:', response.data.message);
+            }
+
+        } catch (err) {
+            console.error('Error fetching study list:', err);
+        }
     };
 
-    // Fetch data when the component mounts
     useEffect(() => {
-        getData();
-    }, []);
+        if (userId) {
+            fetchStudyList();
+        }
+    }, [userId]);
 
     const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -48,9 +74,9 @@ const StudyList = () => {
     const flashcardOptions = ['Flashcards', 'No Flashcards'];
 
     const handleStatusChange = (index, newStatus) => {
-        const updatedData = [...data];
-        updatedData[index].status = newStatus;
-        setData(updatedData);
+        const updatedStudyList = [...studyList];
+        updatedStudyList[index].status = newStatus;
+        setStudyList(updatedStudyList);
     };
 
     const handleDelete = async (id) => {
@@ -58,7 +84,7 @@ const StudyList = () => {
             const response = await axios.delete(`http://localhost:8080/delete/${id}`); // Send the correct id to delete
             if (response.data.success) {
                 // Optionally refetch or update the local state
-                setData(data.filter(item => item.id !== id)); // Remove the item locally
+                setStudyList(studyList.filter(item => item.id !== id)); // Remove the item locally
             } else {
                 alert(response.data.message);
             }
@@ -83,34 +109,25 @@ const StudyList = () => {
         }
 
         try {
-            // Ensure the entered date is valid
             const dateInput = formData.date.trim();
-            
-            // Convert MM-DD-YYYY to YYYY-MM-DD format
             const dateParts = dateInput.split('-');
             if (dateParts.length !== 3 || isNaN(Date.parse(dateInput))) {
                 throw new Error('Invalid date format.');
             }
 
-            // Reconstruct the date in YYYY-MM-DD format
+
             const formattedDate = `${dateParts[2]}-${dateParts[0]}-${dateParts[1]}`;
-
-            // Construct the date-time string in 'YYYY-MM-DDT08:17:44.334Z' format
             const dateTimeString = formattedDate + "T08:17:44.334Z";  // Default time set to 08:17:44.334Z
-
-            // Log the constructed date-time string for debugging
             console.log("Constructed Date-Time String:", dateTimeString);
 
             // Create a Date object using the constructed date-time string
             const date = new Date(dateTimeString);
 
-            // Check if the Date object is valid
             if (isNaN(date.getTime())) {
                 throw new Error('Invalid Date object.');
             }
-
-            // Log the Date object for debugging
             console.log("Date Object:", date);
+
 
             const requestData = {
                 date: date.toISOString(),  // Convert to ISO string with time and adjusted timezone
@@ -118,27 +135,31 @@ const StudyList = () => {
                 status: 'Pending',  // Default status
                 subject: formData.subject,
                 type: formData.type,
-                userId: '672ca9b1572b8a9dad197f4c',  // Static userId
                 FlashCard: formData.flashcards,
+                userId: userId,
             };
-
-            // Log the request data in JSON format
             console.log("Data to be submitted:", JSON.stringify(requestData, null, 2));
 
-            // Send the POST request to the API
-            const response = await axios.post('http://localhost:8080/add', requestData);
+
+            const response = await axios.post('http://localhost:3001/api/studylists/add', requestData, {
+                withCredentials: true
+            });
             console.log('Data successfully added:', response.data);
 
-            // Refresh the data after adding a new item
-            getData(); 
+            if (response.data.success) {
+                setStudyList((prevState) => [...prevState, response.data.data]);
+                handleCloseModal();
+                setFormData({
+                    date: '',
+                    subject: '',
+                    type: 'Quiz',
+                    flashcards: 'Flashcards',
+                });
 
-            handleCloseModal();
-            setFormData({
-                date: '',
-                subject: '',
-                type: 'Quiz',
-                flashcards: 'Flashcards',
-            });
+                fetchStudyList();
+            } else {
+                console.error('Error adding study data:', response.data.message);
+            }
 
         } catch (error) {
             console.error('Error adding data:', error);
@@ -230,7 +251,7 @@ const StudyList = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {data.map((item, index) => (
+                    {studyList.map((item, index) => (
                         <tr key={index}>
                             <td>{item.date}</td>
                             <td>{item.subject}</td>

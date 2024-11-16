@@ -18,20 +18,19 @@ const Slist = new mongoose.Schema({
     },
     subject: {
         type: String,
-        required: true,
+        required: true, 
     },
     type: {
         type: String,
-        enum: ['Quiz', 'Assignment', 'Exam'], // Possible types of the document
+        enum: ['Quiz', 'Exam', 'Activity', 'Others'], // Possible types of the document
+        required: true,
+    },
+    FlashCard: {
+        type: String,
         required: true,
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId, // Reference to the User collection
-        required: true,
-        ref: 'users',
-    },
-    FlashCard: {
-        type: String,
         required: true,
     },
 });

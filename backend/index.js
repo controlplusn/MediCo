@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import { connectDB } from './db/connectDB.js';
 import authRoutes from './routes/auth.route.js';
 import todosRoutes from './routes/todos.route.js';
+import studyListRoutes from './routes/studyList.route.js';
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(cookieParser()); // Parse incoming cookies
 
 app.use("/api/auth", authRoutes);
 app.use("/api/todos", todosRoutes);
+app.use("/api/studylists", studyListRoutes);
 
 app.listen(PORT, async () => {
     try {

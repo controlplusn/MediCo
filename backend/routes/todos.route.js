@@ -1,5 +1,4 @@
 import express from 'express';
-import studList from '../model/studylist.js'; 
 import { verifyToken } from '../middleware/verifyToken.js';
 import ToDoModel from '../model/todoModel.js';
 
@@ -11,7 +10,7 @@ router.get("/todo", verifyToken, async (req, res) => {
     try {
         const userId = req.userId;
 
-        // find tassk for logged in user
+        // find task for logged in user
         const result = await ToDoModel.findOne({ userId });
         
         // If user or tasks are not found
