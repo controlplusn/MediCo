@@ -5,6 +5,7 @@ import LandingPage from './Components/LandingPage/LandingPage';
 import Dashboard from './Components/Dashboard/Dashboard';
 import { useAuthStore } from './store/authStore';
 import { useEffect } from 'react';
+import Community from './Components/Community/Community';
 
 // protect routes that require authentication
 const ProtectedRoute = ({ children }) => {
@@ -72,6 +73,14 @@ function App() {
       element: (
         <ProtectedRoute>
           <Dashboard />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: '/community',
+      element: (
+        <ProtectedRoute>
+          <Community username={"helloWorld"} />
         </ProtectedRoute>
       )
     }
