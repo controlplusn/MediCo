@@ -7,6 +7,7 @@ import { connectDB } from './db/connectDB.js';
 import authRoutes from './routes/auth.route.js';
 import todosRoutes from './routes/todos.route.js';
 import studyListRoutes from './routes/studyList.route.js';
+import communityRoutes from './routes/community.routes.js';
 
 dotenv.config();
 
@@ -20,6 +21,7 @@ app.use(cookieParser()); // Parse incoming cookies
 app.use("/api/auth", authRoutes);
 app.use("/api/todos", todosRoutes);
 app.use("/api/studylists", studyListRoutes);
+app.use("/api/community", communityRoutes);
 
 app.listen(PORT, async () => {
     try {
