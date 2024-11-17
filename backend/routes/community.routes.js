@@ -1,8 +1,12 @@
 import express from 'express';
 import Post from '../model/postModel.js';
 import hearts from '../model/heartModel.js';
+import { verifyToken } from '../middleware/verifyToken.js';
+import UserModel from '../model/User.js';
 
 const router = express.Router();
+
+/* --POST-- */
 
 router.get("/communities", async (req,res) => {
     try{
@@ -14,9 +18,20 @@ router.get("/communities", async (req,res) => {
     }
 });
 
-router.post("/add", async (req, res) => {
+router.post("/add", verifyToken, async (req, res) => {
     try {
-      const { Content, Subject, username, label } = req.body;
+      const { Content, Subject, label } = req.body;
+      console.log(req.body);
+
+      const userId = req.userId;
+      console.log("Success in retrieving the user id:", userId);
+
+      // fetch username associated with the userId
+      const user = await UserModel.findById(userId);
+      console.log(user);
+      if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+      const username = user.username;   
   
       // Validate the required fields
       if (!Content || !Subject || !username || !label) {
@@ -28,9 +43,10 @@ router.post("/add", async (req, res) => {
         Content,
         label,
         Subject,
-        username
+        username,
+        userId
       });
-  
+      
     
       const savedPost = await newPost.save();
       res.status(201).json(savedPost);
@@ -39,6 +55,72 @@ router.post("/add", async (req, res) => {
       res.status(500).send({ success: false, message: "Error adding data" });
     }
 });
+
+/* --HEART-- */
+router.get("/load-heart/:heartId", async (req,res) =>{//adding likes
+    try{
+      const { heartId } = req.params; 
+      const data = await hearts.find({ heartId : heartId});
+      res.json({ success: true, data: data });
+    }catch(e){
+      console.error('Error loading data:', e);
+      res.status(404).send({ success: false, message: "Error loading data data" });
+    }
+});
+
+router.get("/isHeart/:heartId/:username", async (req,res) =>{//checking if liked
+    try{
+      const { heartId } = req.params; 
+      const { username } = req.params;
+      const data = await hearts.find({ heartId : heartId, username : username});
+      res.json({ success: true, data: data });
+    }catch(e){
+      console.error('Error loading data:', e);
+      res.status(404).send({ success: false, message: "Error loading data data" });
+    }
+});
+
+router.post("/addHeart", async (req, res) => { 
+    const { username, heartId } = req.body; // Extract data from request body
+    
+    try {
+      if (!username || !heartId) {
+        return res.status(400).json({ error: 'Lack of data' });
+      }
+  
+      // Create a new heart entry
+      const newHeart = new hearts({
+        username,
+        heartId,
+      });
+  
+      const savedHeart = await newHeart.save();
+      res.status(201).json(savedHeart);
+  
+    } catch (error) {
+      console.error('Error adding data:', error);
+      res.status(500).send({ success: false, message: "Error adding data" });
+    }
+});
+
+router.delete("/deleteHeart/:heartId/:username", async (req,res) => {
+    const { heartId } = req.params; 
+    const { username } = req.params;
+    try{
+        const result = await hearts.deleteOne({ heartId : heartId, username : username});
+  
+  
+        if (result.deletedCount === 0) {
+            return res.status(404).send({ success: false, message: "No record found to delete" });
+        }
+  
+        res.send({ success: true, message: "Data deleted successfully" });
+    }catch(e){
+      console.error('Error deleting hearts:', error);
+      res.status(500).send({ success: false, message: "Error deleting data" });
+    }
+  });
+
 
 
 export default router;
