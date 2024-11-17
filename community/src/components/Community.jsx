@@ -16,7 +16,7 @@ export const Community = ({ username }) => {
   const [newComment, setNewComment] = useState({ body: '', commentId: null });
   
   useEffect(() => {
-    fetchThreads(); // Fetch threads when component mounts
+    fetchThreads(); 
   }, []);
 
   const fetchThreads = () => {
@@ -207,8 +207,8 @@ export const Community = ({ username }) => {
       if (response.status === 201) {
         alert('Comment added successfully!');
         setIsCommentDialogOpen(false);
-        setNewComment({ body: '', commentId: null }); // Reset the form
-        fetchThreads(); // Re-fetch threads to show updated comments
+        setNewComment({ body: '', commentId: null }); 
+        fetchThreads(); 
       }
     } catch (error) {
       console.error('Error adding comment:', error);
@@ -304,7 +304,7 @@ export const Community = ({ username }) => {
             >
               <Icon
                 icon="fluent-mdl2:heart"
-                style={{ backgroundColor: thread.isLiked ? 'red' : 'transparent' }}
+                style={{ backgroundColor: thread.isLiked ? 'red' : 'transparent', }}
               />
             </button>
             <h6 className="heart-count">{thread.heartCount}</h6>
