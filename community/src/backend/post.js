@@ -3,6 +3,7 @@ import cors from 'cors';
 import mongoose from 'mongoose';
 import Post from './model/postModel.js'; 
 import hearts from './model/heartModel.js';
+import Comment from './model/commentModel.js';
 
 const app = express();
 app.use(cors());
@@ -18,6 +19,8 @@ mongoose.connect(uri)
     app.listen(PORT,() => console.log("Server is Running"))})
 .catch((err) => console.log(err));
 
+
+/* --POST-- */
 
 app.get("/", async (req,res) => {
     try{
@@ -54,6 +57,10 @@ app.post("/add", async (req, res) => {
       res.status(500).send({ success: false, message: "Error adding data" });
     }
   });
+
+
+
+  /* --HEART-- */
 
   app.get("/load-heart/:heartId", async (req,res) =>{//adding likes
     try{
@@ -116,5 +123,47 @@ app.delete("/deleteHeart/:heartId/:username", async (req,res) => {
   }catch(e){
     console.error('Error deleting hearts:', error);
     res.status(500).send({ success: false, message: "Error deleting data" });
+  }
+});
+
+
+/* --COMMENT-- */
+
+//adding 
+
+app.post("/addComment", async (req, res) => { 
+  const { body,username, commentId, } = req.body; // Extract data from request body
+  
+  try {
+    if (!username || !commentId || !body) {
+      return res.status(400).json({ error: 'Lack of data' });
+    }
+
+    // Creating comment struct
+    const newComment = new Comment({
+      body,
+      username,
+      commentId
+    });
+
+    const savedComment = await newComment.save();
+    res.status(201).json(savedComment);
+
+  } catch (error) {
+    console.error('Error adding data:', error);
+    res.status(500).send({ success: false, message: "Error adding data" });
+  }
+});
+
+//displaying
+
+app.get("/comment/:commentId", async (req,res) =>{
+  const { commentId } = req.params; 
+  try{
+    const data = await Comment.find({ commentId : commentId});
+    res.json({ success: true, data: data });
+  }catch(e){
+    console.error('Error displaying data:', e);
+    res.status(404).send({ success: false, message: "Data not found" });
   }
 });
