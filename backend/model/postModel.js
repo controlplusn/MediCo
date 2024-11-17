@@ -30,6 +30,10 @@ const postSchema = new mongoose.Schema({
     type: String,
     ref: 'users', 
     required: true
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true
   }
 });
 
