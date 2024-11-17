@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
+import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import '../../styles/sidebar.css'
 
@@ -26,20 +27,25 @@ const Sidebar = () => {
             </div>
 
             <div className={`sidenavbar ${isCollapsed ? 'collapsed' : ''}`}>
-                <ul
-                    className={`item ${activeItem === 'dashboard' ? 'active' : ''}`}
-                    onClick={() => handleItemClick('dashboard')}
-                >
-                    <Icon icon="mage:dashboard-fill" />
-                    {!isCollapsed && 'Dashboard'}
-                </ul>
-                <ul
-                    className={`item ${activeItem === 'flashcards' ? 'active' : ''}`}
-                    onClick={() => handleItemClick('flashcards')}
-                >
-                    <Icon icon="ph:cards-fill" />
-                    {!isCollapsed && 'Flash Cards'}
-                </ul>
+                <Link to="/dashboard">
+                    <ul
+                        className={`item ${activeItem === 'dashboard' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('dashboard')}
+                    >
+                        <Icon icon="mage:dashboard-fill" />
+                        {!isCollapsed && 'Dashboard'}
+                    </ul>
+                </Link>
+
+                <Link to="/homepage">
+                    <ul
+                        className={`item ${activeItem === 'flashcards' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('flashcards')}
+                    >
+                        <Icon icon="ph:cards-fill" />
+                        {!isCollapsed && 'Flash Cards'}
+                    </ul>
+                </Link>
                 <ul
                     className={`item ${activeItem === 'notes' ? 'active' : ''}`}
                     onClick={() => handleItemClick('notes')}
@@ -54,13 +60,16 @@ const Sidebar = () => {
                     <Icon icon="game-icons:anatomy" />
                     {!isCollapsed && 'Graphs'}
                 </ul>
-                <ul
-                    className={`item ${activeItem === 'community' ? 'active' : ''}`}
-                    onClick={() => handleItemClick('community')}
-                >
-                    <Icon icon="fluent:people-community-24-filled" />
-                    {!isCollapsed && 'Community'}
-                </ul>
+
+                <Link to="/community">
+                    <ul
+                        className={`item ${activeItem === 'community' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('community')}
+                    >
+                        <Icon icon="fluent:people-community-24-filled" />
+                        {!isCollapsed && 'Community'}
+                    </ul>
+                </Link>
                 <ul
                     className={`item ${activeItem === 'class' ? 'active' : ''}`}
                     onClick={() => handleItemClick('class')}
