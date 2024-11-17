@@ -6,20 +6,18 @@ import { Icon } from '@iconify/react';
 export const Community = ({ username }) => {
   const [threads, setThreads] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [comments, setComments] = useState([]);
+  const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false);
   const [newThread, setNewThread] = useState({
     label: '',
     Content: '',
     Subject: '',
     username: username,
   });
-  const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false);
-  const [newComment, setNewComment] = useState({ body: "", commentId: null });
-
+  const [newComment, setNewComment] = useState({ body: '', commentId: null });
+  
   useEffect(() => {
     fetchThreads(); // Fetch threads when component mounts
   }, []);
-  
 
   const fetchThreads = () => {
     axios
@@ -38,6 +36,7 @@ export const Community = ({ username }) => {
           commentId: item.commentId,
           heartCount: 0, // Initialize heart count
           isLiked: false, // Track if current user has liked the post
+          comments: [] // Placeholder for thread comments
         }));
 
         setThreads(formattedThreads.sort((a, b) => b.postedAt - a.postedAt));
@@ -45,32 +44,34 @@ export const Community = ({ username }) => {
         formattedThreads.forEach((thread) => {
           fetchHeartCount(thread.heartId);
           checkIfUserLiked(thread.heartId, username);
-          fetchComment(thread.commentId);
+          fetchCommentsForThread(thread.commentId, thread.id); // Fetch comments for each thread
         });
       })
       .catch((error) => console.error('Error fetching data:', error));
   };
 
-  const fetchComment = (commentId) => {
-      axios
-        .get(`http://localhost:6969/comment/${commentId}`)
-        .then((response) => {
-          const data = response.data.data;
-          const formattedComments = data.map((item) => ({
-            id: item.commentId,
-            body: item.body,
-            username: item.username,
-            time: (calculateTimeAgo(item.time))
-          }));
-          setComments(formattedComments);
-        })
-        .catch((error) => {
-          console.error('Error fetching comments:', error);
-        });
-    
+  const fetchCommentsForThread = (commentId, threadId) => {
+    axios
+      .get(`http://localhost:6969/comment/${commentId}`)
+      .then((response) => {
+        const comments = response.data.data.map((item) => ({
+          id: item.commentId,
+          body: item.body,
+          username: item.username,
+          time: calculateTimeAgo(item.time),
+        }));
+
+        setThreads((prevThreads) =>
+          prevThreads.map((thread) =>
+            thread.id === threadId ? { ...thread, comments } : thread
+          )
+        );
+      })
+      .catch((error) => {
+        console.error('Error fetching comments:', error);
+      });
   };
 
- 
   const fetchHeartCount = (heartId) => {
     axios
       .get(`http://localhost:6969/load-heart/${heartId}`)
@@ -85,8 +86,6 @@ export const Community = ({ username }) => {
       .catch((error) => console.error('Error fetching heart count:', error));
   };
 
-  
-
   const checkIfUserLiked = (heartId, username) => {
     axios
       .get(`http://localhost:6969/isHeart/${heartId}/${username}`)
@@ -100,7 +99,6 @@ export const Community = ({ username }) => {
       })
       .catch((error) => console.error('Error checking if user liked:', error));
   };
-
 
   const calculateTimeAgo = (postedAt) => {
     const now = new Date();
@@ -154,12 +152,9 @@ export const Community = ({ username }) => {
 
   const toggleHeart = (heartId, isLiked) => {
     if (isLiked) {
-      // If the user has liked, send DELETE request to remove the heart
       axios
         .delete(`http://localhost:6969/deleteHeart/${heartId}/${username}`)
-        .then((response) => {
-          console.log('Heart removed:', response.data);
-          // Update the heart count and isLiked status in the UI
+        .then(() => {
           setThreads((prevThreads) =>
             prevThreads.map((thread) =>
               thread.heartId === heartId
@@ -172,15 +167,12 @@ export const Community = ({ username }) => {
           console.error('Error removing heart:', error);
         });
     } else {
-      // If the user hasn't liked, send POST request to add the heart
       axios
         .post('http://localhost:6969/addHeart', {
           heartId,
           username,
         })
-        .then((response) => {
-          console.log('Heart added:', response.data);
-          // Update the heart count and isLiked status in the UI
+        .then(() => {
           setThreads((prevThreads) =>
             prevThreads.map((thread) =>
               thread.heartId === heartId
@@ -194,13 +186,11 @@ export const Community = ({ username }) => {
         });
     }
   };
-  
+
   const handleOpenCommentDialog = (commentId) => {
-    fetchComment(commentId); // Fetch the comments for the specific thread
     setNewComment({ ...newComment, commentId });
     setIsCommentDialogOpen(true);
   };
-  
 
   const handleCommentChange = (e) => {
     setNewComment({ ...newComment, body: e.target.value });
@@ -208,27 +198,24 @@ export const Community = ({ username }) => {
 
   const handleAddComment = async () => {
     try {
-      const response = await axios.post("http://localhost:6969/addComment", {
+      const response = await axios.post('http://localhost:6969/addComment', {
         body: newComment.body,
-        username: username, 
-        commentId: newComment.commentId, 
+        username: username,
+        commentId: newComment.commentId,
       });
 
       if (response.status === 201) {
-        alert("Comment added successfully!");
+        alert('Comment added successfully!');
         setIsCommentDialogOpen(false);
-        setNewComment({ body: "", commentId: null }); // Reset the form
+        setNewComment({ body: '', commentId: null }); // Reset the form
+        fetchThreads(); // Re-fetch threads to show updated comments
       }
     } catch (error) {
-      console.error("Error adding comment:", error);
-      alert("Failed to add comment. Please try again.");
+      console.error('Error adding comment:', error);
+      alert('Failed to add comment. Please try again.');
     }
   };
 
-
-
-
-  
   return (
     <div className="community-container">
       <div className="search-box">
@@ -313,7 +300,7 @@ export const Community = ({ username }) => {
           <div className="community--icon">
             <button
               className="heartBtn"
-              onClick={() => toggleHeart(thread.heartId, thread.isLiked)} // Call the toggleHeart function
+              onClick={() => toggleHeart(thread.heartId, thread.isLiked)}
             >
               <Icon
                 icon="fluent-mdl2:heart"
@@ -321,21 +308,23 @@ export const Community = ({ username }) => {
               />
             </button>
             <h6 className="heart-count">{thread.heartCount}</h6>
-            <button onClick={() => handleOpenCommentDialog(thread.commentId)}>{/* jdosajodjoaijsdoiajodisjaoijdsoiajoidjaiosd */}
+            <button onClick={() => handleOpenCommentDialog(thread.commentId)}>
               <Icon icon="meteor-icons:message-dots" />
             </button>
           </div>
           <hr />
-          <div className="community--comments">  
-          { comments
-            .filter((comment) => comment.id === thread.commentId) // Match comment ID with thread comment ID
-            .map((comment) => (
-              <div key={comment.id} className="comment">
-                <h3>{comment.username}</h3>
-                <p>{comment.body}</p>
-                <span className="comment-time">{comment.time}</span>
-              </div>
-            ))}
+          <div className="community--comments">
+            {thread.comments.length > 0 ? (
+              thread.comments.map((comment) => (
+                <div key={comment.id} className="comment">
+                  <h3>{comment.username}</h3>
+                  <p>{comment.body}</p>
+                  <span className="comment-time">{comment.time}</span>
+                </div>
+              ))
+            ) : (
+              <p>No comments yet.</p>
+            )}
           </div>
         </div>
       ))}
