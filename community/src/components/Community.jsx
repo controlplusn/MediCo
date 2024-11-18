@@ -16,7 +16,7 @@ export const Community = ({ username }) => {
   const [newComment, setNewComment] = useState({ body: '', commentId: null });
   
   useEffect(() => {
-    fetchThreads(); 
+    fetchThreads(); // Fetch threads when component mounts
   }, []);
 
   const fetchThreads = () => {
@@ -208,7 +208,7 @@ export const Community = ({ username }) => {
         alert('Comment added successfully!');
         setIsCommentDialogOpen(false);
         setNewComment({ body: '', commentId: null }); 
-        fetchThreads(); 
+        fetchThreads(); // Re-fetch threads to show updated comments
       }
     } catch (error) {
       console.error('Error adding comment:', error);
@@ -218,6 +218,11 @@ export const Community = ({ username }) => {
 
   return (
     <div className="community-container">
+      <div className="community--header">
+      <img src="https://via.placeholder.com/50" alt="profile"></img> 
+      <h5>John Doe</h5>       
+    </div>
+    <hr className="borderline"/>
       <div className="search-box">
         <input type="text" placeholder="Search" />
         <Icon icon="radix-icons:magnifying-glass" />
@@ -298,20 +303,19 @@ export const Community = ({ username }) => {
             <h6>{thread.content}</h6>
           </div>
           <div className="community--icon">
-            <button
-              className="heartBtn"
-              onClick={() => toggleHeart(thread.heartId, thread.isLiked)}
-            >
-              <Icon
-                icon="fluent-mdl2:heart"
-                style={{ backgroundColor: thread.isLiked ? 'red' : 'transparent', }}
-              />
-            </button>
-            <h6 className="heart-count">{thread.heartCount}</h6>
-            <button onClick={() => handleOpenCommentDialog(thread.commentId)}>
-              <Icon icon="meteor-icons:message-dots" />
-            </button>
-          </div>
+  <button
+    className="heartBtn"
+    onClick={() => toggleHeart(thread.heartId, thread.isLiked)}
+  >
+    <Icon
+      icon={thread.isLiked ? "fluent-emoji-flat:heart-suit" : "fluent-mdl2:heart"}
+    />
+  </button>
+  <h6 className="heart-count">{thread.heartCount}</h6>
+  <button onClick={() => handleOpenCommentDialog(thread.commentId)}>
+    <Icon icon="meteor-icons:message-dots" />
+  </button>
+</div>
           <hr />
           <div className="community--comments">
             {thread.comments.length > 0 ? (

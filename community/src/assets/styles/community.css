@@ -4,6 +4,7 @@
     box-sizing: border-box;
 }
 
+
 .community-container {
     display: block;
     flex-direction: column;
@@ -16,12 +17,53 @@
     overflow-y: auto;
 }
 
+.community--header {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-end; 
+    justify-content: center; 
+    background-color: transparent; 
+    padding: 20px; 
+}
+
+.community--header button {
+    background: transparent; 
+    border: none;
+    padding: 10px; 
+    cursor: pointer; 
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+  }
+  
+  
+  .community--header button:focus {
+    outline: none; 
+  }
+  
+  .community--header .icon {
+    color: #1E2022; 
+    font-size: 24px; 
+    transition: color 0.3s ease; 
+  }
+  
+ 
+
+.community--header .borderline {
+    width: 100%; 
+    border: 1px solid #ccc; 
+    margin-top: 10px; 
+    opacity: 0.5; 
+}
+
+
 .search-box {
     display: flex;
     align-items: center;
     background: #C9D6DF;
     padding: 10px;
     margin-bottom: 15px;
+    margin-top: 20px;
     border-radius: 28px;
     width: 100%;
     max-width: 600px;
@@ -147,22 +189,29 @@
 
 .community--icon {
     display: flex;
-    gap: 20px;
+    gap: 5px;  
     font-size: 20px;
-    margin-top: 30px;
+    margin-top: 20px;
     align-items: center;
+    justify-content: flex-start;  
+    width: 100%;  
 }
+
 
 .community--icon button {
     background: transparent;
     border: none;
-    padding: 3px;
+    padding: 5px;
     cursor: pointer;
     display: flex;
+    margin-left: 20px;
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease;
 }
+
+
+
 
 .community--icon .icon {
     color: #007bff;
@@ -180,17 +229,22 @@
     outline: none;
 }
 
-/* Comments section */
 .community--comments {
   margin-top: 10px;
   margin-left: 5px;
+  overflow: auto;
+  max-height: 220px;
 }
 
+.community--comments::-webkit-scrollbar {
+    display: none;  
+  }
 .community--comments p {
   font-size: 0.95rem;
   color: #ffff;
   line-height: 1.6;
   margin-bottom: 10px;
+
 }
 
 .comment {
@@ -227,8 +281,7 @@
   margin-top: 5px;
 }
 
-/* No comments message */
-.community--comments p {
+ .community--comments p {
   font-size: 1rem;
   color: #C9D6DF;
   font-style: italic;
