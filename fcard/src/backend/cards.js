@@ -18,7 +18,6 @@ mongoose.connect(uri)
 .catch((err) => console.log(err));
 
 /* Loading Cards */
-
 app.get("/Cards/:username", async (req, res) => {
     try {
         const { username } = req.params;
@@ -29,46 +28,56 @@ app.get("/Cards/:username", async (req, res) => {
 
         // Fetch data from the database
         const data = await Card.find({ username: username });
-        data.forEach((data_item) =>{
-            // console.log("Question: ",data_item['_doc']['subsets']['cards']['question'],"\nAnswer: ",data_item['_doc']['subsets']['cards']['answer'],"\nisLearned: ",data_item['_doc']['subsets']['cards']['learnVal']);
-            //console.log("Type: ",typeof data_item, "  is Array?: ", Array.isArray(data_item), "data: ",data_item, "length: ", );//di array pero object
-            //console.log(Object.keys(data_item));//[ '$__', '$isNew', '_doc' ]
-            //console.log("Type: ",typeof data_item['_doc'], "  is Array?: ", Array.isArray(data_item['_doc']), "data: ",data_item['_doc'], "length: ", data_item['_doc'].length);
 
-            // Object.keys(data_item['_doc']).forEach((key) => {
-            //     // Print the key and its corresponding value from data_item['_doc']
-            //     console.log(`Key: ${key} => Value:`, data_item['_doc'][key]);
-            // });
-            //console.log(data_item['_doc']['subsets']);
-            //console.log("Type: ",typeof data_item['_doc']['subsets'], "  is Array?: ", Array.isArray(data_item['_doc']['subsets']), "data: ",data_item['_doc']['subsets'], "length: ", data_item['_doc']['subsets'].length);
-            
-            data_item['_doc']['subsets'].forEach((subsets_item) =>{
-                //console.log(Object.keys(subsets_item),"\n\n");
-                // if(Object.keys(subsets_item) == '_doc'){
-                //     console.log("\n\nType: ",typeof subsets_item['_doc'], "\nis Array?: ", Array.isArray(subsets_item['_doc']), "\ndata: ",subsets_item['_doc'], "\nlength: ", subsets_item['_doc'].length);//di array pero object
-                // } 
-                //console.log(Object.keys(subsets_item['_doc']['cards']),"\n\n\n");
-                Object.keys(subsets_item['_doc']['cards']).forEach((cardIndex) => {
-                    const card = subsets_item['_doc']['cards'][cardIndex];
+        // Process data and calculate statistics for each card set
+        const processedData = data.map((data_item) => {
+            let totalCards = 0;
+            let learnedCards = 0;
 
-                    // Now, iterate over the keys of the card
-                    Object.keys(card).forEach((key) => {
-                        // Print the key and its corresponding value
-                        console.log(`Card ${cardIndex} - Key: ${key} => Value:`, card[key]);
-                        
-                    });
-                    
+            // Aggregate cards across all subsets in a card set
+            const subsets = data_item.subsets.map((subset) => {
+                const cards = subset.cards.map((card) => {
+                    // Count total cards and learned cards for the entire card set
+                    console.log(card,"\n\n")
+                    totalCards++;
+                    if (card.learnVal) learnedCards++;
+
+                    return {
+                        question: card.question,
+                        answer: card.answer,
+                        isLearned: card.learnVal,
+                        cardId: card.CardId
+                    };
                 });
-                console.log("\n");
+
+                return {
+                    subsetName: subset.subsetName,
+                    cards,subsetId: subset._id
+                };
             });
-           
+
+            // Calculate the percentage for the entire card set
+            const learnedPercentage = totalCards > 0 ? (learnedCards / totalCards) * 100 : 0;
+
+            return {
+                name: data_item.name,
+                subsets,
+                statistics: {
+                    totalCards,
+                    learnedCards,
+                    learnedPercentage: learnedPercentage.toFixed(2), // Format percentage to 2 decimal places
+                },
+            };
         });
 
-        res.json({ success: true, data: data });
+        // Respond with processed data and statistics
+        res.json({
+            success: true,
+            data: processedData,
+        });
 
     } catch (e) {
         console.error("Error loading data:", e);
         res.status(500).json({ success: false, message: "Server error" });
     }
 });
-

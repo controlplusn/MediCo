@@ -1,20 +1,30 @@
 import mongoose from "mongoose";
 
-const subsetSchema = new mongoose.Schema({
-  name: { type: String, required: true },
-  data: {
-    type: [String, String, Number], // e.g., ["question", "answer", 1]
-    required: true
-  }
+// Card Schema
+const cardSchema = new mongoose.Schema({
+  question: { type: String, required: true },
+  answer: { type: String, required: true },
+  learnVal: { type: Boolean, default: false },
+  CardId: { type: mongoose.Schema.Types.ObjectId, required: true }
 });
 
-const cards = new mongoose.Schema({
+// Subset Schema
+const subsetSchema = new mongoose.Schema({
+  subsetName: { type: String, required: true },
+  cards: [cardSchema] // Array of Card subdocuments
+});
+
+// Collection Schema
+const collectionSchema = new mongoose.Schema({
+  _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
   username: { type: [String], required: true },
   name: { type: String, required: true },
-  subsets: { type: [subsetSchema], required: true }
+  subsets: [subsetSchema], // Array of Subset subdocuments
+  isArchived: { type: Boolean, default: false }
 });
 
+// Model
+const Card = mongoose.model('cards', collectionSchema);
 
-const Card= mongoose.model('cards', cards);
 
 export default Card;
