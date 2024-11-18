@@ -1,10 +1,10 @@
 import React from 'react';
-import Flashcard from './components/Flashcard';  // Default import
+import Flashcard from './components/Flashcard.jsx';  // Default import
 
 const App = () => {
   return (
     <div className="App">
-      <Flashcard />
+      <Flashcard username="carlemedina"/>
     </div>
   );
 };

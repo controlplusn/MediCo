@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
 import '../styles/flashcard.css';
 
-export const Flashcard = () => {
+export const Flashcard = (username) => {
   const [activeTab, setActiveTab] = useState('active');  
 
   const categories = [
-    { name: 'Anatomy', subsets: 2, flashcards: 20 },
-    { name: 'Physics', subsets: 3, flashcards: 25 },
-    { name: 'Chemistry', subsets: 1, flashcards: 15 },
-    { name: 'Biology', subsets: 4, flashcards: 30 }
+    { name: 'Anatomy', subsets: 2, total: 20 },
+    { name: 'Physics', subsets: 3, total: 25 },
+    { name: 'Chemistry', subsets: 1, total: 15 },
+    { name: 'Biology', subsets: 4, total: 30 }
   ];
 
   return (
@@ -43,7 +43,7 @@ export const Flashcard = () => {
               <h5>{category.name}</h5>
               <progress value={50} max={100}></progress>
               <div className="content--h6">
-                <h6>{category.subsets} Subsets <span className="vertical-line"></span>{category.flashcards} Flashcards</h6>
+                <h6>{category.subsets} Subsets <span className="vertical-line"></span>{category.total} Flashcards</h6>
               </div>
             </div>
           </button>
