@@ -3,6 +3,7 @@ import Post from '../model/postModel.js';
 import hearts from '../model/heartModel.js';
 import { verifyToken } from '../middleware/verifyToken.js';
 import UserModel from '../model/User.js';
+import Comment from '../model/commentModel.js';
 
 const router = express.Router();
 
@@ -119,7 +120,61 @@ router.delete("/deleteHeart/:heartId/:username", async (req,res) => {
       console.error('Error deleting hearts:', error);
       res.status(500).send({ success: false, message: "Error deleting data" });
     }
-  });
+});
+
+/* --COMMENT-- */
+router.post("/addComment", verifyToken, async (req, res) => { 
+  const { body, commentId } = req.body; // Extract data from request body
+  console.log(req.body);
+  const userId = req.userId;
+  
+  try {
+    if (!userId || !commentId || !body) {
+      return res.status(400).json({ error: 'Lack of data' });
+    }
+
+    const user = await UserModel.findById(userId);
+    if (!user) return res.status(404).json({ success: false, message: "User not found" });
+
+    // Creating comment struct
+    const newComment = new Comment({
+      body,
+      userId,
+      username: user.username,
+      commentId
+    });
+
+    console.log("New comment:", newComment);
+
+
+    const savedComment = await newComment.save();
+    res.status(201).json(savedComment);
+
+  } catch (error) {
+    console.error('Error adding data:', error);
+    res.status(500).send({ success: false, message: "Error adding data" });
+  }
+});
+
+router.get("/comment/:commentId", async (req,res) =>{
+  const { commentId } = req.params;
+  console.log("Comment id:", commentId) ;
+
+  try{
+    const data = await Comment.find({ commentId : commentId});
+    console.log("Fetched Comments: ", data);
+
+    if (data.length === 0) {
+      return res.status(404).json({ success: false, message: "No comments found" });
+    }
+
+    res.json({ success: true, data: data });
+
+  }catch(e){
+    console.error('Error displaying data:', e);
+    res.status(404).send({ success: false, message: "Data not found" });
+  }
+});
 
 
 
