@@ -1,194 +1,232 @@
 .flashcard--container {
-    font-family: Arial, sans-serif;
-    width: 100vw;
-    height: 100vh;
-    padding: 20px;
-    background-color: #F0F5F9;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    display: flex;
-    flex-direction: column;
-    align-items:flex-start;
-  }
-  
-  .flashcard--header {
-    text-align: left;
-    margin-bottom: 5px;
-  }
-  
-  .flashcard--header h4{
-    color:#1E2022;
-    font-size: 30px;
-  }
-  
-  .flashcard--navbar {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin-left: 30px;
-    margin-bottom: 5px;
-  }
-  
-  .flashcard--navbar h6 {
-    cursor: pointer;
+  font-family: Arial, sans-serif;
+  width: 100vw;
+  height: 100vh;
+  padding: 20px;
+  background-color: #F0F5F9;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.flashcard--header {
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.flashcard--header h4 {
+  color: #1E2022;
+  font-size: 30px;
+}
+
+.flashcard--navbar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-left: 30px;
+  margin-bottom: 5px;
+}
+
+.flashcard--navbar h6 {
+  cursor: pointer;
+  padding: 10px;
+  font-weight: 600;
+  margin-right: 20px;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.flashcard--navbar h6:hover {
+  background-color: transparent;
+}
+
+.flashcard--navbar h6.active {
+  border-bottom: 3px solid #1E2022;
+  padding-bottom: 8px;
+}
+
+.Card--section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 20px;
+  width: 100%;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.Card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: #C9D6DF;
+  border: transparent;
+  border-radius: 25px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 269px;
+  height: 270px;
+  position: relative;
+  cursor: pointer;
+}
+
+.flashcard--head {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #333;
+}
+
+.flashcard--body h5 {
+  display: flex;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0 0;
+  color: #F0F5F9;
+}
+
+.content--h6 {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.content--h6 h6 {
+  font-size: 10px;
+  color: #fff;
+  margin: 0;
+  flex: 1;
+  text-align: end;
+  padding-right: 5px;
+}
+
+.flashcard--body progress {
+  width: 100%;
+  height: 5px;
+  margin: 0 10px 0;
+  border-radius: 5px;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: #FFFFFF;
+  border-radius: 5px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  width: 150px;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu ul li {
+  padding: 5px;
+  font-size: 10px;
+  color: #333;
+  cursor: pointer;
+}
+
+.dropdown-menu ul li:hover {
+  background-color: #F0F5F9;
+}
+
+.flashcard--body {
+  background-color: #0F1035;
+  border-radius: 0 0 25px 25px;
+  padding: 15px;
+  width: 100%;
+  height: 60%;
+  max-width: 240px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 80px;
+  justify-content: space-between;
+  align-items: flex-start;
+  text-align: center;
+}
+
+.flashcard--body h5 {
+  display: flex;
+  font-size: 24px;
+  font-weight: bold;
+  margin: 10px 0;
+  color: #F0F5F9;
+}
+
+.flashcard--body progress {
+  width: 100%;
+  height: 5px;
+  margin: 0 0 10px 0;
+  border-radius: 5px;
+}
+
+.content--h6 {
+  display: flex;
+  justify-content: space-evenly;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.content--h6 h6 {
+  font-size: 10px;
+  color: #fff;
+  margin: 0;
+  flex: 1;
+  text-align: end;
+  padding-right: 5px;
+}
+
+.vertical-line {
+  border-left: 1px solid #F0F5F9;
+  height: 16px;
+  margin: 0 5px;
+  display: inline-block;
+}
+
+@media (max-width: 768px) {
+  .flashcard--container {
     padding: 10px;
-    font-weight: 600px;
-    margin-right: 20px;
-    transition: all 0.3s ease;
-    text-align: center;
   }
-  
-  .flashcard--navbar h6:hover {
-    background-color: transparent;
-  }
-  
-  .flashcard--navbar h6.active {
-    border-bottom: 3px solid #1E2022;
-    padding-bottom: 8px;
-  }
-  
-  .Card--section {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr); 
-    gap: 20px;
-    width: 100%;
-    justify-content: space-around;
-    align-items: center;
-  }
-  
-  .Card {
-    display: flex;
+
+  .flashcard--navbar {
     flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    background-color: #C9D6DF;
-    border: transparent;
-    border-radius: 25px;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 269px;
-    height: 270px; 
-    position: relative; 
-    cursor: pointer;
-  }
-  
-  .flashcard--head {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    font-size: 20px;
-    color: #333;
-  }
-  
-  .flashcard--body {
-    background-color: #0F1035;
-    border-radius: 0 0 25px 25px;
-    padding: 15px;
-    width: 100%;
-    height: 60%;
-    max-width: 240px; 
-    display: flex;
-    flex-direction: column;
-    margin-top: 80px;  
-    justify-content: space-between;
     align-items: flex-start;
-    text-align: center;
+    margin-left: 0;
   }
-  
-  .flashcard--body h5 {
-    display: flex;
-    font-size: 24px;
-    font-weight: bold;
-    margin: 10px 0;
-    color: #F0F5F9;
+
+  .flashcard--navbar h6 {
+    margin-right: 0;
+    margin-bottom: 10px;
   }
-  
-  .flashcard--body progress {
+
+  .Card--section {
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .Card {
     width: 100%;
-    height: 5px;
-    margin: 0 0 10px 0;
-    border-radius: 5px;
+    height: auto;
   }
-  
-  .content--h6 {
-    display: flex;
-    justify-content: space-evenly;
+}
+
+@media (max-width: 480px) {
+  .Card--section {
+    grid-template-columns: 1fr;
+  }
+
+  .Card {
     width: 100%;
-    margin-top: 10px;
+    height: auto;
   }
-  
-  .content--h6 h6 {
-    font-size: 10px;
-    color: #fff;
-    margin: 0;
-    flex: 1; 
-    text-align: end;
-    padding-right: 5px;
-  }
-  
-  .vertical-line {
-    border-left: 1px solid #F0F5F9;
-    height: 16px;
-    margin: 0 5px;
-    display: inline-block;
-  }
-  
-  
-  .flashcard--body progress {
-    width: 100%;
-    height: 5px;
-    margin: 0 0 50px 0;
-    border-radius: 5px;
-  }
-  
-  .flashcard--body progress::-webkit-progress-bar {
-    background-color: #F0F5F9; 
-    border-radius: 5px;
-  }
-  
-  .flashcard--body progress::-webkit-progress-value {
-    background-color: #7FC7D9;
-    border-radius: 5px;
-  }
-  
-  @media (max-width: 768px) {
-    .flashcard--container {
-      padding: 10px;
-    }
-  
-    .flashcard--navbar {
-      flex-direction: column;
-      align-items: flex-start;
-      margin-left: 0;
-    }
-  
-    .flashcard--navbar h6 {
-      margin-right: 0;
-      margin-bottom: 10px;
-    }
-  
-    .Card--section {
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-    }
-  
-    .Card {
-      width: 100%;
-      height: auto; 
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .Card--section {
-      grid-template-columns: 1fr;
-    }
-  
-    .Card {
-      width: 100%;
-      height: auto;
-    }
-  }
-  
-  
-  
+}

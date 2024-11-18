@@ -4,6 +4,7 @@ import '../styles/flashcard.css';
 
 export const Flashcard = (username) => {
   const [activeTab, setActiveTab] = useState('active');  
+  const [dropdownOpen, setDropdownOpen] = useState(false); // State to control the dropdown visibility
 
   const categories = [
     { name: 'Anatomy', subsets: 2, total: 20 },
@@ -11,6 +12,11 @@ export const Flashcard = (username) => {
     { name: 'Chemistry', subsets: 1, total: 15 },
     { name: 'Biology', subsets: 4, total: 30 }
   ];
+
+  // Function to toggle the dropdown visibility
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
 
   return (
     <div className="flashcard--container">
@@ -37,7 +43,25 @@ export const Flashcard = (username) => {
         {categories.map((category, index) => (
           <button className="Card" key={index}>
             <div className="flashcard--head">
-              <Icon icon="oi:ellipses" />
+              <Icon 
+                icon="oi:ellipses" 
+                onClick={toggleDropdown} 
+              />
+              {dropdownOpen && (
+                <div className="dropdown-menu">
+                  <ul>
+                    <li>Rename</li>
+                    <hr className="borderline"/>
+                    <li>Quiz</li>
+                    <hr className="borderline"/>
+                    <li>Archived</li>
+                    <hr className="borderline"/>
+                    <li>Delete</li>
+                    <hr className="borderline"/>
+                    <li>Share</li>
+                  </ul>
+                </div>
+              )}
             </div>
             <div className="flashcard--body">
               <h5>{category.name}</h5>
