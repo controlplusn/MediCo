@@ -1,0 +1,242 @@
+body {
+  margin: 0;
+  font-family: 'Arial', sans-serif;
+  background: linear-gradient(to bottom, #F0F5F9, #E8F1F8);
+  overflow: hidden; 
+  height: 100vh;
+}
+
+.flearn--header {
+  background-color: #F0F5F9;
+  color: #1E2022;
+  text-align: left;
+  padding: 20px 0;
+  border-radius: 8px 8px 0 0;
+  margin-bottom: 20px;
+  margin-top: 10px;
+  width: 100%;
+  padding-left: 20px;
+}
+
+.flearn--header h5 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.borderline {
+  border: 1px solid #C9D6DF;
+  margin: 10px 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.div {
+  display: flex;
+  width: 100%;
+  gap: 10px;
+  background-color: #F0F5F9;
+  max-width: 100vw;
+  min-height: 100vh;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.flearn--content--container {
+  background-color: #0F1035;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  border-radius: 10px;
+  padding: 20px;
+  height: 500px;
+  width: 70%;
+  margin-left: 70px;
+  margin-top: 20px;
+  margin-right: 10px;
+}
+
+.qna--container {
+  background-color: #F0F5F9;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 7%;
+  margin: 20px 0;
+  border-radius: 10px;
+  font-size: 16px;
+  color: #333;
+  box-sizing: border-box;
+}
+
+.flearn--content--container h5 {
+  color: #F0F5F9;
+  text-align: center;
+  margin-bottom: 15px;
+}
+
+.prevnnext {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #F0F5F9;
+  margin-top: 20px;
+}
+
+.flearn--content--container progress {
+  width: 100%; 
+  height: 6px;
+  border-radius: 5px;
+  appearance: none; 
+}
+
+.flearn--content--container progress::-webkit-progress-bar {
+  background-color: #F0F5F9; 
+  border-radius: 5px;
+}
+
+.flearn--content--container progress::-webkit-progress-value {
+  background-color: #7FC7D9; 
+  border-radius: 5px;
+}
+
+
+.flearn--content--container progress::-ms-fill {
+  background-color: #7FC7D9; 
+}
+
+
+.flearn--content--container label {
+  color: #F0F5F9;
+  display: block;
+  margin: 10px 0;
+}
+
+.flearn--content--container .tagname {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  background-color: #7FC7D9;
+}
+
+.flearn--content--container .tagname h6 {
+  color: #1E2022;
+  font-size: 7px;
+  margin: 3px 0;
+  padding: 3px 6px;
+  background-color: #7FC7D9;
+  border-radius: 30px;
+}
+
+.flearn--side--container {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px; 
+}
+
+.side--container {
+  background-color: transparent;
+  border-left: 1px solid #C9D6DF;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+}
+
+.study--method,
+.subsets--container {
+  background-color: #0F1035; 
+  color: #F0F5F9;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 100%;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px; 
+}
+
+.study--method {
+  border: 2px solid #F0F5F9; 
+}
+
+.subsets--container {
+  border: 2px solid #C9D6DF; 
+}
+
+.study--method button,
+.subsets--container button {
+  background-color: transparent;
+  border: 2px solid #F0F5F9;
+  color: #F0F5F9;
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.study--method button:hover,
+.subsets--container button:hover {
+  background-color: #F0F5F9;
+  color: #1E2022;
+}
+
+.subsets--header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.subsets--header h5 {
+  margin: 0;
+  color: #F0F5F9;
+}
+
+.subsets--header svg {
+  cursor: pointer;
+  color: #F0F5F9;
+}
+
+.flearn--container > div {
+  border-left: 2px solid #C9D6DF;
+  padding-left: 20px;
+}
+
+@media (max-width: 768px) {
+  .flearn--container > div {
+    flex-direction: column; 
+    gap: 0;
+  }
+
+  .flearn--content--container,
+  .flearn--side--container {
+    width: 100%; 
+    margin-right: 0;
+  }
+
+  .flearn--container {
+    padding: 10px;
+  }
+
+  .flearn--header {
+    padding: 15px 0;
+  }
+
+  .qna--container {
+    padding: 20px;
+  }
+
+  .prevnnext {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .prevnnext h5 {
+    margin: 10px 0;
+  }
+}
