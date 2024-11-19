@@ -17,7 +17,7 @@ const subsetSchema = new mongoose.Schema({
 // Collection Schema
 const collectionSchema = new mongoose.Schema({
   _id: { type: mongoose.Schema.Types.ObjectId, auto: true },
-  username: { type: [String], required: true },
+  userId: { type: mongoose.Schema.Types.ObjectId, required: true },
   name: { type: String, required: true },
   subsets: [subsetSchema], // Array of Subset subdocuments
   isArchived: { type: Boolean, default: false }

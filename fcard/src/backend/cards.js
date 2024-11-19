@@ -18,16 +18,16 @@ mongoose.connect(uri)
 .catch((err) => console.log(err));
 
 /* Loading Cards */
-app.get("/Cards/:username", async (req, res) => {
+app.get("/Cards/:userId", async (req, res) => {
     try {
-        const { username } = req.params;
+        const { userId } = req.params;
 
-        if (!username) {
-            return res.status(400).json({ success: false, message: "Username is required" });
+        if (!userId) {
+            return res.status(400).json({ success: false, message: "User ID required" });
         }
 
         // Fetch data from the database
-        const data = await Card.find({ username: username });
+        const data = await Card.find({ userId : userId });
 
         // Process data and calculate statistics for each card set
         const processedData = data.map((data_item) => {
@@ -67,6 +67,7 @@ app.get("/Cards/:username", async (req, res) => {
                     learnedCards,
                     learnedPercentage: learnedPercentage.toFixed(2), // Format percentage to 2 decimal places
                 },
+                isArchived: data_item.isArchived,
             };
         });
 

@@ -1,22 +1,38 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Icon } from '@iconify/react';
 import '../styles/flashcard.css';
 
-export const Flashcard = (username) => {
+const Flashcard = ({ userId }) => {
   const [activeTab, setActiveTab] = useState('active');  
-  const [dropdownOpen, setDropdownOpen] = useState(false); // State to control the dropdown visibility
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [data, setData] = useState([]); // State to hold fetched data
+  const [loading, setLoading] = useState(true); // State to manage loading
+  const [error, setError] = useState(null); // State to manage errors
 
-  const categories = [
-    { name: 'Anatomy', subsets: 2, total: 20 },
-    { name: 'Physics', subsets: 3, total: 25 },
-    { name: 'Chemistry', subsets: 1, total: 15 },
-    { name: 'Biology', subsets: 4, total: 30 }
-  ];
+  // Fetch data from the API
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:1234/Cards/${userId}`);
+        setData(response.data.data); // Set the data from the response
+      } catch (err) {
+        setError(err); // Set error if the request fails
+      } finally {
+        setLoading(false); // Set loading to false after fetching
+      }
+    };
+
+    fetchData();
+  }, [userId]); // Dependency array to refetch if username changes
 
   // Function to toggle the dropdown visibility
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
   };
+
+  if (loading) return <div>Loading...</div>; // Loading state
+  if (error) return <div>Error: {error.message}</div>; // Error state
 
   return (
     <div className="flashcard--container">
@@ -40,39 +56,42 @@ export const Flashcard = (username) => {
       </div>
 
       <section className="Card--section">
-        {categories.map((category, index) => (
-          <button className="Card" key={index}>
-            <div className="flashcard--head">
-              <Icon 
-                icon="oi:ellipses" 
-                onClick={toggleDropdown} 
-              />
-              {dropdownOpen && (
-                <div className="dropdown-menu">
-                  <ul>
-                    <li>Rename</li>
-                    <hr className="borderline"/>
-                    <li>Quiz</li>
-                    <hr className="borderline"/>
-                    <li>Archived</li>
-                    <hr className="borderline"/>
-                    <li>Delete</li>
-                    <hr className="borderline"/>
-                    <li>Share</li>
-                  </ul>
-                </div>
-              )}
-            </div>
-            <div className="flashcard--body">
-              <h5>{category.name}</h5>
-              <progress value={50} max={100}></progress>
-              <div className="content--h6">
-                <h6>{category.subsets} Subsets <span className="vertical-line"></span>{category.total} Flashcards</h6>
+        {data
+          .filter(category => (activeTab === 'active' ? !category.isArchived : category.isArchived))
+          .map((category, index) => (
+            <button className="Card" key={index}>
+              <div className="flashcard--head">
+                <Icon 
+                  icon="oi:ellipses" 
+                  onClick={toggleDropdown} 
+                />
+                {dropdownOpen && (
+                  <div className="dropdown-menu">
+                    <ul>
+                      <li>Rename</li>
+                      <hr className="borderline"/>
+                      <li>Quiz</li>
+                      <hr className="borderline"/>
+                      <li>Archived</li>
+                      <hr className="borderline"/>
+                      <li>Delete</li>
+                      <hr className="borderline"/>
+                      <li>Share</li>
+                    </ul>
+                  </div>
+                )}
               </div>
-            </div>
-          </button>
-        ))}
+              <div className="flashcard--body">
+                <h5>{category.name}</h5>
+                <progress value={category.statistics.learnedPercentage} max={100}></progress>
+                <div className="content--h6">
+                  <h6>{category.subsets.length} Subsets <span className="vertical-line"></span>{category.statistics.totalCards} Flashcards</h6>
+                </div>
+              </div>
+            </button>
+          ))}
       </section>
+
     </div>
   );
 };
