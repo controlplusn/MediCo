@@ -51,9 +51,9 @@ body {
     justify-content: flex-start;
     border-radius: 10px;
     padding: 20px;
-    height: 500px;
+    height: 450px;
     width: 70%;
-    margin-left: 70px;
+    margin-left: 50px;
     margin-top: 20px;
     margin-right: 10px;
   }
@@ -63,7 +63,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 80px 7%;
-    margin: 20px 0;
+    margin: 10px 0;
     border-radius: 10px;
     font-size: 16px;
     color: #333;
@@ -80,8 +80,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 10px;
     color: #F0F5F9;
-    margin-top: 20px;
   }
   
   .flearn--content--container progress {
@@ -136,7 +136,6 @@ body {
     width: 30%;
     display: flex;
     flex-direction: column;
-    gap: 5px; 
   }
   
   .side--container {
@@ -145,7 +144,7 @@ body {
     padding: 5px;
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
+    margin-left: 50px;
   }
   
   .study--method,
@@ -154,8 +153,8 @@ body {
     color: #F0F5F9;
     display: flex;
     flex-direction: column;
-    gap: 5px;
     width: 100%;
+    height: 250px;
     padding: 15px;
     border-radius: 10px;
     margin-bottom: 20px; 
@@ -206,6 +205,48 @@ body {
     border-left: 2px solid #C9D6DF;
     padding-left: 20px;
   }
+
+  .pomodoro-container {
+    text-align: center;
+    padding: 20px;
+    background-color: #F0F5F9;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column; 
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px; 
+    box-sizing: border-box;
+  }
+  
+  .pomodoro-container p {
+    font-size: 2.5em; 
+    font-weight: bold;
+    margin-bottom: 20px;
+    color: #1E2022; 
+  }
+  
+  .pomodoro-container button {
+    padding: 15px 25px; 
+    background-color: #1E2022;
+    color: #F0F5F9;
+    border: none;
+    border-radius: 8px; 
+    cursor: pointer;
+    font-size: 1em; 
+    transition: background-color 0.3s ease;
+  }
+  
+  .pomodoro-container button:disabled {
+    background-color: #C9D6DF;
+    cursor: not-allowed;
+  }
+  
+  .pomodoro-container button:hover {
+    background-color: #5D98B4; 
+  }
+
   
   @media (max-width: 768px) {
     .flearn--container > div {
@@ -239,5 +280,19 @@ body {
     .prevnnext h5 {
       margin: 10px 0;
     }
+
+    .pomodoro-container {
+        width: 80%; 
+        margin: 15px auto; 
+      }
+    
+      .pomodoro-container p {
+        font-size: 2em; 
+      }
+    
+      .pomodoro-container button {
+        padding: 12px 20px; 
+        font-size: 0.9em;
+      }
   }
   
