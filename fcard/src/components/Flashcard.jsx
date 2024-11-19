@@ -4,35 +4,35 @@ import { Icon } from '@iconify/react';
 import '../styles/flashcard.css';
 
 const Flashcard = ({ userId }) => {
-  const [activeTab, setActiveTab] = useState('active');  
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [data, setData] = useState([]); // State to hold fetched data
-  const [loading, setLoading] = useState(true); // State to manage loading
-  const [error, setError] = useState(null); // State to manage errors
+  const [activeTab, setActiveTab] = useState('active');
+  const [openDropdown, setOpenDropdown] = useState(null); // Tracks which dropdown is open
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Fetch data from the API
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:1234/Cards/${userId}`);
-        setData(response.data.data); // Set the data from the response
+        setData(response.data.data);
       } catch (err) {
-        setError(err); // Set error if the request fails
+        setError(err);
       } finally {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, [userId]); // Dependency array to refetch if username changes
+  }, [userId]);
 
-  // Function to toggle the dropdown visibility
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+  // Function to toggle the dropdown visibility for a specific card
+  const toggleDropdown = (index) => {
+    setOpenDropdown(openDropdown === index ? null : index);
   };
 
-  if (loading) return <div>Loading...</div>; // Loading state
-  if (error) return <div>Error: {error.message}</div>; // Error state
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error.message}</div>;
 
   return (
     <div className="flashcard--container">
@@ -41,14 +41,14 @@ const Flashcard = ({ userId }) => {
       </div>
 
       <div className="flashcard--navbar">
-        <h6 
-          onClick={() => setActiveTab('active')} 
+        <h6
+          onClick={() => setActiveTab('active')}
           className={activeTab === 'active' ? 'active' : ''}
         >
           Active
         </h6>
-        <h6 
-          onClick={() => setActiveTab('archived')} 
+        <h6
+          onClick={() => setActiveTab('archived')}
           className={activeTab === 'archived' ? 'active' : ''}
         >
           Archived
@@ -59,23 +59,23 @@ const Flashcard = ({ userId }) => {
         {data
           .filter(category => (activeTab === 'active' ? !category.isArchived : category.isArchived))
           .map((category, index) => (
-            <button className="Card" key={index}>
+            <div className="Card" key={index}>
               <div className="flashcard--head">
-                <Icon 
-                  icon="oi:ellipses" 
-                  onClick={toggleDropdown} 
+                <Icon
+                  icon="oi:ellipses"
+                  onClick={() => toggleDropdown(index)} // Pass index to toggleDropdown
                 />
-                {dropdownOpen && (
+                {openDropdown === index && (
                   <div className="dropdown-menu">
                     <ul>
                       <li>Rename</li>
-                      <hr className="borderline"/>
+                      <hr className="borderline" />
                       <li>Quiz</li>
-                      <hr className="borderline"/>
+                      <hr className="borderline" />
                       <li>Archived</li>
-                      <hr className="borderline"/>
+                      <hr className="borderline" />
                       <li>Delete</li>
-                      <hr className="borderline"/>
+                      <hr className="borderline" />
                       <li>Share</li>
                     </ul>
                   </div>
@@ -85,13 +85,16 @@ const Flashcard = ({ userId }) => {
                 <h5>{category.name}</h5>
                 <progress value={category.statistics.learnedPercentage} max={100}></progress>
                 <div className="content--h6">
-                  <h6>{category.subsets.length} Subsets <span className="vertical-line"></span>{category.statistics.totalCards} Flashcards</h6>
+                  <h6>
+                    {category.subsets.length} Subsets{' '}
+                    <span className="vertical-line"></span>
+                    {category.statistics.totalCards} Flashcards
+                  </h6>
                 </div>
               </div>
-            </button>
+            </div>
           ))}
       </section>
-
     </div>
   );
 };
