@@ -5,7 +5,7 @@ import Card from '../model/cardsModel.js';
 const router = express.Router();
 
 // loading cards
-router.get("/cards/:userId", verifyToken, async (req, res) => {
+router.get("/cards", verifyToken, async (req, res) => {
     try {
         const userId = req.userId; // get user token from JWT when user is verified
 
@@ -13,6 +13,7 @@ router.get("/cards/:userId", verifyToken, async (req, res) => {
             return res.status(400).json({ success: false, message: "User ID required" });
         }
 
+        console.log("Fetching cards for user:", userId);
         // Fetch data from the database
         const data = await Card.find({ userId });
 
@@ -47,6 +48,7 @@ router.get("/cards/:userId", verifyToken, async (req, res) => {
             const learnedPercentage = totalCards > 0 ? (learnedCards / totalCards) * 100 : 0;
 
             return {
+                _id: data_item._id,
                 name: data_item.name,
                 subsets,
                 statistics: {
@@ -162,6 +164,25 @@ router.delete('/cards/delete/:collectionId', verifyToken, async (req, res) => {
             success: false,
             message: "Server error. Unable to delete the collection."
         });
+    }   
+});
+
+router.put("/renameCard", async (req, res) => {
+    try{
+        const {id, name} = req.body;
+        
+        const result = await Card.updateOne({ _id: id }, { $set: {  name : name } });
+        
+        // Check if any document was modified
+        if (result.nModified === 0) {
+            return res.status(404).send({ success: false, message: "No record found to update" });
+        }
+
+        res.send({ success: true, message: "Progress updated successfully" });
+
+    }catch(e){
+        console.error("Error updating data:", e);
+        res.status(270).json({ success: false, message: "Server error" });
     }
 });
 

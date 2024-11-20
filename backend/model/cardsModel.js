@@ -2,10 +2,34 @@ import mongoose from "mongoose";
 
 // Card Schema
 const cardSchema = new mongoose.Schema({
-  question: { type: String, required: true },
-  answer: { type: String, required: true },
-  learnVal: { type: Boolean, default: false },
-  CardId: { type: mongoose.Schema.Types.ObjectId, required: true }
+  question: { 
+    type: String, 
+    required: true 
+  },
+  answer: { 
+    type: String, 
+    required: true 
+  },
+  learnVal: { // tracker if the card is learned
+    type: Boolean, 
+    default: false 
+  },
+  CardId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    required: true 
+  },
+  reviewInterval: { // interval in days
+    type: Number,
+    default: 1
+  },
+  nextReview: { // Date when the card should be reviewed
+    type: Date,
+    default: Date.now
+  },
+  lastReviewed: { // Date of last reviewed
+    type: Date,
+    default: Date.now
+  }
 });
 
 // Subset Schema
