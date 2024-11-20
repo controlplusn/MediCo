@@ -141,8 +141,6 @@ router.post("/addComment", verifyToken, async (req, res) => {
       commentId
     });
 
-    console.log("New comment:", newComment);
-
 
     const savedComment = await newComment.save();
     res.status(201).json(savedComment);
@@ -159,7 +157,6 @@ router.get("/comment/:commentId", async (req,res) =>{
 
   try{
     const data = await Comment.find({ commentId : commentId});
-    console.log("Fetched Comments: ", data);
 
     if (data.length === 0) {
       return res.status(404).json({ success: false, message: "No comments found" });
