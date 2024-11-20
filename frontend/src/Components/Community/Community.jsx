@@ -239,6 +239,11 @@ export const Community = ({ username }) => {
   return (
     <div className="community-body">
         <div className="community-container">
+          <div className="community--header">
+            <img src="https://via.placeholder.com/50" alt="profile"></img> 
+            <h5>John Doe</h5>  
+          </div>
+          <hr className="borderline"/>  
             <div className="search-box">
               <input type="text" placeholder="Search" />
               <Icon icon="radix-icons:magnifying-glass" />
@@ -321,11 +326,10 @@ export const Community = ({ username }) => {
                 <div className="community--icon">
                   <button
                     className="heartBtn"
-                    onClick={() => toggleHeart(thread.heartId, thread.isLiked)} // Call the toggleHeart function
+                    onClick={() => toggleHeart(thread.heartId, thread.isLiked)}
                   >
                     <Icon
-                      icon="fluent-mdl2:heart"
-                      style={{ backgroundColor: thread.isLiked ? 'red' : 'transparent' }}
+                      icon={thread.isLiked ? "fluent-emoji-flat:heart-suit" : "fluent-mdl2:heart"}
                     />
                   </button>
                   <h6 className="heart-count">{thread.heartCount}</h6>

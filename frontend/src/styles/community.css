@@ -16,12 +16,53 @@
     overflow-y: auto;
 }
 
+.community--header {
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-end; 
+    justify-content: center; 
+    background-color: transparent; 
+    padding: 20px; 
+}
+
+.community--header button {
+    background: transparent; 
+    border: none;
+    padding: 10px; 
+    cursor: pointer; 
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+  }
+  
+  
+  .community--header button:focus {
+    outline: none; 
+  }
+  
+  .community--header .icon {
+    color: #1E2022; 
+    font-size: 24px; 
+    transition: color 0.3s ease; 
+  }
+  
+ 
+
+.community--header .borderline {
+    width: 100%; 
+    border: 1px solid #ccc; 
+    margin-top: 10px; 
+    opacity: 0.5; 
+}
+
+
 .search-box {
     display: flex;
     align-items: center;
     background: #C9D6DF;
     padding: 10px;
     margin-bottom: 15px;
+    margin-top: 20px;
     border-radius: 28px;
     width: 100%;
     max-width: 600px;
@@ -62,11 +103,10 @@
 .thread button {
     display: flex;
     justify-content: flex-start;
-    padding: 15px;
     width: 100%;
     color: #52616B;
     border-radius: 10px;
-    border-color: solid #52616B;
+    border-color: #52616B;
 }
 
 .community--thread {
@@ -148,22 +188,29 @@
 
 .community--icon {
     display: flex;
-    gap: 20px;
+    gap: 5px;  
     font-size: 20px;
-    margin-top: 30px;
+    margin-top: 20px;
     align-items: center;
+    justify-content: flex-start;  
+    width: 100%;  
 }
+
 
 .community--icon button {
     background: transparent;
     border: none;
-    padding: 3px;
+    padding: 5px;
     cursor: pointer;
     display: flex;
+    margin-left: 20px;
     justify-content: center;
     align-items: center;
     transition: all 0.3s ease;
 }
+
+
+
 
 .community--icon .icon {
     color: #007bff;
@@ -180,6 +227,66 @@
 .community--icon button:focus {
     outline: none;
 }
+
+.community--comments {
+  margin-top: 10px;
+  margin-left: 5px;
+  overflow: auto;
+  max-height: 220px;
+}
+
+.community--comments::-webkit-scrollbar {
+    display: none;  
+  }
+.community--comments p {
+  font-size: 0.95rem;
+  color: #ffff;
+  line-height: 1.6;
+  margin-bottom: 10px;
+
+}
+
+.comment {
+  background-color: #0F1035;
+  border: 1px solid;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 5px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comment h3 {
+  font-size: 1rem;
+  color: #fff;
+  margin: 0 0 5px;
+}
+
+.comment .comment-time {
+  font-size: 0.65rem;
+  color: #F0F5F9;
+  margin-top: 5px;
+}
+
+.comment p {
+  font-size: 0.85rem;
+  color: #1E2022;
+  line-height: 1.6;
+}
+
+.comment-time {
+  display: block;
+  font-size: 0.85rem;
+  color: #52616B;
+  margin-top: 5px;
+}
+
+ .community--comments p {
+  font-size: 1rem;
+  color: #C9D6DF;
+  font-style: italic;
+  margin-top: 5px;
+}
+
 
 
 
@@ -318,7 +425,7 @@
     padding: 10px 20px;
     margin-right: 10px;
     border: none;
-    background-color: #1e2022;
+    background-color: #0F1035;
     color: white;
     cursor: pointer;
     border-radius: 4px;
@@ -327,5 +434,3 @@
 .dialog-content button:hover {
     background-color: #52616B;
 }
-
- 
