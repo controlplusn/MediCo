@@ -136,7 +136,6 @@ export const Community = ({ username }) => {
 
   const handleFormSubmit = async () => {
     if (!newThread.label || !newThread.Subject || !newThread.Content) {
-      alert('All fields must be filled');
       return;
     }
 
@@ -163,7 +162,6 @@ export const Community = ({ username }) => {
         fetchThreads();
     } catch(error) {
         console.error('Error adding new thread:', error);
-        alert('Failed to add new thread: ' + error.response.data.error);
     }
   };
 
@@ -228,14 +226,12 @@ export const Community = ({ username }) => {
       });
 
       if (response.status === 201) {
-        alert('Comment added successfully!');
         setIsCommentDialogOpen(false);
         setNewComment({ body: '', commentId: null }); 
         fetchThreads(); // Re-fetch threads to show updated comments
       }
     } catch (error) {
       console.error('Error adding comment:', error);
-      alert('Failed to add comment. Please try again.');
     }
   };
   
