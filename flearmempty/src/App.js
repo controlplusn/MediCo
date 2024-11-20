@@ -1,10 +1,10 @@
 import React from 'react'
-import FlearnEmpty from './components/FlearnEmpty'
+import FlearnFlashcardContent from './components/FlearnFlashcardContent';
 
 export const App = () => {
   return (
     <div>
-      <FlearnEmpty />
+      <FlearnFlashcardContent />
     </div>
   )
 }

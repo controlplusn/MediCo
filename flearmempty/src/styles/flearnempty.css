@@ -1,14 +1,33 @@
-.flearnempty--container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    background-color: #F0F5F9;
-    border-radius: 8px;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
+html, body {
+    overflow: hidden; 
   }
+  
+  .flearnempty--container {
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #F0F5F9;
+    width: 100vw;
+    height: 100vh; 
+    overflow: hidden; 
+    box-sizing: border-box; 
+    flex-wrap: wrap; 
+  }
+
+  .flearncontent{
+    display: flex;
+    flex-direction: row; 
+    justify-content: center;
+    align-items: flex-start;
+    background-color: #F0F5F9;
+    width: 100%;
+    height: 100%; 
+    overflow: hidden; 
+    box-sizing: border-box; 
+    flex-wrap: wrap; 
+  }
+  
   
   .flearn--header {
     display: flex;
@@ -17,7 +36,7 @@
     align-items: flex-start;
     gap: 25px;
     width: 100%;
-    margin-top: 10px;
+    background-color: #F0F5F9;
     padding: 20px;
     box-sizing: border-box;
   }
@@ -104,15 +123,18 @@
     align-items: center;
     flex-direction: column;
     text-align: center;
+    flex-grow: 1; 
+    width: 25%; 
   }
   
   .flearn--content img {
-    max-width: 550px;
-    height: 400px;
+    max-width: 100%; 
+    height: auto; 
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 20px;
   }
+  
   
   .flearn--content button {
     background-color: #1E2022;
@@ -140,14 +162,13 @@
     font-size: 18px;
   }
   
-  /* Modal Overlay */
   .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); 
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -198,4 +219,31 @@
     background-color: #F0F5F9;
     color: #1E2022;
   }
+  
+  /* Styling for the progress container */
+.progress--container {
+    width: 150px;  /* Increased width to accommodate the progress circle */
+    height: 150px; /* Increased height for a larger progress circle */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    position: relative;
+    text-align: center;  /* Ensures content is centered */
+  }
+  
+  .progress--container h5 {
+    font-size: 20px;  /* Adjust the font size */
+    font-weight: bold;
+    color: #1E2022;
+    margin-bottom: 20px; /* Adjust space between the title and circle */
+  }
+  
+  /* Optionally, remove this class as the `CircularProgressbar` handles the text size */
+  .circular-progressbar {
+    margin-top: 10px;
+  }
+
+  
   
