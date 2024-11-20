@@ -1,13 +1,13 @@
 .flearnempty--container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;  
-    align-items: center;      
+    justify-content: flex-start;
+    align-items: center;
     background-color: #F0F5F9;
     border-radius: 8px;
     width: 100%;
-    height: 100vh;            
-    overflow: hidden;         
+    height: 100vh;
+    overflow: hidden;
   }
   
   .flearn--header {
@@ -19,7 +19,7 @@
     width: 100%;
     margin-top: 10px;
     padding: 20px;
-    box-sizing: border-box; 
+    box-sizing: border-box;
   }
   
   .flearn--header h5 {
@@ -33,13 +33,14 @@
     background: #1E2022;
     border: 1px solid;
     border-radius: 20px;
-    font-size: 18px;
+    font-size: 16px;
     padding: 5px;
     font-weight: 300;
     color: #F0F5F9;
     cursor: pointer;
     display: flex;
     margin-left: 20px;
+    position: relative;
   }
   
   .flearn--header button:hover {
@@ -52,6 +53,51 @@
     font-size: 20px;
   }
   
+  .dropdown {
+    position: absolute;
+    top: 120px;
+    background-color: #1E2022;
+    color: #F0F5F9;
+    border: 1px solid;
+    border-radius: 10px;
+    width: 150px;
+    padding: 10px;
+    z-index: 100;
+  }
+  
+  .dropdown ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dropdown ul li {
+    padding: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .dropdown ul button {
+    padding: 4px;
+    border: none;
+    border-radius: 0;
+    width: 90%;
+    border: 1px solid;
+    border-radius: 20px;
+    display: flex;
+    font-size: 14px;
+  }
+  
+  .dropdown ul button:hover {
+    background-color: transparent;
+    color: #F0F5F9;
+  }
+  
+  .dropdown ul li:hover {
+    background-color: #52616B;
+    color: #1E2022;
+  }
+  
   .flearn--content {
     display: flex;
     justify-content: center;
@@ -61,7 +107,7 @@
   }
   
   .flearn--content img {
-    max-width: 550px; 
+    max-width: 550px;
     height: 400px;
     object-fit: cover;
     border-radius: 8px;
@@ -92,5 +138,64 @@
   .flearn--content button svg {
     margin-left: 8px;
     font-size: 18px;
+  }
+  
+  /* Modal Overlay */
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+  }
+  
+  .modal-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .modal-content h2 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .modal-input {
+    padding: 8px;
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .modal-actions button {
+    padding: 8px 12px;
+    font-size: 14px;
+    background-color: #1E2022;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .modal-actions button:hover {
+    background-color: #F0F5F9;
+    color: #1E2022;
   }
   
