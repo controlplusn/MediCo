@@ -18,7 +18,7 @@ html, body {
   .flearncontent{
     display: flex;
     flex-direction: row; 
-    justify-content: center;
+    justify-content: space-around;
     align-items: flex-start;
     background-color: #F0F5F9;
     width: 100%;
@@ -245,5 +245,18 @@ html, body {
     margin-top: 10px;
   }
 
-  
-  
+  .Card--Container{
+    display: grid;
+    grid-template-columns: auto auto auto;
+    gap: 5px;
+  }
+
+  .Card{
+    background-color: #0F1035;
+    border-radius: 5px;
+    color: #F0F5F9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px;
+  }

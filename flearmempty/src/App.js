@@ -1,5 +1,5 @@
 import React from 'react'
-import FlearnFlashcardContent from './components/FlearnFlashcardContent';
+import FlearnFlashcardContent from './components/FlearnFlashcardContent.jsx';
 
 export const App = () => {
   return (
