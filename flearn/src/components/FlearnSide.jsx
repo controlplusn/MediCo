@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Icon } from '@iconify/react';
 
 export const FlearnSide = () => {
-  const [activeMethod, setActiveMethod] = useState(null);
-  const [activeSubset, setActiveSubset] = useState(null);
   const [isTimerActive, setIsTimerActive] = useState(false);
   const [workTime, setWorkTime] = useState(25);
   const [breakTime, setBreakTime] = useState(5);
@@ -78,23 +76,6 @@ export const FlearnSide = () => {
         </div>
       </div>
 
-      <div className="subsets--container">
-        <div className="subsets--header">
-          <h5>Subsets:</h5>
-          <Icon icon="gridicons:add" />
-        </div>
-        <ul>
-          {['Nervous System', 'Digestive System', 'Endocrine System', 'Reproductive System'].map((subset, index) => (
-            <li
-              key={index}
-              className={activeSubset === index ? 'active' : ''}
-              onClick={() => setActiveSubset(index)}
-            >
-              {subset}
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 };

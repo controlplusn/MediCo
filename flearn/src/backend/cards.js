@@ -27,20 +27,26 @@ app.get("/Cards/:userId", async (req, res) => {
         }
 
         // Fetch data from the database
-        const data = await Card.find({ userId : userId });
+        const data = await Card.find({ userId: userId });
 
-        // Process data and calculate statistics for each card set
+        // Process data and calculate statistics for each card set and subset
         const processedData = data.map((data_item) => {
             let totalCards = 0;
             let learnedCards = 0;
 
             // Aggregate cards across all subsets in a card set
             const subsets = data_item.subsets.map((subset) => {
+                let subsetTotalCards = 0;
+                let subsetLearnedCards = 0;
+
                 const cards = subset.cards.map((card) => {
-                    // Count total cards and learned cards for the entire card set
-                    console.log(card,"\n\n")
+                    // Count total cards and learned cards for the entire card set and individual subset
                     totalCards++;
-                    if (card.learnVal) learnedCards++;
+                    subsetTotalCards++;
+                    if (card.learnVal) {
+                        learnedCards++;
+                        subsetLearnedCards++;
+                    }
 
                     return {
                         question: card.question,
@@ -50,9 +56,18 @@ app.get("/Cards/:userId", async (req, res) => {
                     };
                 });
 
+                // Calculate the percentage for each subset
+                const subsetLearnedPercentage = subsetTotalCards > 0 ? (subsetLearnedCards / subsetTotalCards) * 100 : 0;
+
                 return {
                     subsetName: subset.subsetName,
-                    cards,subsetId: subset._id
+                    cards,
+                    subsetId: subset._id,
+                    statistics: {
+                        totalCards: subsetTotalCards,
+                        learnedCards: subsetLearnedCards,
+                        learnedPercentage: subsetLearnedPercentage.toFixed(2), // Format percentage to 2 decimal places
+                    },
                 };
             });
 
@@ -60,6 +75,7 @@ app.get("/Cards/:userId", async (req, res) => {
             const learnedPercentage = totalCards > 0 ? (learnedCards / totalCards) * 100 : 0;
 
             return {
+                _id: data_item._id,
                 name: data_item.name,
                 subsets,
                 statistics: {
@@ -71,7 +87,7 @@ app.get("/Cards/:userId", async (req, res) => {
             };
         });
 
-        // Respond with processed data and statistics
+
         res.json({
             success: true,
             data: processedData,
@@ -79,6 +95,42 @@ app.get("/Cards/:userId", async (req, res) => {
 
     } catch (e) {
         console.error("Error loading data:", e);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+});
+
+
+app.put("/Cards/update/:FlashcardId/:cardId", async (req, res) => {
+    try {
+        const { FlashcardId, cardId } = req.params;
+        const { learnVal } = req.body;
+
+        const data_item = await Card.findOne({ _id: new mongoose.Types.ObjectId(FlashcardId) });
+
+        let cardUpdated = false;
+
+        for (let subset of data_item.subsets) {
+            const cardIndex = subset.cards.findIndex(card => card.CardId.toString() === cardId);
+
+            if (cardIndex !== -1) {
+                subset.cards[cardIndex].learnVal = learnVal;
+                cardUpdated = true;
+                break; 
+            }
+        }
+
+        if (!cardUpdated) {
+            return res.status(404).json({ success: false, message: "Card not found" });
+        }
+        await data_item.save();
+
+        res.json({
+            success: true,
+            message: "Card learnVal updated successfully"
+        });
+
+    } catch (e) {
+        console.error("Error updating learnVal:", e);
         res.status(500).json({ success: false, message: "Server error" });
     }
 });
