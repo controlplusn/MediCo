@@ -148,6 +148,28 @@ body {
   margin-left: 20px;
 }
 
+.side--container ul li {
+  list-style: none;
+  padding: 10px;
+  margin: 5px 0;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  background-color: #0F1035; /* Default background color */
+}
+
+/* Hover effect for list items */
+.side--container ul li:hover {
+  box-shadow: inset 0 0 0 1px #E8F1F8; /* Creates a 1px internal border on hover */
+}
+
+/* Active list item styling */
+.side--container ul li.active {
+  background-color: #F0F5F9;
+  color: #0F1035;
+  font-weight: bold;
+}
+
 .study--method,
 .subsets--container {
   background-color: #0F1035; 
@@ -155,7 +177,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 5px;
-  width: 100%;
+  width: 90%;
   padding: 15px;
   border-radius: 10px;
   margin-bottom: 20px; 
@@ -240,3 +262,63 @@ body {
     margin: 10px 0;
   }
 }
+
+.pomodoro--container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.timer-display{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.timer-display h1 {
+  font-size: 48px;
+  margin: 10px 0;
+  color: #F0F5F9;
+  
+}
+
+.study--method h5{
+  margin: 10px 10px;
+}
+.controls button {
+  padding: 10px 20px;
+  margin: 5px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: white;
+  transition: background-color 0.3s ease;
+}
+
+.controls button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+.settings label {
+  display: block;
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.settings input {
+  width: 60px;
+  padding: 5px;
+  margin-left: 10px;
+  text-align: center;
+}
+
+.toggle-timer label {
+  display: block;
+  margin: 15px 0;
+  font-size: 16px;
+}
+
