@@ -9,7 +9,7 @@ export const Flearn = () => {
     <div>
       <FlearnHeader />
       <div style={{ display: 'flex', width: '100%' }}>
-        <FlearnContent />
+        <FlearnContent useeId='672ca9b1572b8a9dad197f4c' />
         <FlearnSide />
       </div>
     </div>

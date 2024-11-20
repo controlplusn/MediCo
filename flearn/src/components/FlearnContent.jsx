@@ -7,11 +7,9 @@ export const FlearnContent = () => {
         <h5>Anatomy</h5>
         <label>
         <div className="tagname">
-          <h6>Chapter 1</h6>
+          <h6>Learned</h6>
           </div>
-          <div className="tagname">
-          <h6>Central Ne...</h6>
-          </div>
+          
         </label>
 
         <progress value={50} max={100}/>
@@ -23,6 +21,10 @@ export const FlearnContent = () => {
             <Icon icon = "ep:arrow-left"/>
             <h5>Central Nervous System</h5>
             <Icon icon="ep:arrow-right"/>
+        </div>
+        <div>
+          <button>Good</button>
+          <button>Bad</button>
         </div>
     </div>
   )
