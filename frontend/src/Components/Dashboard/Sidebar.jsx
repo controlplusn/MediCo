@@ -37,7 +37,7 @@ const Sidebar = () => {
                     </ul>
                 </Link>
 
-                <Link to="/homepage">
+                <Link to="/flashcards">
                     <ul
                         className={`item ${activeItem === 'flashcards' ? 'active' : ''}`}
                         onClick={() => handleItemClick('flashcards')}

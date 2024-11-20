@@ -6,6 +6,7 @@ import Dashboard from './Components/Dashboard/Dashboard';
 import { useAuthStore } from './store/authStore';
 import { useEffect } from 'react';
 import Community from './Components/Community/Community';
+import Flashcard from './Components/Flashcards/Flashcard';
 
 // protect routes that require authentication
 const ProtectedRoute = ({ children }) => {
@@ -81,6 +82,14 @@ function App() {
       element: (
         <ProtectedRoute>
           <Community username={"helloWorld"} />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: '/flashcards',
+      element: (
+        <ProtectedRoute>
+          <Flashcard />
         </ProtectedRoute>
       )
     }
