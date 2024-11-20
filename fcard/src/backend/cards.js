@@ -38,7 +38,6 @@ app.get("/Cards/:userId", async (req, res) => {
             const subsets = data_item.subsets.map((subset) => {
                 const cards = subset.cards.map((card) => {
                     // Count total cards and learned cards for the entire card set
-                    console.log(card,"\n\n")
                     totalCards++;
                     if (card.learnVal) learnedCards++;
 
@@ -61,6 +60,7 @@ app.get("/Cards/:userId", async (req, res) => {
 
             return {
                 name: data_item.name,
+                _id : data_item._id,
                 subsets,
                 statistics: {
                     totalCards,
@@ -80,5 +80,24 @@ app.get("/Cards/:userId", async (req, res) => {
     } catch (e) {
         console.error("Error loading data:", e);
         res.status(500).json({ success: false, message: "Server error" });
+    }
+});
+
+app.put("/renameCard", async (req, res) => {
+    try{
+        const {id, name} = req.body;
+        
+        const result = await Card.updateOne({ _id: id }, { $set: {  name : name } });
+        
+        // Check if any document was modified
+        if (result.nModified === 0) {
+            return res.status(404).send({ success: false, message: "No record found to update" });
+        }
+
+        res.send({ success: true, message: "Progress updated successfully" });
+
+    }catch(e){
+        console.error("Error updating data:", e);
+        res.status(270).json({ success: false, message: "Server error" });
     }
 });
