@@ -1,0 +1,96 @@
+.flearnempty--container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;  
+    align-items: center;      
+    background-color: #F0F5F9;
+    border-radius: 8px;
+    width: 100%;
+    height: 100vh;            
+    overflow: hidden;         
+  }
+  
+  .flearn--header {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 25px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 20px;
+    box-sizing: border-box; 
+  }
+  
+  .flearn--header h5 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1E2022;
+    margin: 0;
+  }
+  
+  .flearn--header button {
+    background: #1E2022;
+    border: 1px solid;
+    border-radius: 20px;
+    font-size: 18px;
+    padding: 5px;
+    font-weight: 300;
+    color: #F0F5F9;
+    cursor: pointer;
+    display: flex;
+    margin-left: 20px;
+  }
+  
+  .flearn--header button:hover {
+    color: #1E2022;
+    background-color: #F0F5F9;
+  }
+  
+  .flearn--header button .svg {
+    margin-left: 5px;
+    font-size: 20px;
+  }
+  
+  .flearn--content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .flearn--content img {
+    max-width: 550px; 
+    height: 400px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 20px;
+  }
+  
+  .flearn--content button {
+    background-color: #1E2022;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.3s ease;
+  }
+  
+  .flearn--content button:hover {
+    background-color: #F0F5F9;
+    border: 1px solid;
+    color: #1E2022;
+  }
+  
+  .flearn--content button svg {
+    margin-left: 8px;
+    font-size: 18px;
+  }
+  
