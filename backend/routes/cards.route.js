@@ -135,12 +135,9 @@ router.post('/cards/add', verifyToken, async (req, res) => {
 });
 
 router.delete('/cards/delete/:collectionId', verifyToken, async (req, res) => {
-    console.log("Received DELETE request for collection ID:", req.params.collectionId);
     const userId = req.userId;
-    console.log("Verify userId:", userId);
 
     const { collectionId } = req.params;
-    console.log("Collection id:", collectionId);
 
     try {
         // check if collection exists and belong to the user
