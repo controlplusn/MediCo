@@ -11,7 +11,8 @@ const Flashcard = ({ userId }) => {
   const [error, setError] = useState(null);
   const [renameDialog, setRenameDialog] = useState({ isOpen: false, currentCategory: null });
   const [renameValue, setRenameValue] = useState('');
-
+  const [createDialog, setCreateDialog] = useState(false); 
+  const [newCategoryName, setNewCategoryName] = useState('');
   // Fetch data from the API
   useEffect(() => {
     const fetchData = async () => {
@@ -38,6 +39,10 @@ const Flashcard = ({ userId }) => {
     setRenameDialog({ isOpen: true, currentCategory: category });
     setRenameValue(''); // Set initial value to the current name
     setOpenDropdown(null); // Close the dropdown
+  };
+
+  const openCreateDialog = () => {
+    setCreateDialog(true);
   };
 
   // Function to handle rename submission (including API call)
@@ -76,19 +81,27 @@ const Flashcard = ({ userId }) => {
         <h4>Flash Cards</h4>
       </div>
 
-      <div className="flashcard--navbar">
-        <h6
-          onClick={() => setActiveTab('active')}
-          className={activeTab === 'active' ? 'active' : ''}
-        >
-          Active
-        </h6>
-        <h6
-          onClick={() => setActiveTab('archived')}
-          className={activeTab === 'archived' ? 'active' : ''}
-        >
-          Archived
-        </h6>
+      <div className="flashcard--nav--con">
+        <div className="flashcard--navbar">
+          <h6
+            onClick={() => setActiveTab('active')}
+            className={activeTab === 'active' ? 'active' : ''}
+          >
+            Active
+          </h6>
+          <h6
+            onClick={() => setActiveTab('archived')}
+            className={activeTab === 'archived' ? 'active' : ''}
+          >
+            Archived
+          </h6>
+        </div>
+        <button onClick={() => openCreateDialog({})}>
+          <h5 style={{ margin: '0 5px 0 0', padding: '8px' }}>Add</h5>
+          <div>
+            <Icon icon="ic:twotone-plus" />
+          </div>
+        </button>
       </div>
 
       <section className="Card--section">
@@ -132,7 +145,7 @@ const Flashcard = ({ userId }) => {
           ))}
       </section>
 
-      
+      {/* Rename Dialog */}
       {renameDialog.isOpen && (
         <div className="rename-dialog">
           <div className="dialog-content">
@@ -150,6 +163,33 @@ const Flashcard = ({ userId }) => {
               </button>
               <button onClick={handleRenameSubmit} disabled={!renameValue.trim()}>
                 Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Create Dialog */}
+      {createDialog && (
+        <div className="create-dialog">
+          <div className="dialog-content">
+            <h4>Create New Flashcard</h4>
+            <label htmlFor="category-name">Flashcard Name:</label>
+            <input
+              id="category-name"
+              type="text"
+              value={newCategoryName}
+              onChange={(e) => setNewCategoryName(e.target.value)}
+              maxLength={15}
+              placeholder="Enter flashcard name"
+            />
+            <div className="dialog-actions">
+              <button onClick={() => setCreateDialog(false)}>Cancel</button>
+              <button
+                // {onClick={handleCreateSubmit}}
+                disabled={!newCategoryName.trim()}
+              >
+                Create
               </button>
             </div>
           </div>
