@@ -321,9 +321,13 @@ export const Community = ({ username }) => {
             {thread.comments.length > 0 ? (
               thread.comments.map((comment) => (
                 <div key={comment.id} className="comment">
-                  <h3>{comment.username}</h3>
+               <div className="comment-user">
+                <img src="https://via.placeholder.com/50" alt="profile" />
+                <h3>{comment.username}</h3>
+              </div>          
+              <span className="comment-time">{comment.time}</span>
+                  
                   <p>{comment.body}</p>
-                  <span className="comment-time">{comment.time}</span>
                 </div>
               ))
             ) : (
