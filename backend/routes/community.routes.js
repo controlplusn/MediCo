@@ -22,10 +22,8 @@ router.get("/communities", async (req,res) => {
 router.post("/add", verifyToken, async (req, res) => {
     try {
       const { Content, Subject, label } = req.body;
-      console.log(req.body);
 
       const userId = req.userId;
-      console.log("Success in retrieving the user id:", userId);
 
       // fetch username associated with the userId
       const user = await UserModel.findById(userId);
@@ -125,7 +123,6 @@ router.delete("/deleteHeart/:heartId/:username", async (req,res) => {
 /* --COMMENT-- */
 router.post("/addComment", verifyToken, async (req, res) => { 
   const { body, commentId } = req.body; // Extract data from request body
-  console.log(req.body);
   const userId = req.userId;
   
   try {
