@@ -7,6 +7,7 @@ import { useAuthStore } from './store/authStore';
 import { useEffect } from 'react';
 import Community from './Components/Community/Community';
 import Flashcard from './Components/Flashcards/Flashcard';
+import FlashCardContent from './Components/FlashcardsLearn/FlashCardContent';
 
 // protect routes that require authentication
 const ProtectedRoute = ({ children }) => {
@@ -90,6 +91,14 @@ function App() {
       element: (
         <ProtectedRoute>
           <Flashcard />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: '/flashcardcontent/:categoryId',
+      element: (
+        <ProtectedRoute>
+          <FlashCardContent />
         </ProtectedRoute>
       )
     }

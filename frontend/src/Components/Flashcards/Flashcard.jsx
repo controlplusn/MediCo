@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import '../../styles/flashcards.css';
 
@@ -16,6 +17,8 @@ const Flashcard = () => {
   const [renameValue, setRenameValue] = useState('');
   const [createDialog, setCreateDialog] = useState(false); 
   const [newCategoryName, setNewCategoryName] = useState('');
+
+  const navigate = useNavigate();
 
   // fetch userId
   useEffect(() => {
@@ -67,6 +70,7 @@ const Flashcard = () => {
     }
   }, [userId]);
 
+
   const handleCreateFlashcard = async () => {
     const subsetName = "All subset"; // Or select from the dropdown or form field
     try {
@@ -79,7 +83,7 @@ const Flashcard = () => {
   
       if (response.data.success) {
         // Add the new flashcard to the local state
-        setData([...data, response.data.collection]);
+        setData(prevData => [...prevData, response.data.collection]);
         setCreateDialog(false);
         setNewCategoryName('');
       } else {
@@ -108,7 +112,7 @@ const Flashcard = () => {
     }
 
     setRenameDialog({ isOpen: true, currentCategory: category });
-    setRenameValue(''); // Set initial value to the current name
+    setRenameValue(category.name); // Set initial value to the current name
     setOpenDropdown(null); // Close the dropdown
   };
 
@@ -174,6 +178,11 @@ const Flashcard = () => {
 
   }
 
+  // Handle card click and navigate to category page
+  const handleCardClick = (categoryId) => {
+    navigate(`/flashcardcontent/${categoryId}`);
+  };
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -210,7 +219,7 @@ const Flashcard = () => {
         {data
           .filter(category => (activeTab === 'active' ? !category.isArchived : category.isArchived))
           .map((category, index) => (
-            <div className="Card" key={index}>
+            <div className="Card" key={index} onClick={() => handleCardClick(category._id)}>
               <div className="flashcard--head">
                 <Icon
                   icon="oi:ellipses"

@@ -186,6 +186,50 @@ router.put("/renameCard", async (req, res) => {
     }
 });
 
+/// category-based flashcard
+router.get('/cards/:categoryId', verifyToken, async (req, res) => {
+    const { categoryId } = req.params // from req parameter
+
+    const userId = req.userId; // from verified token
+
+    try {
+        // find specific card collection by id, ensure it belongs to the authenticated user
+        const category = await Card.findOne({ _id: categoryId, userId });
+
+        if (!category) {
+            return res.status(404).json({
+                success: false,
+                message: "Category not found or does not belong to the user"
+            });
+        }
+
+        // Format response
+        const formattedCategory = {
+            name: category.name,
+            subsets: category.subsets.map(subset => ({
+                subsetName: subset.subsetName,
+                cards: subset.cards.map(card => ({
+                    question: card.question,
+                    answer: card.answer,
+                    isLearned: card.learnVal
+                })),
+            })),
+        };
+
+        res.status(200).json({
+            success: true,
+            data: category
+        });
+
+
+    } catch (error) {
+        console.error('Error fetching category data:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error. Unable to fetch the category.',
+        });
+    }
+});
 
 
 export default router;
