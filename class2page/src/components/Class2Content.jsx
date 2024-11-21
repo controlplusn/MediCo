@@ -14,8 +14,6 @@ export const Class2Content = () => {
   const [threads, setThreads] = useState([
     {
       id: 1,
-      label: 'Anatomy',
-      subject: 'Human Anatomy Basics',
       content: 'Understanding the human body.',
       username: 'Doc_Iorem123',
       time: '2 hours ago',
@@ -33,8 +31,6 @@ export const Class2Content = () => {
     },
     {
       id: 2,
-      label: 'Chemistry',
-      subject: 'Periodic Table Trends',
       content: 'A detailed explanation of the periodic table.',
       username: 'ChemistryGuru',
       time: '1 day ago',
@@ -69,7 +65,7 @@ export const Class2Content = () => {
       ...threads,
       { ...newThread, id: threads.length + 1, heartCount: 0, commentCount: 0, comments: [] },
     ]);
-    setNewThread({ label: '', subject: '', content: '' });
+    setNewThread({ content: '' });
     setIsDialogOpen(false); // Close the dialog after form submission
   };
 
@@ -155,24 +151,6 @@ export const Class2Content = () => {
             <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
               <h3>Add New Thread</h3>
               <form onSubmit={handleFormSubmit}>
-                <label>Label</label>
-                <input
-                  type="text"
-                  name="label"
-                  value={newThread.label}
-                  onChange={handleInputChange}
-                  placeholder="Enter label (e.g., Chemistry)"
-                  required
-                />
-                <label>Subject</label>
-                <input
-                  type="text"
-                  name="subject"
-                  value={newThread.subject}
-                  onChange={handleInputChange}
-                  placeholder="Enter subject"
-                  required
-                />
                 <label>Content</label>
                 <textarea
                   name="content"
