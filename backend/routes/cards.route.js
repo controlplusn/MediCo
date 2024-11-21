@@ -24,12 +24,17 @@ router.get("/cards", verifyToken, async (req, res) => {
 
             // Aggregate cards across all subsets in a card set
             const subsets = data_item.subsets.map((subset) => {
-                const cards = subset.cards.map((card) => {
-                    // Count total cards and learned cards for the entire card set
-                    console.log(card,"\n\n")
-                    totalCards++;
-                    if (card.learnVal) learnedCards++;
+                let subsetTotalCards = 0;
+                let subsetLearnedCards = 0;
 
+                const cards = subset.cards.map((card) => {
+                    // Count total cards and learned cards for the entire card set and individual subset
+                    totalCards++;
+                    subsetTotalCards++;
+                    if (card.learnVal) {
+                        learnedCards++;
+                        subsetLearnedCards++;
+                    }
                     return {
                         question: card.question,
                         answer: card.answer,
@@ -38,9 +43,17 @@ router.get("/cards", verifyToken, async (req, res) => {
                     };
                 });
 
+                const subsetLearnedPercentage = subsetTotalCards > 0 ? (subsetLearnedCards / subsetTotalCards) * 100 : 0;
+
                 return {
                     subsetName: subset.subsetName,
-                    cards,subsetId: subset._id
+                    cards,
+                    subsetId: subset._id,
+                    statistics: {
+                        totalCards: subsetTotalCards,
+                        learnedCards: subsetLearnedCards,
+                        learnedPercentage: subsetLearnedPercentage.toFixed(2), // Format percentage to 2 decimal places
+                    },
                 };
             });
 
@@ -230,6 +243,48 @@ router.get('/cards/:categoryId', verifyToken, async (req, res) => {
         });
     }
 });
+
+router.post("/Cards/:flashcardId/addSubset", verifyToken, async (req, res) => {
+    try {
+        const userId = req.userId;
+        console.log("Retrieved user id from subset:", userId);
+        const { flashcardId } = req.params;
+        const { subsetName } = req.body; // Only subsetName is required
+        
+        if (!userId || !flashcardId || !subsetName) {
+          return res.status(400).json({ success: false, message: "User ID, Flashcard ID, and subsetName are required" });
+        }
+      
+        // Find the flashcard by userId and flashcardId
+        const flashcard = await Card.findOne({ userId: userId, _id: flashcardId });
+      
+        if (!flashcard) {
+          return res.status(404).json({ success: false, message: "Flashcard not found" });
+        }
+      
+        // Create a new subset object
+        const newSubset = {
+          subsetName: subsetName,
+          cards: [] // Initialize with an empty array
+        };
+      
+        // Push the new subset into the subsets array
+        flashcard.subsets.push(newSubset);
+      
+        // Save the updated flashcard
+        await flashcard.save();
+      
+        res.status(200).json({
+          success: true,
+          message: "Subset added successfully",
+          updatedFlashcard: flashcard,
+        });
+  
+    } catch (e) {
+        console.error("Error adding subset:", e);
+        res.status(500).json({ success: false, message: "Server error" });
+    }
+  });
 
 
 export default router;
