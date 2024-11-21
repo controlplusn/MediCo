@@ -16,19 +16,7 @@ const cardSchema = new mongoose.Schema({
   },
   CardId: { 
     type: mongoose.Schema.Types.ObjectId, 
-    required: true 
-  },
-  reviewInterval: { // interval in days
-    type: Number,
-    default: 1
-  },
-  nextReview: { // Date when the card should be reviewed
-    type: Date,
-    default: Date.now
-  },
-  lastReviewed: { // Date of last reviewed
-    type: Date,
-    default: Date.now
+    auto: true
   }
 });
 
