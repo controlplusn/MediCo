@@ -97,7 +97,8 @@ const Flashcard = () => {
 
 
   // Function to toggle the dropdown visibility for a specific card
-  const toggleDropdown = (index) => {
+  const toggleDropdown = (index, e) => {
+    e.stopPropagation();
     setOpenDropdown(openDropdown === index ? null : index);
   };
 
@@ -223,18 +224,18 @@ const Flashcard = () => {
               <div className="flashcard--head">
                 <Icon
                   icon="oi:ellipses"
-                  onClick={() => toggleDropdown(index)} // Pass index to toggleDropdown
+                  onClick={(e) => toggleDropdown(index, e)} // Pass index to toggleDropdown
                 />
                 {openDropdown === index && (
                   <div className="dropdown-menu">
                     <ul>
-                      <li onClick={() => openRenameDialog(category)}>Rename</li>
+                      <li onClick={(e) => {e.stopPropagation(); openRenameDialog(category)}}>Rename</li>
                       <hr className="borderline" />
                       <li>Quiz</li>
-                      <hr className="borderline" />
+                      <hr className="borderline" /> 
                       <li>Archived</li>
                       <hr className="borderline" />
-                      <li onClick={() => handleDelete(category._id)}>Delete</li>
+                      <li onClick={(e) => {e.stopPropagation(); handleDelete(category._id)}}>Delete</li>
                       <hr className="borderline" />
                       <li>Share</li>
                     </ul>
