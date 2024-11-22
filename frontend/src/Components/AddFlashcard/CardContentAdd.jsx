@@ -1,46 +1,109 @@
 import React, { useState, useEffect } from 'react';
-import '../styles/cardcontentadd.css';
+import axios from 'axios';
+import '../../styles/cardcontentadd.css';
 
-export const CardContentAdd = ({ activeCard, cardSetId, subsetId, userId }) => {
+const CardContentAdd = ({ activeCard }) => {
   const isAddingNew = activeCard === null;
   
   // Manage state for question and answer
   const [question, setQuestion] = useState(isAddingNew ? '' : activeCard?.question);
   const [answer, setAnswer] = useState(isAddingNew ? '' : activeCard?.answer);
+  const [userId, setUserId] = useState(null);
+  const [categories, setCategories] = useState([]);
+  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeSubset, setActiveSubset] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Re-run the effect whenever activeCard changes (for updating existing card)
+  // used for userId passed from api JWT authentication
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await axios.get('http://localhost:3001/api/auth/check-auth', {
+          withCredentials: true,
+        });
+        if (response.data.user) {
+          setUserId(response.data.user._id);
+        }
+      } catch (err) {
+        console.error('Error checking authentication:', err);
+      }
+    };
+
+    fetchUser();
+  }, []);
+
+  // fetch category id and subset id
+  useEffect(() => {
+    const fetchCategoryData = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3001/api/flashcard/cards`, {
+          withCredentials: true
+        });
+
+        if (response.data.success) {
+          setCategories(response.data.data);
+          const firstCategory = response.data.data[0];
+          if (firstCategory) {
+            setActiveCategory(firstCategory._id);
+            const firstSubset = firstCategory.subsets[0];
+            if (firstSubset) {
+              setActiveSubset(firstSubset.subsetId);
+            }
+          }
+
+        } else {
+          setError(new Error(response.data.message));
+        }
+      } catch (err) {
+        setError(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCategoryData();
+  }, []);
+
+  // Update question and answer when editing an existing card or resetting when adding a new card
   useEffect(() => {
     if (!isAddingNew && activeCard) {
-      setQuestion(activeCard.question);
-      setAnswer(activeCard.answer);
+        setQuestion(activeCard.question);
+        setAnswer(activeCard.answer);
     } else {
-      // Reset to empty values if adding new card
-      setQuestion('');
-      setAnswer('');
+        setQuestion('');
+        setAnswer('');
     }
-  }, [activeCard, isAddingNew]); // Dependency on activeCard and isAddingNew
+  }, [activeCard, isAddingNew]);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
     try {
       const url = isAddingNew
-        ? `http://localhost:1234/Cards/${userId}/${cardSetId}/${subsetId}`
-        : `http://localhost:1234/UpdateCards/${userId}/${cardSetId}/${subsetId}/${activeCard.cardId}`;
+        ? `http://localhost:3001/api/flashcard/cards/addflashcard`
+        : `http://localhost:3001/api/flashcard/cards/updateCard`;
 
       const method = isAddingNew ? 'POST' : 'PUT';
 
-      const response = await fetch(url, {
+      const response = await axios({
         method,
-        headers: {
-          'Content-Type': 'application/json',
+        url,
+        data: {
+          userId,
+          cardSetId: activeCategory,
+          subsetId: activeSubset,
+          question,
+          answer,
         },
-        body: JSON.stringify({ question, answer }),
+        withCredentials: true
       });
 
-      const result = await response.json();
-      if (result.success) {
+      console.log(response);
+      if (response.data.success) {
         alert(isAddingNew ? 'Flashcard added successfully!' : 'Flashcard updated successfully!');
       } else {
-        alert(result.message || 'Failed to save flashcard.');
+        alert(response.data.message || 'Failed to save flashcard.');
       }
     } catch (error) {
       console.error('Error saving flashcard:', error);

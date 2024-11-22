@@ -284,7 +284,118 @@ router.post("/cards/:categoryId/addSubset", verifyToken, async (req, res) => {
       console.error("Error adding subset:", e);
       res.status(500).json({ success: false, message: "Server error" });
     }
-  });
+});
+
+// for adding flashcard
+router.post('/cards/addflashcard', verifyToken, async (req, res) => {
+    const userId = req.userId; // Extracted from the JWT token middleware
+    const { cardSetId, subsetId, question, answer } = req.body;
+
+    console.log("Card set id:", cardSetId);
+    console.log("Subset id:", subsetId);
+    console.log("question:", question);
+    console.log("answer:", answer);
+
+    try {
+      // Validate the request body
+      if (!cardSetId || !subsetId || !question || !answer) {
+        return res.status(400).json({
+          success: false,
+          message: "All fields (cardSetId, subsetId, question, answer) are required",
+        });
+      }
+
+      // Find the card set and subset
+      const cardSet = await Card.findOne({ _id: cardSetId, userId });
+
+      if (!cardSet) {
+        return res.status(404).json({
+          success: false,
+          message: "Card set not found or does not belong to the user",
+        });
+      }
+
+      const subset = cardSet.subsets.id(subsetId);
+
+      if (!subset) {
+        return res.status(404).json({
+          success: false,
+          message: "Subset not found in the specified card set",
+        });
+      }
+
+      // Add the new card to the subset
+      const newCard = {
+        question,
+        answer,
+        learnVal: false, // Default value for whether the card is learned
+      };
+
+      subset.cards.push(newCard);
+
+      // Save the updated card set
+      await cardSet.save();
+
+      res.status(201).json({
+        success: true,
+        message: "Card added successfully",
+        card: newCard,
+      });
+    } catch (error) {
+      console.error("Error adding card:", error);
+      res.status(500).json({
+        success: false,
+        message: "Server error while adding card",
+      });
+    }
+});
+
+// getting the flashcards
+router.get('/cards/:categoryId/:subsetId', verifyToken, async (req, res) => {
+    console.log("Request received for cards route");
+
+    const { categoryId, subsetId } = req.params; // Get categoryId and subsetId from URL parameters
+    console.log("Category id for fetching cards:", categoryId);
+    console.log("Subset id for fetching cards:", subsetId);
+
+    const userId = req.userId; // Extracted from JWT token
+    console.log("User ID:", userId);
+
+    try {
+        // Find specific category by categoryId and ensure it belongs to the user
+        const category = await Card.findOne({ _id: categoryId, userId });
+
+        if (!category) {
+            return res.status(404).json({
+                success: false,
+                message: "Category not found or does not belong to the user",
+            });
+        }
+
+        // Find specific subset within the category
+        const subset = category.subsets.id(subsetId);
+
+        if (!subset) {
+            return res.status(404).json({
+                success: false,
+                message: "Subset not found",
+            });
+        }
+
+        // Format response to include only the subset's cards
+        res.status(200).json({
+            success: true,
+            data: subset
+        });
+
+    } catch (error) {
+        console.error('Error fetching category and subset data:', error);
+        res.status(500).json({
+            success: false,
+            message: 'Server error. Unable to fetch the data.',
+        });
+    }
+});
 
   
 
