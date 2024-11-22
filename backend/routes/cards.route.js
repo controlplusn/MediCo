@@ -244,47 +244,48 @@ router.get('/cards/:categoryId', verifyToken, async (req, res) => {
     }
 });
 
-router.post("/Cards/:flashcardId/addSubset", verifyToken, async (req, res) => {
+router.post("/cards/:categoryId/addSubset", verifyToken, async (req, res) => {
     try {
-        const userId = req.userId;
-        console.log("Retrieved user id from subset:", userId);
-        const { flashcardId } = req.params;
-        const { subsetName } = req.body; // Only subsetName is required
-        
-        if (!userId || !flashcardId || !subsetName) {
-          return res.status(400).json({ success: false, message: "User ID, Flashcard ID, and subsetName are required" });
-        }
-      
-        // Find the flashcard by userId and flashcardId
-        const flashcard = await Card.findOne({ userId: userId, _id: flashcardId });
-      
-        if (!flashcard) {
-          return res.status(404).json({ success: false, message: "Flashcard not found" });
-        }
-      
-        // Create a new subset object
-        const newSubset = {
-          subsetName: subsetName,
-          cards: [] // Initialize with an empty array
-        };
-      
-        // Push the new subset into the subsets array
-        flashcard.subsets.push(newSubset);
-      
-        // Save the updated flashcard
-        await flashcard.save();
-      
-        res.status(200).json({
-          success: true,
-          message: "Subset added successfully",
-          updatedFlashcard: flashcard,
-        });
+      const { categoryId } = req.params;
+      const userId = req.userId;
+      const { subsetName } = req.body; // Only subsetName is required
+      console.log("Subset name:", subsetName);
+  
+      if (!subsetName) {
+        return res.status(400).json({ success: false, message: 'Subset name is required.' });
+      }
+  
+      // Find the flashcard by userId and flashcardId
+      const flashcard = await Card.findOne({ userId: userId, _id: categoryId });
+  
+      if (!flashcard) {
+        return res.status(404).json({ success: false, message: "Flashcard not found" });
+      }
+  
+      // Create a new subset object
+      const newSubset = {
+        subsetName,
+        cards: [] // Initialize with an empty array
+      };
+  
+      // Push the new subset into the subsets array
+      flashcard.subsets.push(newSubset);
+  
+      // Save the updated flashcard
+      await flashcard.save();
+  
+      res.status(200).json({
+        success: true,
+        message: "Subset added successfully",
+        updatedFlashcard: flashcard,
+      });
   
     } catch (e) {
-        console.error("Error adding subset:", e);
-        res.status(500).json({ success: false, message: "Server error" });
+      console.error("Error adding subset:", e);
+      res.status(500).json({ success: false, message: "Server error" });
     }
   });
 
+  
 
 export default router;
