@@ -73,7 +73,6 @@ app.get('/classes/:username/:id', async (req, res) => {
 });
 
 
-//adding discussions/thread
 app.post('/addDiscussion/:classId', async (req, res) => {
   const { classId } = req.params;
   const { title, author, content } = req.body;
@@ -103,6 +102,7 @@ app.post('/addDiscussion/:classId', async (req, res) => {
       date: new Date(),
       likes: [],
       comments: [],
+      DiscussionId: new mongoose.Types.ObjectId(), // Generate a unique ID for the discussion
     };
 
     // Add the discussion to the class
@@ -122,10 +122,10 @@ app.post('/addDiscussion/:classId', async (req, res) => {
 });
 
 
+
 // Add a comment to a specific discussion
-// Add a comment to a specific discussion
-app.post('/addComment/:classId/:_id', async (req, res) => {
-  const { classId, _id } = req.params;
+app.post('/addComment/:classId/:DiscussionId', async (req, res) => {
+  const { classId, DiscussionId } = req.params;
   const { commentContent, author } = req.body;
 
   try {
@@ -135,7 +135,7 @@ app.post('/addComment/:classId/:_id', async (req, res) => {
     }
 
     // Validate class ID and discussion ID
-    if (!mongoose.Types.ObjectId.isValid(classId) || !mongoose.Types.ObjectId.isValid(_id)) {
+    if (!mongoose.Types.ObjectId.isValid(classId) || !mongoose.Types.ObjectId.isValid(DiscussionId)) {
       return res.status(400).json({ message: 'Invalid class or discussion ID' });
     }
 
@@ -145,8 +145,8 @@ app.post('/addComment/:classId/:_id', async (req, res) => {
       return res.status(404).json({ message: 'Class not found' });
     }
 
-    // Find the specific discussion by its _id
-    const discussion = classData.discussion.find(d => d._id.toString() === _id);
+    // Find the specific discussion by its id
+    const discussion = classData.discussion.find(d => d.DiscussionId.toString() === DiscussionId);
     if (!discussion) {
       return res.status(404).json({ message: 'Discussion not found' });
     }
@@ -155,8 +155,7 @@ app.post('/addComment/:classId/:_id', async (req, res) => {
     const newComment = {
       content: commentContent,
       author,
-      time: new Date(),
-      _id: new mongoose.Types.ObjectId(), // Automatically generate a new ObjectId
+      CommentId: new mongoose.Types.ObjectId(), // Automatically generate a new ObjectId
     };
 
     // Push the new comment to the comments array of the selected discussion
@@ -176,12 +175,12 @@ app.post('/addComment/:classId/:_id', async (req, res) => {
 });
 
 // Add a like to a specific discussion
-app.post('/likeDiscussion/:classId/:_id/:username', async (req, res) => {
-  const { classId, _id, username } = req.params;
+app.post('/likeDiscussion/:classId/:DiscussionId/:username', async (req, res) => {
+  const { classId, DiscussionId, username } = req.params;
 
   try {
     // Validate class ID and discussion ID
-    if (!mongoose.Types.ObjectId.isValid(classId) || !mongoose.Types.ObjectId.isValid(_id)) {
+    if (!mongoose.Types.ObjectId.isValid(classId) || !mongoose.Types.ObjectId.isValid(DiscussionId)) {
       return res.status(400).json({ message: 'Invalid class or discussion ID' });
     }
 
@@ -191,8 +190,8 @@ app.post('/likeDiscussion/:classId/:_id/:username', async (req, res) => {
       return res.status(404).json({ message: 'Class not found' });
     }
 
-    // Find the specific discussion by its _id
-    const discussion = classData.discussion.find(d => d._id.toString() === _id);
+    // Find the specific discussion by its id
+    const discussion = classData.discussion.find(d => d.DiscussionId.toString() === DiscussionId);
     if (!discussion) {
       return res.status(404).json({ message: 'Discussion not found' });
     }
@@ -220,12 +219,12 @@ app.post('/likeDiscussion/:classId/:_id/:username', async (req, res) => {
 
 
 // Remove a like from a specific discussion
-app.delete('/unlikeDiscussion/:classId/:_id/:username', async (req, res) => {
-  const { classId, _id, username } = req.params;
+app.delete('/unlikeDiscussion/:classId/:DiscussionId/:username', async (req, res) => {
+  const { classId, DiscussionId, username } = req.params;
 
   try {
     // Validate class ID and discussion ID
-    if (!mongoose.Types.ObjectId.isValid(classId) || !mongoose.Types.ObjectId.isValid(_id)) {
+    if (!mongoose.Types.ObjectId.isValid(classId) || !mongoose.Types.ObjectId.isValid(DiscussionId)) {
       return res.status(400).json({ message: 'Invalid class or discussion ID' });
     }
 
@@ -236,7 +235,7 @@ app.delete('/unlikeDiscussion/:classId/:_id/:username', async (req, res) => {
     }
 
     // Find the specific discussion by its _id
-    const discussion = classData.discussion.find(d => d._id.toString() === _id);
+    const discussion = classData.discussion.find(d => d.DiscussionId.toString() === DiscussionId);
     if (!discussion) {
       return res.status(404).json({ message: 'Discussion not found' });
     }
