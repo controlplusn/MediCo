@@ -1,0 +1,73 @@
+.cardcontentadd {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 30px;
+    background-color: #F0F5F9;
+    border-radius: 10px;
+    width: 60%;
+    margin-top: 40px;
+    margin: 0;
+  }
+  
+
+  .cardquestion, .cardanswer {
+    display: flex;
+    margin-top: 50px;
+    flex-direction: column;
+    width: 80%;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .cardquestion input, .cardanswer input {
+    padding: 70px;
+    font-size: 17px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 5px;
+    background-color: #fff;
+  }
+  
+  .cardquestion input:focus, .cardanswer input:focus {
+    border-color: #0F1035;
+    outline: none;
+  }
+  
+  .cardquestion h5, .cardanswer h5 {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 5px;
+    font-weight: 600;
+  }
+  
+  button {
+    padding: 12px 20px;
+    font-size: 16px;
+    background-color: #0F1035;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-weight: 600;
+    margin-right: 500px;
+  }
+  
+  
+  button:active {
+    background-color: #fff;
+    color:#1e2020;
+    transform: translateY(0);
+  }
+  
+  @media (max-width: 600px) {
+    .cardcontentadd {
+      padding: 20px;
+    }
+    button {
+      width: 100%;
+      margin: 0;
+    }
+  }
+  

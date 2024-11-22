@@ -1,0 +1,43 @@
+/* Container for the entire layout */
+.addcrd-container {
+    display: flex;
+    justify-content: space-between; /* Distribute space between the two components */
+    align-items: flex-start;
+    flex-wrap: nowrap;
+    overflow: hidden; /* Hide any overflow content */
+    position: fixed; /* Fix the container to the screen */
+    top: 0;
+    left: 0;
+    width: 100%; /* Full width of the screen */
+    height: 100%; /* Full height of the screen */
+}
+
+
+
+/* CardContentAdd component on the right side */
+.cardcontentadd {
+    flex:1;
+    width: 40%; /* Adjust width of the right side */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    background-color: #F0F5F9;
+    border-radius: 10px;
+    height: 100%; /* Take full height of the container */
+    box-sizing: border-box;
+    flex-shrink: 0; /* Prevent shrinking */
+}
+
+/* Make layout responsive for smaller screens */
+@media (max-width: 768px) {
+    .addcrd-container {
+        flex-direction: column; /* Stack components vertically */
+        align-items: center; /* Center components */
+    }
+
+    .fcards-container, .cardcontentadd {
+        width: 100%; /* Take full width on small screens */
+        margin-bottom: 20px; /* Space between stacked components */
+    }
+}
