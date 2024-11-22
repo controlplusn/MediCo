@@ -1,88 +1,200 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Icon } from '@iconify/react';
 import '../styles/classcontent.css';
 
-const classCards = [
-  {
-    id: 1,
-    title: 'Anatomy',
-    author: 'Doc_Iorem123',
-    profileImage: 'https://via.placeholder.com/50',
-  },
-  {
-    id: 2,
-    title: 'Biochemistry',
-    author: 'Mr_yoso777',
-    profileImage: 'https://via.placeholder.com/50',
-  },
-  {
-    id: 3,
-    title: 'Microbiology',
-    author: 'John_John_John',
-    profileImage: 'https://via.placeholder.com/50',
-  },
-  {
-    id: 4,
-    title: 'Physiology',
-    author: 'Your_Name',
-    profileImage: 'https://via.placeholder.com/50',
-  },
-];
-
 export const ClassContent = () => {
-  // State to track the visibility of dropdowns for each card
+  const username = 'carlemedina';
+  const [classData, setClassData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [dropdownState, setDropdownState] = useState({});
-  // State for modal visibility
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [newClassTitle, setNewClassTitle] = useState('');
+  const [selectedClass, setSelectedClass] = useState(null); // Tracks the selected class for edit/delete
 
-  // Toggle dropdown visibility for a specific card
+  // Fetch class data
+  const fetchClassData = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`http://localhost:3001/classes/${username}`);
+      setClassData(response.data);
+    } catch (err) {
+      console.error('Error fetching class data:', err);
+      setError('Failed to fetch class data');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchClassData();
+  }, [username]);
+
+  // Add a new class
+  const handleAddClass = async () => {
+    if (!newClassTitle.trim()) return;
+    try {
+      const response = await axios.post(`http://localhost:3001/classes`, {
+        title: newClassTitle,
+        host: username,
+      });
+      if (response.status === 201) {
+        fetchClassData();
+        setIsModalOpen(false);
+        setNewClassTitle('');
+      }
+    } catch (err) {
+      console.error('Error adding class:', err);
+      setError('Failed to add class. Please try again.');
+    }
+  };
+
+  // Edit a class
+  const handleEditClass = async () => {
+    if (!newClassTitle.trim() || !selectedClass) return;
+    try {
+      await axios.put(`http://localhost:3001/classes/${selectedClass._id}`, {
+        title: newClassTitle,
+      });
+      fetchClassData();
+      setIsEditModalOpen(false);
+      setNewClassTitle('');
+    } catch (err) {
+      console.error('Error editing class:', err);
+      setError('Failed to edit class. Please try again.');
+    }
+  };
+
+  // Delete a class
+  const handleDeleteClass = async () => {
+    if (!selectedClass) return;
+    try {
+      await axios.delete(`http://localhost:3001/classes/${selectedClass._id}`);
+      fetchClassData();
+      setIsDeleteModalOpen(false);
+      setSelectedClass(null);
+    } catch (err) {
+      console.error('Error deleting class:', err);
+      setError('Failed to delete class. Please try again.');
+    }
+  };
+
+  // Toggle dropdown
   const toggleDropdown = (id) => {
-    setDropdownState(prevState => ({
+    setDropdownState((prevState) => ({
       ...prevState,
-      [id]: !prevState[id] // Toggle the dropdown for the specific card
+      [id]: !prevState[id],
     }));
   };
 
-  // Toggle the modal visibility
-  const toggleModal = () => {
-    setIsModalOpen(!isModalOpen); // Toggle modal visibility
-  };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
     <div>
       <div className="add-icon">
-        <button onClick={toggleModal}><Icon icon="material-symbols:add" /></button>
+        <button onClick={() => setIsModalOpen(true)}>
+          <Icon icon="material-symbols:add" />
+        </button>
       </div>
-      
-      {/* Modal Dialog */}
+
+      {/* Add Modal */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
             <div className="modal-header">
               <h2>Add New Class</h2>
-              <button className="close-btn" onClick={toggleModal}><Icon icon="material-symbols:close"/></button>
+              <button className="close-btn" onClick={() => setIsModalOpen(false)}>
+                <Icon icon="material-symbols:close" />
+              </button>
             </div>
             <div className="modal-body">
-              <input type="text" placeholder="Class Title" />
-              <button onClick={toggleModal}>Add Class</button>
+              <input
+                type="text"
+                placeholder="Class Title"
+                value={newClassTitle}
+                onChange={(e) => setNewClassTitle(e.target.value)}
+              />
+              <button onClick={handleAddClass}>Add Class</button>
             </div>
           </div>
         </div>
       )}
 
+      {/* Edit Modal */}
+      {isEditModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2>Edit Class</h2>
+              <button className="close-btn" onClick={() => setIsEditModalOpen(false)}>
+                <Icon icon="material-symbols:close" />
+              </button>
+            </div>
+            <div className="modal-body">
+              <input
+                type="text"
+                placeholder="New Class Title"
+                value={newClassTitle}
+                onChange={(e) => setNewClassTitle(e.target.value)}
+              />
+              <button onClick={handleEditClass}>Save</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Modal */}
+      {isDeleteModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h2>Delete Class</h2>
+              <button className="close-btn" onClick={() => setIsDeleteModalOpen(false)}>
+                <Icon icon="material-symbols:close" />
+              </button>
+            </div>
+            <div className="modal-body">
+              <p>Are you sure you want to delete this class?</p>
+              <button onClick={handleDeleteClass}>Yes</button>
+              <button onClick={() => setIsDeleteModalOpen(false)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Class Cards */}
       <section className="Card--section">
-        {classCards.map((card) => (
-          <button className="Card" key={card.id}>
+        {classData.map((card) => (
+          <button className="Card" key={card._id}>
             <div className="flashcard--head">
-              <img src={card.profileImage} alt="profile" />
-              <button onClick={() => toggleDropdown(card.id)}>
+              <img src={'https://via.placeholder.com/50'} alt="profile" />
+              <button onClick={() => toggleDropdown(card._id)}>
                 <Icon icon="oi:ellipses" />
               </button>
-              {dropdownState[card.id] && (
+              {dropdownState[card._id] && (
                 <div className="dropdown-menu">
                   <ul>
-                    <li>Edit</li>
-                    <li>Delete</li>
+                    <li
+                      onClick={() => {
+                        setSelectedClass(card);
+                        setNewClassTitle(card.title);
+                        setIsEditModalOpen(true);
+                      }}
+                    >
+                      Edit
+                    </li>
+                    <li
+                      onClick={() => {
+                        setSelectedClass(card);
+                        setIsDeleteModalOpen(true);
+                      }}
+                    >
+                      Delete
+                    </li>
                     <li>Share</li>
                   </ul>
                 </div>
@@ -91,7 +203,7 @@ export const ClassContent = () => {
             <div className="flashcard--body">
               <h5>{card.title}</h5>
               <div className="content--h6">
-                <h6>By {card.author}</h6>
+                <h6>By {card.host}</h6>
               </div>
             </div>
           </button>

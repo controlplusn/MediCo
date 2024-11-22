@@ -1,5 +1,5 @@
 import React from 'react'
-import Class from './components/Class'
+import Class from './components/Class.jsx'
 
 export const App = () => {
   return (

@@ -1,6 +1,6 @@
 import React from 'react'
-import ClassHeader from './ClassHeader';
-import ClassContent  from './ClassContent';
+import ClassHeader from './ClassHeader.jsx';
+import ClassContent  from './ClassContent.jsx';
 import '../styles/class.css'
 
 export const Class = () => {
