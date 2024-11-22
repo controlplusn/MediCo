@@ -1,0 +1,256 @@
+  
+.flearnempty--container {
+  display: flex;
+  flex-direction: row; 
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #F0F5F9;
+  width: 100vw;
+  height: 100vh; 
+  overflow: hidden; 
+  box-sizing: border-box; 
+  flex-wrap: wrap; 
+}
+
+.flearncontent{
+  display: flex;
+  flex-direction: row; 
+  justify-content: space-around;
+  align-items: flex-start;
+  background-color: #F0F5F9;
+  width: 100%;
+  height: 100%; 
+  overflow: hidden; 
+  box-sizing: border-box; 
+  flex-wrap: wrap; 
+}
+
+.flearn--header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 25px;
+  width: 100%;
+  background-color: #F0F5F9;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.flearn--header h5 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1E2022;
+  margin: 0;
+}
+
+.flearn--header button {
+  background: #1E2022;
+  border: 1px solid;
+  border-radius: 20px;
+  font-size: 16px;
+  padding: 5px;
+  font-weight: 300;
+  color: #F0F5F9;
+  cursor: pointer;
+  display: flex;
+  margin-left: 20px;
+  position: relative;
+}
+
+.flearn--header button:hover {
+  color: #1E2022;
+  background-color: #F0F5F9;
+}
+
+.flearn--header button .svg {
+  margin-left: 5px;
+  font-size: 20px;
+}
+
+.dropdown {
+  position: absolute;
+  top: 120px;
+  background-color: #1E2022;
+  color: #F0F5F9;
+  border: 1px solid;
+  border-radius: 10px;
+  width: 150px;
+  padding: 10px;
+  z-index: 100;
+}
+
+.dropdown ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown ul li {
+  padding: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.dropdown ul button {
+  padding: 4px;
+  border: none;
+  border-radius: 0;
+  width: 90%;
+  border: 1px solid;
+  border-radius: 20px;
+  display: flex;
+  font-size: 14px;
+}
+
+.dropdown ul button:hover {
+  background-color: transparent;
+  color: #F0F5F9;
+}
+
+.dropdown ul li:hover {
+  background-color: #52616B;
+  color: #1E2022;
+}
+
+.flearn--content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  flex-grow: 1; 
+  width: 25%; 
+}
+
+.flearn--content img {
+  max-width: 100%; 
+  height: auto; 
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+
+.flearn--content button {
+  background-color: #1E2022;
+  color: white;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+}
+
+.flearn--content button:hover {
+  background-color: #F0F5F9;
+  border: 1px solid;
+  color: #1E2022;
+}
+
+.flearn--content button svg {
+  margin-left: 8px;
+  font-size: 18px;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 200;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.modal-content h2 {
+  font-size: 20px;
+  margin-bottom: 15px;
+}
+
+.modal-input {
+  padding: 8px;
+  font-size: 16px;
+  width: 100%;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.modal-actions button {
+  padding: 8px 12px;
+  font-size: 14px;
+  background-color: #1E2022;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-actions button:hover {
+  background-color: #F0F5F9;
+  color: #1E2022;
+}
+
+/* Styling for the progress container */
+.rogress--container {
+  width: 150px;  /* Increased width to accommodate the progress circle */
+  height: 150px; /* Increased height for a larger progress circle */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+  text-align: center;  /* Ensures content is centered */
+}
+
+.progress--container h5 {
+  font-size: 20px;  /* Adjust the font size */
+  font-weight: bold;
+  color: #1E2022;
+  margin-bottom: 20px; /* Adjust space between the title and circle */
+}
+
+/* Optionally, remove this class as the `CircularProgressbar` handles the text size */
+.circular-progressbar {
+  margin-top: 10px;
+}
+.Card--Container{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 5px;
+}
+.Card{
+  background-color: #0F1035;
+  border-radius: 5px;
+  color: #F0F5F9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 5px;
+}

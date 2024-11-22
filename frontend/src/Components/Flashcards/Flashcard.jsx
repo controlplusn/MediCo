@@ -71,12 +71,10 @@ const Flashcard = () => {
   }, [userId]);
 
 
-  const handleCreateFlashcard = async () => {
-    const subsetName = "All subset"; // Or select from the dropdown or form field
+  const handleCreateFlashcard = async () => {// Or select from the dropdown or form field
     try {
       const response = await axios.post('http://localhost:3001/api/flashcard/cards/add', {
         collectionName: newCategoryName, // Collection name from input field
-        subsetName: subsetName,
         question: 'Sample question', // You can add inputs for question and answer
         answer: 'Sample answer'
       });

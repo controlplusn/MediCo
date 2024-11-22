@@ -1,12 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { Icon } from '@iconify/react';
 
-function FlashCardContent() {
+function FlashCardContent({ activeSubset, setActiveSubset }) {
   const { categoryId } = useParams(); // Get the category ID from the URL
+  const [flashcard, setFlashcard] = useState(null);
   const [categoryData, setCategoryData] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [newSubset, setNewSubset] = useState('');
 
   useEffect(() => {
     const fetchCategoryData = async () => {
@@ -27,24 +32,110 @@ function FlashCardContent() {
     fetchCategoryData();
   }, [categoryId]);
 
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  }
+
+  const selectSubset = (subsetName) => {
+    setActiveSubset(subsetName); // Update the active subset in the parent
+    setIsDropdownOpen(false); // Close the dropdown
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+    setIsDropdownOpen(false); 
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setNewSubset(""); // Reset input field when closing the modal
+  };
+
+  // adding new subset 
+  const handleAddSubset = async (e) => {
+    e.preventDefault();
+
+    if (!newSubset.trim()) {
+      console.log('Subset name is required');
+    }
+
+    try {
+      const response = await axios.post(
+        `http://localhost:3001/api/flashcard/cards/${categoryId}/addSubset`,
+        { subsetName: newSubset }
+      );
+
+      if (response.data.success) {
+        console.log("New subset added:", response.data.updatedFlashcard);
+        const newSubsetData = response.data.updatedFlashcard.subsets.find(
+          (subset) => subset.subsetName === newSubset
+        );
+        
+        // Update the state to reflect the new subset
+        setCategoryData((prevData) => ({
+          ...prevData,
+          subsets: [...prevData.subsets, newSubsetData],
+        }));
+
+          closeModal();
+        } else {
+          console.log("Faile to add subset");
+        }
+
+    } catch (error) {
+      console.error('Error adding subset:', error);
+      setError(new Error('Error adding subset.'));
+    }
+  }
+  
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div>
+    <div className='flearn--header'>
       <h2>{categoryData?.name} Flashcards</h2>
-      {categoryData?.subsets.map((subset, index) => (
-        <div key={index}>
-          <h3>{subset.subsetName}</h3>
-          {/* Render flashcards for each subset */}
-          {subset.cards.map((card, cardIndex) => (
-            <div key={cardIndex}>
-              <p>{card.question}</p>
-              <p>{card.answer}</p>
-            </div>
-          ))}
+
+      <button onClick={toggleDropdown}>
+        {activeSubset} <Icon icon="fe:arrow-down" />
+      </button>
+
+      {isDropdownOpen && (
+        <div className="dropdown">
+          <ul>
+            {/* fix all subset here */}
+            <li onClick={() => selectSubset('All Subsets')}>All Subsets</li>
+            {categoryData?.subsets.map((subset) => (
+              <li key={subset.subsetId} onClick={() => selectSubset(subset.subsetName)}>
+                {subset.subsetName}
+              </li>
+            ))}
+            <button onClick={openModal}>Add Subsets</button>
+          </ul>
         </div>
-      ))}
+      )}
+
+      {isModalOpen && (
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <h2>Add New Subset</h2>
+            <form onSubmit={handleAddSubset}>
+              <input
+                type="text"
+                placeholder="Enter subset name"
+                value={newSubset}
+                onChange={(e) => setNewSubset(e.target.value)}
+              />
+              <div className="modal-actions">
+                <button type="button" onClick={closeModal}>
+                  Close
+                </button>
+                <button type="submit">Add</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

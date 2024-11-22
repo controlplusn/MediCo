@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import FlashCardContent from './FlashCardContent';
 import FlearncardContent from './FlearncardContent';
+import FlearnSubset from './FlearnSubset';
 import '../../styles/flearnempty.css';
 
 function MainFlashCardLearn() {
@@ -11,6 +12,7 @@ function MainFlashCardLearn() {
         <FlashCardContent activeSubset={activeSubset} setActiveSubset={setActiveSubset} />
         <div className="flearncontent">
           <FlearncardContent activeSubset={activeSubset} />
+          <FlearnSubset activeSubset={activeSubset}/>
         </div>
     </div>
   )
