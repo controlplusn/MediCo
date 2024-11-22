@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Icon } from '@iconify/react';
 
@@ -53,9 +53,12 @@ const FlearncardContent = ({ activeSubset }) => {
         return (
             <div className="flearn--content">
                 <img src="https://via.placeholder.com/100" alt="Anatomy graphic" />
-                <button>
-                    Add <Icon icon="material-symbols-light:add" />
-                </button>
+
+                <Link to="/flashcardcollection">
+                    <button>
+                        Add <Icon icon="material-symbols-light:add" />
+                    </button>
+                </Link>
             </div>
         );
     }
