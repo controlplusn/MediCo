@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import Community from './Components/Community/Community';
 import Flashcard from './Components/Flashcards/Flashcard';
 import MainFlashCardLearn from './Components/FlashcardsLearn/MainFlashCardLearn';
+import AddCard from './Components/AddFlashcard/AddCard';
 
 // protect routes that require authentication
 const ProtectedRoute = ({ children }) => {
@@ -99,6 +100,14 @@ function App() {
       element: (
         <ProtectedRoute>
           <MainFlashCardLearn />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: '/flashcardcollection',
+      element: (
+        <ProtectedRoute>
+          <AddCard />
         </ProtectedRoute>
       )
     }
