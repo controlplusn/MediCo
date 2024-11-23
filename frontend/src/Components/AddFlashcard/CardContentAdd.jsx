@@ -101,13 +101,13 @@ const CardContentAdd = ({ activeCard }) => {
 
       console.log(response);
       if (response.data.success) {
-        alert(isAddingNew ? 'Flashcard added successfully!' : 'Flashcard updated successfully!');
+        console.log(isAddingNew ? 'Flashcard added successfully!' : 'Flashcard updated successfully!');
       } else {
-        alert(response.data.message || 'Failed to save flashcard.');
+        console.log(response.data.message || 'Failed to save flashcard.');
       }
     } catch (error) {
       console.error('Error saving flashcard:', error);
-      alert('An error occurred while saving the flashcard.');
+      console.log('An error occurred while saving the flashcard.');
     }
   };
 
