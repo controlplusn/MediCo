@@ -82,9 +82,11 @@ const FlearncardContent = ({ activeSubset }) => {
         return (
             <div className="flearn--content">
                 <img src="https://via.placeholder.com/100" alt="Anatomy graphic" />
-                <button>
-                    Add <Icon icon="material-symbols-light:add" />
-                </button>
+                <Link to="/flashcardcollection">
+                    <button>
+                        Add <Icon icon="material-symbols-light:add" />
+                    </button>
+                </Link>
             </div>
         );
     }
