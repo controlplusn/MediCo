@@ -45,6 +45,12 @@ export const CardSide = () => {
   // fetch category id and subset id
   useEffect(() => {
     const fetchCategoryData = async () => {
+
+      if (!userId) {
+        console.error('No userId available');
+        return;
+      }
+
       try {
         const response = await axios.get(`http://localhost:3001/api/flashcard/cards`, {
           withCredentials: true
@@ -71,14 +77,17 @@ export const CardSide = () => {
       }
     };
 
-    fetchCategoryData();
-  }, []);
+    if (userId) {
+      fetchCategoryData();
+    }
+  }, [userId]);
 
   useEffect(() => {
-      if (activeCategory && activeSubset) {
+      if (activeCategory) {
         const fetchCards = async () => {
           try {
-            const response = await axios.get(`http://localhost:3001/api/flashcard/cards/${activeCategory}/${activeSubset}`, {
+            const subsetId = activeSubset === 'All Subsets' ? 'All Subsets' : activeSubset;
+            const response = await axios.get(`http://localhost:3001/api/flashcard/cards/${activeCategory}/${subsetId}`, {
               withCredentials: true,
             });
             console.log(response);
