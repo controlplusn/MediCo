@@ -1,113 +1,102 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../styles/cardcontentadd.css';
+import { useParams } from 'react-router-dom';
 
-const CardContentAdd = ({ activeCard }) => {
+const CardContentAdd = ({ activeCard, userId, category }) => {
+  // Determine if we're adding a new card or editing an existing one
   const isAddingNew = activeCard === null;
-  
-  // Manage state for question and answer
-  const [question, setQuestion] = useState(isAddingNew ? '' : activeCard?.question);
-  const [answer, setAnswer] = useState(isAddingNew ? '' : activeCard?.answer);
-  const [userId, setUserId] = useState(null);
-  const [categories, setCategories] = useState([]);
+
   const [activeCategory, setActiveCategory] = useState(null);
-  const [activeSubset, setActiveSubset] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // used for userId passed from api JWT authentication
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/api/auth/check-auth', {
-          withCredentials: true,
-        });
-        if (response.data.user) {
-          setUserId(response.data.user._id);
-        }
-      } catch (err) {
-        console.error('Error checking authentication:', err);
-      }
-    };
-
-    fetchUser();
-  }, []);
+  // Manage state for question and answer
+  const [question, setQuestion] = useState(isAddingNew ? '' : activeCard?.question);
+  const [answer, setAnswer] = useState(isAddingNew ? '' : activeCard?.answer);
+  const { categoryId, subsetId } = useParams();
+  console.log('Params in AddCard:', { categoryId, subsetId });
 
   // fetch category id and subset id
   useEffect(() => {
     const fetchCategoryData = async () => {
-      try {
-        const response = await axios.get(`http://localhost:3001/api/flashcard/cards`, {
-          withCredentials: true
-        });
+      console.log('Fetching category data with:', { categoryId, subsetId, userId });
+      if (!categoryId || !subsetId) {
+        console.error('No category ID or subset ID provided');
+        return;
+      }
+        
+      if (userId) {
+        try {
+          const response = await axios.get(`http://localhost:3001/api/flashcard/cards/${categoryId}/${subsetId}`, {
+            withCredentials: true,
+          });
 
-        if (response.data.success) {
-          setCategories(response.data.data);
-          const firstCategory = response.data.data[0];
-          if (firstCategory) {
-            setActiveCategory(firstCategory._id);
-            const firstSubset = firstCategory.subsets[0];
-            if (firstSubset) {
-              setActiveSubset(firstSubset.subsetId);
-            }
+          if (response.data.success) {
+              setActiveCategory(response.data.data);
+              console.log('Fetched Category Data:', response.data.data)
+          } else {
+              console.error(response.data.message || 'Failed to fetch flashcard data');
           }
-
-        } else {
-          setError(new Error(response.data.message));
+        } catch (error) {
+          console.error('Error fetching categories:', error);
+          setError(error);
+        } finally {
+          setLoading(false);
         }
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
       }
     };
 
-    fetchCategoryData();
-  }, []);
+    if (categoryId && subsetId && userId) {
+      fetchCategoryData();
+    } else {
+      console.log('Missing data for fetch:', { categoryId, subsetId, userId });
+    }
+    
+  }, [categoryId, subsetId, userId]);
 
-  // Update question and answer when editing an existing card or resetting when adding a new card
+  // Re-run the effect whenever activeCard changes (for updating existing card)
   useEffect(() => {
     if (!isAddingNew && activeCard) {
-        setQuestion(activeCard.question);
-        setAnswer(activeCard.answer);
+      setQuestion(activeCard.question);
+      setAnswer(activeCard.answer);
     } else {
-        setQuestion('');
-        setAnswer('');
+      // Reset to empty values if adding new card
+      setQuestion('');
+      setAnswer('');
     }
-  }, [activeCard, isAddingNew]);
+  }, [activeCard, isAddingNew]); // Dependency on activeCard and isAddingNew
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     try {
       const url = isAddingNew
-        ? `http://localhost:3001/api/flashcard/cards/addflashcard`
-        : `http://localhost:3001/api/flashcard/cards/updateCard`;
+        ? `http://localhost:3001/api/flashcard/cards/${categoryId}/${subsetId}`
+        : `http://localhost:3001/api/flashcard/cards/${categoryId}/${subsetId}/${activeCard._id}`;
 
       const method = isAddingNew ? 'POST' : 'PUT';
 
       const response = await axios({
         method,
         url,
-        data: {
-          userId,
-          cardSetId: activeCategory,
-          subsetId: activeSubset,
-          question,
-          answer,
-        },
-        withCredentials: true
+        data: { question, answer },
+        withCredentials: true,
       });
 
-      console.log(response);
       if (response.data.success) {
-        console.log(isAddingNew ? 'Flashcard added successfully!' : 'Flashcard updated successfully!');
+        alert(isAddingNew ? 'Flashcard added successfully!' : 'Flashcard updated successfully!');
+        // Reset form if adding new card
+        if (isAddingNew) {
+          setQuestion('');
+          setAnswer('');
+        }
       } else {
-        console.log(response.data.message || 'Failed to save flashcard.');
+        alert(response.data.message || 'Failed to save flashcard.');
       }
     } catch (error) {
       console.error('Error saving flashcard:', error);
-      console.log('An error occurred while saving the flashcard.');
+      alert('An error occurred while saving the flashcard.');
     }
   };
 
@@ -131,7 +120,7 @@ const CardContentAdd = ({ activeCard }) => {
         />
         <h5>Answer</h5>
       </div>
-      <button className='addflashcard--btn' onClick={handleSubmit}>
+      <button onClick={handleSubmit}>
         {isAddingNew ? 'Add Flashcard' : 'Update Flashcard'}
       </button>
     </div>
