@@ -131,7 +131,7 @@ const CardContentAdd = ({ activeCard }) => {
         />
         <h5>Answer</h5>
       </div>
-      <button onClick={handleSubmit}>
+      <button className='addflashcard--btn' onClick={handleSubmit}>
         {isAddingNew ? 'Add Flashcard' : 'Update Flashcard'}
       </button>
     </div>
