@@ -89,6 +89,35 @@ function FlashCardContent({ activeSubset, setActiveSubset }) {
 
 
   // Adding new subsets
+  const handleFormSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!subsetName.trim()) {
+        alert("Subset name is required.");
+        return;
+    }
+
+    try {
+        // Sending POST request to add the new subset to the backend
+        const response = await axios.post(`http://localhost:3001/api/flashcard/cards/${categoryId}/addSubset`, {
+            subsetName: subsetName
+        }, {
+            withCredentials: true
+        });
+
+        if (response.data.success) {
+            console.log("New subset added:", response.data.updatedFlashcard);
+            setFlashcard(response.data.updatedFlashcard); // Update the flashcard with the new subset
+            closeModal(); // Close the modal after successful submission
+            setSubsetName('');
+        } else {
+            setError(new Error(response.data.message || "Failed to add subset"));
+        }
+    } catch (error) {
+        console.error("Error adding subset:", error);
+        setError(new Error("Error adding subset"));
+    }
+  };
 
 
   // Error and loading handling
@@ -116,6 +145,27 @@ function FlashCardContent({ activeSubset, setActiveSubset }) {
                         }
                         <button onClick={openModal}>Add Subsets</button>
                     </ul>
+                </div>
+            )}
+
+            {isModalOpen && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                        <h2>Add New Subset</h2>
+                        <form onSubmit={handleFormSubmit}>
+                            <input
+                                type="text"
+                                placeholder="Enter Subset Name"
+                                className="modal-input"
+                                value={subsetName}
+                                onChange={(e) => setSubsetName(e.target.value)} // Update the input field value
+                            />
+                            <div className="modal-actions">
+                                <button type="button" onClick={closeModal}>Close</button>
+                                <button type="submit">Add</button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             )}
     </div>

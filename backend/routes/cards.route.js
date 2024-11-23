@@ -245,6 +245,7 @@ router.get('/cards/:categoryId', verifyToken, async (req, res) => {
 });
 
 router.post("/cards/:categoryId/addSubset", verifyToken, async (req, res) => {
+    console.log("Recieved request");
     try {
       const { categoryId } = req.params;
       const userId = req.userId;
