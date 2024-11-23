@@ -12,13 +12,65 @@ function FlashCardContent({ activeSubset, setActiveSubset }) {
   const [error, setError] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newSubset, setNewSubset] = useState('');
+  const [selectedSubset, setSelectedSubset] = useState(null);
+
+  // Add the state for getting the userId here...
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
-    const fetchCategoryData = async () => {
+    const fetchUser = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/flashcard/cards/${categoryId}`);
+        const response = await axios.get('http://localhost:3001/api/auth/check-auth', {
+          withCredentials: true,
+        });
+        if (response.data.user) {
+          setUserId(response.data.user._id);
+        }
+      } catch (err) {
+        console.error('Error checking authentication:', err);
+      }
+    };
+    
+    fetchUser();
+  }, []);
+
+
+  // Fetching the cards data -> filtered to show only the selected subset
+  useEffect(() => {
+    const fetchCategoryData = async () => {
+
+      if (!userId) {
+        console.error('No userId available');
+        return;
+      }
+
+      try {
+        const response = await axios.get(`http://localhost:3001/api/flashcard/cards/${categoryId}`); // getting the category id
+        console.log("URL:", response);
+
         if (response.data.success) {
           setCategoryData(response.data.data);
+
+          // If we have a selected subset, fetch its specific cards
+          if (selectedSubset && selectedSubset !== "All Subsets") {
+            const subsetResponse = await axios.get(
+                `http://localhost:3001/api/flashcard/cards/${categoryId}/${selectedSubset._id}`
+            );
+            console.log("Subset response:", subsetResponse);
+            
+            if (subsetResponse.data.success) {
+                // Update only this subset's cards in the categoryData
+                setCategoryData(prevData => ({
+                    ...prevData,
+                    subsets: prevData.subsets.map(subset =>
+                        subset._id === selectedSubset._id
+                            ? { ...subset, cards: subsetResponse.data.data.cards }
+                            : subset
+                    )
+                }));
+            }
+        }
+
         } else {
           setError(new Error(response.data.message));
         }
@@ -28,24 +80,32 @@ function FlashCardContent({ activeSubset, setActiveSubset }) {
         setLoading(false);
       }
     };
+ 
+    if (userId) {
+      fetchCategoryData();
+    }
 
-    fetchCategoryData();
-  }, [categoryId]);
+  }, [categoryId, userId]);
 
+  // toggle dropdown
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   }
 
-  const selectSubset = (subsetName) => {
-    setActiveSubset(subsetName); // Update the active subset in the parent
+  // for selecting the subset
+  const selectSubset = (subset) => {
+    setSelectedSubset(subset === 'All Subsets' ? null : subset);
+    setActiveSubset(subset === 'All Subsets' ? 'All Subsets' : subset.subsetName);
     setIsDropdownOpen(false); // Close the dropdown
   };
 
+  // adding of subset modal
   const openModal = () => {
     setIsModalOpen(true);
     setIsDropdownOpen(false); 
   };
 
+  // closing modal for adding subset
   const closeModal = () => {
     setIsModalOpen(false);
     setNewSubset(""); // Reset input field when closing the modal
@@ -77,6 +137,7 @@ function FlashCardContent({ activeSubset, setActiveSubset }) {
           subsets: [...prevData.subsets, newSubsetData],
         }));
 
+          selectSubset(newSubsetData)
           closeModal();
         } else {
           console.log("Faile to add subset");
@@ -88,7 +149,7 @@ function FlashCardContent({ activeSubset, setActiveSubset }) {
     }
   }
   
-
+  // loading and error component
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
 
@@ -106,7 +167,7 @@ function FlashCardContent({ activeSubset, setActiveSubset }) {
             {/* fix all subset here */}
             <li onClick={() => selectSubset('All Subsets')}>All Subsets</li>
             {categoryData?.subsets.map((subset) => (
-              <li key={subset.subsetId} onClick={() => selectSubset(subset.subsetName)}>
+              <li key={subset.subsetId} onClick={() => selectSubset(subset)}>
                 {subset.subsetName}
               </li>
             ))}

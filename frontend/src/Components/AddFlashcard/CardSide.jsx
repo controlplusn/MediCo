@@ -81,6 +81,7 @@ export const CardSide = () => {
             const response = await axios.get(`http://localhost:3001/api/flashcard/cards/${activeCategory}/${activeSubset}`, {
               withCredentials: true,
             });
+            console.log(response);
 
             const result = response.data; 
             console.log('Fetched cards:', result);

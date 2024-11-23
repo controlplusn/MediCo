@@ -103,23 +103,23 @@ router.post('/cards/add', verifyToken, async (req, res) => {
         let collection = await Card.findOne({ userId, name: collectionName });
 
         // if collection doesn't exists
-        if (!collection) {
-            collection = new Card({
-                userId,
-                name: collectionName,
-                subsets: [{
-                    subsetName: "All subset",
-                    cards: []
-                }]
-            });
+        // if (!collection) {
+        //     collection = new Card({
+        //         userId,
+        //         name: collectionName,
+        //         subsets: [{
+        //             subsetName: "All subset",
+        //             cards: []
+        //         }]
+        //     });
 
-            await collection.save();
-            return res.status(201).json({
-                success: true,
-                message: "New collection created successfully",
-                collection
-            });
-        }
+        //     await collection.save();
+        //     return res.status(201).json({
+        //         success: true,
+        //         message: "New collection created successfully",
+        //         collection
+        //     });
+        // }
 
         if (collection) {
             return res.status(400).json({
@@ -127,17 +127,22 @@ router.post('/cards/add', verifyToken, async (req, res) => {
                 message: "Collection already exists"
             });
         }
-
-        const newCollection = new Card({
+        
+        // Create a new collection if it doesn't exist
+        conllecton = new Card({
             userId,
             name: collectionName,
-            subsets: []
-        });
+            subsets: [{
+                subsetName: "All Subsets",
+                cards: []
+            }]
+        })
 
-        await newCollection.save();
+        await collection.save();
         return res.status(201).json({
             success: true,
-            message: "Collection created successfully"
+            message: "New collection created successfully",
+            collection
         });
 
     } catch (error) {
@@ -373,7 +378,8 @@ router.get('/cards/:categoryId/:subsetId', verifyToken, async (req, res) => {
         }
 
         // Find specific subset within the category
-        const subset = category.subsets.id(subsetId);
+        const subset = category.subsets.find(sub => sub._id.toString() === subsetId);
+        console.log(subset);
 
         if (!subset) {
             return res.status(404).json({
