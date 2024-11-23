@@ -22,7 +22,7 @@ const cardSchema = new mongoose.Schema({
 
 // Subset Schema
 const subsetSchema = new mongoose.Schema({
-  subsetName: { type: String, default: "All subset" },
+  subsetName: { type: String, required: true },
   cards: [cardSchema] // Array of Card subdocuments
 });
 

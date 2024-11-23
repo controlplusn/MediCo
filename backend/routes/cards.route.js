@@ -102,25 +102,6 @@ router.post('/cards/add', verifyToken, async (req, res) => {
         // find the collection belonging to the user
         let collection = await Card.findOne({ userId, name: collectionName });
 
-        // if collection doesn't exists
-        // if (!collection) {
-        //     collection = new Card({
-        //         userId,
-        //         name: collectionName,
-        //         subsets: [{
-        //             subsetName: "All subset",
-        //             cards: []
-        //         }]
-        //     });
-
-        //     await collection.save();
-        //     return res.status(201).json({
-        //         success: true,
-        //         message: "New collection created successfully",
-        //         collection
-        //     });
-        // }
-
         if (collection) {
             return res.status(400).json({
                 success: false,
@@ -129,11 +110,11 @@ router.post('/cards/add', verifyToken, async (req, res) => {
         }
         
         // Create a new collection if it doesn't exist
-        conllecton = new Card({
+        collection = new Card({
             userId,
             name: collectionName,
             subsets: [{
-                subsetName: "All Subsets",
+                subsetName: subsetName,
                 cards: []
             }]
         })
