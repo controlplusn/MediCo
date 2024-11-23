@@ -373,11 +373,14 @@ router.get('/cards/:categoryId/:subsetId', verifyToken, async (req, res) => {
             });
         }
 
-        let cards;
+        let responseData;
         if (subsetId === 'All Subsets') {
             // If 'all' is specified, return cards from all subsets
-            cards = category.subsets.flatMap(subset => subset.cards);
-            console.log("Cards;", cards);
+            responseData = {
+                name: 'All Subsets',
+                cards: category.subsets.flatMap(subset => subset.cards)
+            };
+            console.log("Response:", responseData);
         } else {
             // Find specific subset within the category
             const subset = category.subsets.find(sub => sub._id.toString() === subsetId);
@@ -389,12 +392,14 @@ router.get('/cards/:categoryId/:subsetId', verifyToken, async (req, res) => {
                     message: "Subset not found",
                 });
             }
+
+            responseData = subset;
         }
 
         // Format response to include only the subset's cards
         res.status(200).json({
             success: true,
-            data: subset
+            data: responseData
         });
 
     } catch (error) {
