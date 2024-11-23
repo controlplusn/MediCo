@@ -91,7 +91,12 @@ router.post('/cards/add', verifyToken, async (req, res) => {
 
     const { collectionName } = req.body;
 
+
     try {
+        if (!userId) {
+            return res.status(400).json({ success: false, message: "User ID required" });
+        }
+
         if (!collectionName) {
             return res.status(400).json({
                 success: false,
@@ -114,7 +119,7 @@ router.post('/cards/add', verifyToken, async (req, res) => {
             userId,
             name: collectionName,
             subsets: [{
-                subsetName: subsetName,
+                subsetName: "All Subsets",
                 cards: []
             }]
         })
@@ -151,11 +156,20 @@ router.delete('/cards/delete/:collectionId', verifyToken, async (req, res) => {
             });
         }
 
-        await Card.deleteOne({ _id: collectionId });
+        // Use findByIdAndDelete for more robust deletion
+        const deletedCollection = await Card.findByIdAndDelete(collectionId);
+
+        if (!deletedCollection) {
+            return res.status(404).json({
+                success: false,
+                message: "Collection not found"
+            });
+        }
 
         res.status(200).json({
             success: true,
-            message: "Collection deleted successfully"
+            message: "Collection deleted successfully",
+            deletedCollection
         });
     } catch (error) {
         console.error("Error deleting collection:", error);

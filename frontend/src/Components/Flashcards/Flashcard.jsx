@@ -100,6 +100,11 @@ const Flashcard = () => {
     setOpenDropdown(openDropdown === index ? null : index);
   };
 
+  // close dropdown function
+  const closeDropdown = () => {
+    setOpenDropdown(null);
+  };
+
   // Function to open the rename dialog
   const openRenameDialog = (category) => {
     console.log("Opening rename dialog for category:", category);
@@ -112,7 +117,7 @@ const Flashcard = () => {
 
     setRenameDialog({ isOpen: true, currentCategory: category });
     setRenameValue(category.name); // Set initial value to the current name
-    setOpenDropdown(null); // Close the dropdown
+    closeDropdown(); 
   };
 
   const openCreateDialog = () => {
@@ -149,6 +154,8 @@ const Flashcard = () => {
       console.error('Error renaming the card:', error);
       alert('An error occurred while renaming the card.');
     }
+
+    closeDropdown();
   };
 
   const handleDelete = async (categoryId) => {
@@ -174,6 +181,8 @@ const Flashcard = () => {
       console.error('Error deleting collection:', error);
       console.log('An error occurred while deleting the collection.');
     }
+
+    closeDropdown();
 
   }
 
