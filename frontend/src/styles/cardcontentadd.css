@@ -41,7 +41,7 @@
     font-weight: 600;
   }
   
-  button {
+  .addflashcard--btn button {
     padding: 12px 20px;
     font-size: 16px;
     background-color: #0F1035;
@@ -55,7 +55,7 @@
   }
   
   
-  button:active {
+  .addflashcard--btn button:active {
     background-color: #fff;
     color:#1e2020;
     transform: translateY(0);
@@ -65,7 +65,7 @@
     .cardcontentadd {
       padding: 20px;
     }
-    button {
+    .addflashcard--btn button {
       width: 100%;
       margin: 0;
     }
