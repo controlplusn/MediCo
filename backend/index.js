@@ -10,6 +10,7 @@ import studyListRoutes from './routes/studyList.route.js';
 import communityRoutes from './routes/community.routes.js';
 import cardRoutes from './routes/cards.route.js';
 import flearn from './routes/flashcardReview.route.js';
+import classRoutes from './routes/class.route.js';
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use("/api/studylists", studyListRoutes);
 app.use("/api/community", communityRoutes);
 app.use("/api/flashcard", cardRoutes);
 app.use("/api/cardlearn", flearn);
+app.use("/api/class", classRoutes);
 
 app.listen(PORT, async () => {
     try {
