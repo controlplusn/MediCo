@@ -2,9 +2,28 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import '../../styles/cardcontentadd.css';
 
-const CardContentAdd = ({ userId, categoryId, subsetId }) => {
+const CardContentAdd = ({ userId, categoryId, subsetId, activeCard }) => {
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
+    const [formData, setFormData] = useState({
+        question: '',
+        answer: ''
+    });
+
+    useEffect(() => {
+        if (activeCard) {
+            setFormData({
+                question: activeCard.question,
+                answer: activeCard.answer
+            });
+        } else {
+            setFormData({
+                question: '',
+                answer: ''
+            });
+        }
+    }, [activeCard]);
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
