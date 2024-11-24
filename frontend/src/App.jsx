@@ -104,7 +104,7 @@ function App() {
       )
     },
     {
-      path: '/flashcardcollection',
+      path: '/flashcardcollection/:categoryId/:subsetId',
       element: (
         <ProtectedRoute>
           <AddCard />
