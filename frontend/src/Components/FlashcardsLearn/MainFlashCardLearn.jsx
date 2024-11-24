@@ -10,7 +10,6 @@ function MainFlashCardLearn() {
   const [category, setCategory] = useState(null);
   const [activeSubset, setActiveSubset] = useState('All Subsets');
   const { categoryId } = useParams();
-  console.log(`Params in MainFlashCardLearn:, ${ categoryId } }`);
 
   useEffect(() => {
     // Fetch the category data using the categoryId
