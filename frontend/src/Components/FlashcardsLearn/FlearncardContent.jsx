@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Icon } from '@iconify/react';
 
-const FlearncardContent = ({ activeSubset }) => {
-    const { categoryId } = useParams();
+const FlearncardContent = ({ activeSubset, categoryId, category }) => {
+    console.log('FlearncardContent props:', { activeSubset, categoryId, category });
+
     const [flashcard, setFlashcard] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [userId, setUserId] = useState(null);
+    const navigate = useNavigate();
 
     // fetch the user Id from JWT
     useEffect(() => {
@@ -82,11 +84,9 @@ const FlearncardContent = ({ activeSubset }) => {
         return (
             <div className="flearn--content">
                 <img src="https://via.placeholder.com/100" alt="Anatomy graphic" />
-                <Link to="/flashcardcollection">
-                    <button>
+                    <button onClick={() => navigate(`/flashcardcollection/${categoryId}/${activeSubset}`)}>
                         Add <Icon icon="material-symbols-light:add" />
                     </button>
-                </Link>
             </div>
         );
     }

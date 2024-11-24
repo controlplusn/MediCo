@@ -3,9 +3,10 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 
-function FlashCardContent({ activeSubset, setActiveSubset }) {
+function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId }) {
+  console.log('FlashCardContent props:', { activeSubset, categoryId, subsetId });
+  
   // state management
-  const { categoryId } = useParams(); // get category id from url params
   const [flashcard, setFlashcard] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
