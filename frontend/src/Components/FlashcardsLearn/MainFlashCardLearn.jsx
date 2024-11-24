@@ -8,7 +8,7 @@ import '../../styles/flearnempty.css';
 
 function MainFlashCardLearn() {
   const [category, setCategory] = useState(null);
-  const [activeSubset, setActiveSubset] = useState('All Subsets');
+  const [activeSubset, setActiveSubset] = useState({ id: 'all', name: 'All Subsets' });
   const { categoryId } = useParams();
 
   useEffect(() => {

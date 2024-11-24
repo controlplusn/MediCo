@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Icon } from '@iconify/react';
 
 const FlearncardContent = ({ activeSubset, categoryId, category }) => {
+    console.log('FlearncardContent props:', { activeSubset, categoryId, category });
 
     const [flashcard, setFlashcard] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -64,14 +65,13 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
     if (!flashcard) return <div>No flashcard data available</div>;
 
     // Data processing
-    const activeSubsetData =
-        activeSubset === 'All Subsets'
-            ? null
-            : flashcard.subsets?.find(subset => subset.subsetName === activeSubset);
+    const activeSubsetData = activeSubset.id === 'all'
+        ? null
+        : flashcard?.subsets?.find(subset => subset._id === activeSubset.id);
 
-    const allCards = flashcard.subsets?.flatMap(subset => subset.cards) || [];
+    const allCards = flashcard?.subsets?.flatMap(subset => subset.cards) || [];
 
-    const noCardsAvailable = activeSubset === 'All Subsets'
+    const noCardsAvailable = activeSubset === 'all'
         ? !allCards || allCards.length === 0
         : activeSubsetData && (!activeSubsetData.cards || activeSubsetData.cards.length === 0);
 
@@ -82,8 +82,8 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
         console.log('Flashcard Data:', flashcard);
 
         const subsetId = activeSubset === 'All Subsets' 
-            ? flashcard.subsets[0]._id  // Default to first subset if 'All Subsets' is selected
-            : flashcard.subsets.find(subset => subset.subsetName === activeSubset)?._id;
+            ? flashcard.subsets[0]?._id  // Default to first subset if 'All Subsets' is selected
+            : activeSubset.id;
         
         console.log('Selected Subset ID:', subsetId);   
 
@@ -116,7 +116,7 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
                 <div>
                     <h4>No cards available for the selected subset.</h4>
                 </div>
-            ) : activeSubset === 'All Subsets' ? (
+            ) : activeSubset === 'all' ? (
                 <div className="Card--Container">
                     {allCards?.map(card => (
                         <div key={card.cardId} className="Card">

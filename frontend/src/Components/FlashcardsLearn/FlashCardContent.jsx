@@ -72,8 +72,8 @@ function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId 
       setIsDropdownOpen(!isDropdownOpen);
   };
 
-  const selectSubset = (subsetName) => {
-      setActiveSubset(subsetName); // Update the active subset in the parent
+  const selectSubset = (subset) => {
+      setActiveSubset(subset); // Update the active subset in the parent
       setIsDropdownOpen(false); // Close the dropdown
   };
 
@@ -136,18 +136,18 @@ function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId 
 
   return (
     <div className='flearn--header'>
-      <h5>{flashcard.name}</h5> {/* Display the active subset */}
+      <h5>{flashcard?.name}</h5> {/* Display the active subset */}
             <button onClick={toggleDropdown}>
-                {activeSubset} <Icon icon="fe:arrow-down" />
+                {activeSubset.name || 'Select Subset'} <Icon icon="fe:arrow-down" />
             </button>
             {isDropdownOpen && (
                 <div className="dropdown">
                     <ul>
-                        <li onClick={() => selectSubset('All Subsets')}>All Subsets</li>
+                        <li onClick={() => selectSubset({ id: 'all', name: 'All Subsets' })}>All Subsets</li>
                         {flashcard?.subsets
                           ?.filter(subset => subset.subsetName !== 'All Subsets')
                           .map(subset => (
-                            <li key={subset._id} onClick={() => selectSubset(subset.subsetName)}>
+                            <li key={subset._id} onClick={() => selectSubset({ id: subset._id, name: subset.subsetName })}>
                               {subset.subsetName}
                             </li>
                           ))
