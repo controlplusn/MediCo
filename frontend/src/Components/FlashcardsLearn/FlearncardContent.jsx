@@ -42,6 +42,8 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
                     withCredentials: true,
                 });
 
+                console.log('API Response:', response.data);
+
                 if (response.data.success) {
                     setFlashcard(response.data.data);
                     console.log('Fetched Flashcard:', response.data.data);
@@ -63,6 +65,7 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
     if (!flashcard) return <div>No flashcard data available</div>;
+    
 
     // Data processing
     const activeSubsetData = activeSubset.id === 'all'
@@ -71,9 +74,9 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
 
     const allCards = flashcard?.subsets?.flatMap(subset => subset.cards) || [];
 
-    const noCardsAvailable = activeSubset === 'all'
-        ? !allCards || allCards.length === 0
-        : activeSubsetData && (!activeSubsetData.cards || activeSubsetData.cards.length === 0);
+    const cardsToDisplay = activeSubset.id === 'all' ? allCards : activeSubsetData?.cards || [];
+
+    const noCardsAvailable = cardsToDisplay.length === 0;
 
     // AddCard component navigate
     const handleAddCard = () => {
@@ -81,7 +84,7 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
         console.log('Category ID:', categoryId);
         console.log('Flashcard Data:', flashcard);
 
-        const subsetId = activeSubset === 'All Subsets' 
+        const subsetId = activeSubset.id === 'All Subsets' 
             ? flashcard.subsets[0]?._id  // Default to first subset if 'All Subsets' is selected
             : activeSubset.id;
         
@@ -96,6 +99,8 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
             if (!subsetId) console.error('subsetId is missing or invalid');
         }
     };
+
+    console.log('Cards to display:', cardsToDisplay);
 
     // Render logic
     if (!flashcard.statistics || flashcard.statistics.totalCards === 0) {
@@ -118,7 +123,7 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
                 </div>
             ) : activeSubset === 'all' ? (
                 <div className="Card--Container">
-                    {allCards?.map(card => (
+                    {cardsToDisplay.map(card => (
                         <div key={card.cardId} className="Card">
                             <label>
                                 <div className="tagname">
