@@ -15,7 +15,7 @@ function MainFlashCardLearn() {
     // Fetch the category data using the categoryId
     const fetchCategory = async () => {
       try {
-        const response = await axios.get(`http://localhost:3001/api/flashcard/category/${categoryId}`);
+        const response = await axios.get(`http://localhost:3001/api/flashcard/card/${categoryId}`);
         setCategory(response.data);
         if (response.data.subsets.length > 0) {
           setActiveSubset(response.data.subsets[0]._id);
