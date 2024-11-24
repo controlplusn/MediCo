@@ -1,12 +1,12 @@
 import React from 'react'
-import ClassHeader from './ClassHeader.jsx';
-import ClassContent  from './ClassContent.jsx';
+import ClassHeader from './ClassHeader';
+import ClassContent  from './ClassContent';
 import '../../styles/class.css';
-export const Class = () => {
+
+const Class = () => {
   return (
     <div className="class-container">
         <ClassHeader />
-        <ClassContent />
     </div>
   )
 }
