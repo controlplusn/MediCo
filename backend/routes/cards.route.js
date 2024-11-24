@@ -352,62 +352,118 @@ router.post('/cards/addflashcard', verifyToken, async (req, res) => {
 });
 
 // getting the flashcards
-router.get('/cards/:categoryId/:subsetId', verifyToken, async (req, res) => {
-    console.log("Request received for cards route");
+// router.get('/cards/:categoryId/:subsetId', verifyToken, async (req, res) => {
+//     console.log("Request received for cards route");
 
-    const { categoryId, subsetId } = req.params; // Get categoryId and subsetId from URL parameters
-    console.log("Category id for fetching cards:", categoryId);
-    console.log("Subset id for fetching cards:", subsetId);
+//     const { categoryId, subsetId } = req.params; // Get categoryId and subsetId from URL parameters
+//     console.log("Category id for fetching cards:", categoryId);
+//     console.log("Subset id for fetching cards:", subsetId);
 
-    const userId = req.userId; // Extracted from JWT token
-    console.log("User ID:", userId);
+//     const userId = req.userId; // Extracted from JWT token
+//     console.log("User ID:", userId);
+
+//     try {
+//         // Find specific category by categoryId and ensure it belongs to the user
+//         const category = await Card.findOne({ _id: categoryId, userId });
+
+//         if (!category) {
+//             return res.status(404).json({
+//                 success: false,
+//                 message: "Category not found or does not belong to the user",
+//             });
+//         }
+
+//         let responseData;
+//         if (subsetId === 'All Subsets') {
+//             // If 'all' is specified, return cards from all subsets
+//             responseData = {
+//                 name: 'All Subsets',
+//                 cards: category.subsets.flatMap(subset => subset.cards)
+//             };
+//             console.log("Response:", responseData);
+//         } else {
+//             // Find specific subset within the category
+//             const subset = category.subsets.find(sub => sub._id.toString() === subsetId);
+//             console.log(subset);
+
+//             if (!subset) {
+//                 return res.status(404).json({
+//                     success: false,
+//                     message: "Subset not found",
+//                 });
+//             }
+
+//             responseData = subset;
+//         }
+
+//         // Format response to include only the subset's cards
+//         res.status(200).json({
+//             success: true,
+//             data: responseData
+//         });
+
+//     } catch (error) {
+//         console.error('Error fetching category and subset data:', error);
+//         res.status(500).json({
+//             success: false,
+//             message: 'Server error. Unable to fetch the data.',
+//         });
+//     }
+// });
+
+// repo adding flashcard
+router.post('/cards/:categoryId/:subsetId', async (req, res) => {
+    console.log("Recieved request on adding flashcard");
+
 
     try {
-        // Find specific category by categoryId and ensure it belongs to the user
-        const category = await Card.findOne({ _id: categoryId, userId });
+        const userId = req.userId;
+
+        const { categoryId, subsetId } = req.params;
+        console.log("Category id:", categoryId);
+        console.log("Subset id:", subsetId);
+
+        const { question, answer} = req.body;
+
+        if (!userId || !categoryId || !subsetId) {
+            return res.status(400).json({ success: false, message: "Missing required parameters." });
+        }
+
+        if (!question || !answer) {
+            return res.status(400).json({ success: false, message: "Question and answer are required." });
+        }
+
+        // Find the card set by categoryId and subsetId
+        const category = await Card.findOne({ _id: categoryId, userId: userId });
 
         if (!category) {
-            return res.status(404).json({
-                success: false,
-                message: "Category not found or does not belong to the user",
-            });
+            return res.status(404).json({ success: false, message: "Card set not found." });
         }
 
-        let responseData;
-        if (subsetId === 'All Subsets') {
-            // If 'all' is specified, return cards from all subsets
-            responseData = {
-                name: 'All Subsets',
-                cards: category.subsets.flatMap(subset => subset.cards)
-            };
-            console.log("Response:", responseData);
-        } else {
-            // Find specific subset within the category
-            const subset = category.subsets.find(sub => sub._id.toString() === subsetId);
-            console.log(subset);
-
-            if (!subset) {
-                return res.status(404).json({
-                    success: false,
-                    message: "Subset not found",
-                });
-            }
-
-            responseData = subset;
+        // Find the subset
+        const subset = category.subsets.id(subsetId);
+        if (!subset) {
+            return res.status(404).json({ success: false, message: "Subset not found." });
         }
 
-        // Format response to include only the subset's cards
-        res.status(200).json({
+        // Add new flashcard to the subset
+        const newCard = {
+            question,
+            answer
+        };
+        subset.cards.push(newCard);
+
+        // Save the changes to the database
+        await category.save();
+
+        res.status(201).json({
             success: true,
-            data: responseData
+            message: "Flashcard added successfully.",
+            category,
         });
-
     } catch (error) {
-        console.error('Error fetching category and subset data:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Server error. Unable to fetch the data.',
-        });
+        console.error("Error adding flashcard:", error);
+        res.status(500).json({ success: false, message: "Server error." });
     }
 });
 
