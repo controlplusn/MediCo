@@ -109,6 +109,14 @@ function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId 
         if (response.data.success) {
             console.log("New subset added:", response.data.updatedFlashcard);
             setFlashcard(response.data.updatedFlashcard); // Update the flashcard with the new subset
+
+            // Store the new subset ID
+            const newSubsetId = response.data.newSubsetId;
+            console.log("New subset ID:", newSubsetId);
+
+            // Set the new subset as active
+            setActiveSubset({ id: newSubsetId, name: subsetName });
+
             closeModal(); // Close the modal after successful submission
             setSubsetName('');
         } else {
