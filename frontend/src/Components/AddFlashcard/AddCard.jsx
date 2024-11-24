@@ -1,98 +1,37 @@
-import React, { useState, useEffect } from 'react';
-import CardContentAdd from './CardContentAdd.jsx';
-import CardSide from './CardSide.jsx';
+import React, { useState, useEffect } from 'react'
+import { useParams } from 'react-router-dom'
 import axios from 'axios';
 import '../../styles/addcard.css';
+import CardContentAdd from './CardContentAdd';
 
-export const AddCard = () => {
-  const [activeCard, setActiveCard] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [activeCategory, setActiveCategory] = useState(null);
-  const [activeSubset, setActiveSubset] = useState(null);
+const AddCard = () => {
+    const { categoryId, subsetId } = useParams(); // getting the categoryId and subsetId from the url
+    console.log(`Params in AddCard: ${ categoryId }, ${ subsetId }`);
+    const [userId, setUserId] = useState(null);
 
-  // Getting the userId using JWT token
-  const [userId, setUserId] = useState(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const response = await axios.get('http://localhost:3001/api/auth/check-auth', {
-          withCredentials: true,
-        });
-        if (response.data.user) {
-          setUserId(response.data.user._id);
-        }
-      } catch (err) {
-        console.error('Error checking authentication:', err);
-      }
-    };
-    
-    fetchUser();
-  }, []);
-
-  // fetch categories and subset
-  useEffect(() => {
-    const fetchCategories = async () => {
-      if (userId) {
-        try {
-          const response = await axios.get('http://localhost:3001/api/flashcard/cards', {
-            withCredentials: true,
-          });
-          if (response.data.success) {
-            setCategories(response.data.data);
-            if (response.data.data.length > 0) {
-              setActiveCategory(response.data.data[0]._id);
-              if (response.data.data[0].subsets.length > 0) {
-                setActiveSubset(response.data.data[0].subsets[0]._id);
-              }
+    // fetch authenticated user id
+    useEffect(() => {
+        const fetchUserId = async () => {
+            try {
+                const response = await axios.get('http://localhost:3001/api/auth/check-auth', {
+                    withCredentials: true,
+                });
+                if (response.data.user) {
+                    setUserId(response.data.user._id);
+                }
+            } catch (error) {
+                console.error('Error fetching user ID:', error);
             }
-          }
-        } catch (error) {
-          console.error('Error fetching categories:', error);
-        }
-      }
-    };
+        };
 
-    if (userId) {
-      fetchCategories();
-    }
-    
-  }, [userId]);
-
-  const handleCategoryChange = (categoryId) => {
-    setActiveCategory(categoryId);
-    const category = categories.find(cat => cat._id === categoryId);
-    if (category && category.subsets.length > 0) {
-      setActiveSubset(category.subsets[0]._id);
-    } else {
-      setActiveSubset(null);
-    }
-  };
-
-  const handleSubsetChange = (subsetId) => {
-    setActiveSubset(subsetId);
-  };
+        fetchUserId();
+    }, []);
 
 
-  return (
-    <div className="addcrd-container">
-      <CardSide
-        setActiveCard={setActiveCard}
-        userId={userId}
-        categories={categories}
-        activeCategory={activeCategory}
-        activeSubset={activeSubset}
-        onCategoryChange={handleCategoryChange}
-        onSubsetChange={handleSubsetChange}
-      />
-      <CardContentAdd
-        activeCard={activeCard}
-        userId={userId}
-        categoryId={activeCategory}
-        subsetId={activeSubset}
-      />
-    </div>
-  );
-};
+
+    return (
+      <CardContentAdd userId={userId} categoryId={categoryId} subsetId={subsetId} />
+    )
+}
 
 export default AddCard;

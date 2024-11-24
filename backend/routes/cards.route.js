@@ -1,6 +1,7 @@
 import express from 'express';
 import { verifyToken } from '../middleware/verifyToken.js';
 import Card from '../model/cardsModel.js';
+import mongoose from 'mongoose';
 
 const router = express.Router();
 
@@ -308,6 +309,7 @@ router.post('/cards/addflashcard', verifyToken, async (req, res) => {
 
       // Find the card set and subset
       const cardSet = await Card.findOne({ _id: cardSetId, userId });
+      console.log("Found card set:", cardSet);
 
       if (!cardSet) {
         return res.status(404).json({
@@ -317,6 +319,7 @@ router.post('/cards/addflashcard', verifyToken, async (req, res) => {
       }
 
       const subset = cardSet.subsets.id(subsetId);
+      console.log("Found subset:", subset);
 
       if (!subset) {
         return res.status(404).json({
@@ -325,17 +328,23 @@ router.post('/cards/addflashcard', verifyToken, async (req, res) => {
         });
       }
 
+      // Clean up existing cards
+      subset.cards = subset.cards.filter(card => card.question && card.answer);
+
       // Add the new card to the subset
       const newCard = {
         question,
         answer,
         learnVal: false, // Default value for whether the card is learned
+        CardId: new mongoose.Types.ObjectId()
       };
 
       subset.cards.push(newCard);
+      console.log("New card added to subset:", newCard);
 
       // Save the updated card set
       await cardSet.save();
+      console.log("Card set saved successfully");
 
       res.status(201).json({
         success: true,
