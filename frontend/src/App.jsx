@@ -9,6 +9,7 @@ import Community from './Components/Community/Community';
 import Flashcard from './Components/Flashcards/Flashcard';
 import MainFlashCardLearn from './Components/FlashcardsLearn/MainFlashCardLearn';
 import AddCard from './Components/AddFlashcard/AddCard';
+import Class from './Components/Class/Class';
 
 // protect routes that require authentication
 const ProtectedRoute = ({ children }) => {
@@ -108,6 +109,14 @@ function App() {
       element: (
         <ProtectedRoute>
           <AddCard />
+        </ProtectedRoute>
+      )
+    },
+    {
+      path: '/class',
+      element: (
+        <ProtectedRoute>
+          <Class />
         </ProtectedRoute>
       )
     }

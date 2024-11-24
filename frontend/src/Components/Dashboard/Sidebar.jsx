@@ -70,13 +70,16 @@ const Sidebar = () => {
                         {!isCollapsed && 'Community'}
                     </ul>
                 </Link>
-                <ul
-                    className={`item ${activeItem === 'class' ? 'active' : ''}`}
-                    onClick={() => handleItemClick('class')}
-                >
-                    <Icon icon="streamline:class-lesson-solid" />
-                    {!isCollapsed && 'Class'}
-                </ul>
+                
+                <Link to="/class">
+                    <ul
+                        className={`item ${activeItem === 'class' ? 'active' : ''}`}
+                        onClick={() => handleItemClick('class')}
+                    >
+                        <Icon icon="streamline:class-lesson-solid" />
+                        {!isCollapsed && 'Class'}
+                    </ul>
+                </Link>
             </div>
 
             <div className="user--sidebar">
