@@ -4,7 +4,6 @@ import axios from 'axios';
 import { Icon } from '@iconify/react';
 
 const FlearncardContent = ({ activeSubset, categoryId, category }) => {
-    console.log('FlearncardContent props:', { activeSubset, categoryId, category });
 
     const [flashcard, setFlashcard] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -70,21 +69,40 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
             ? null
             : flashcard.subsets?.find(subset => subset.subsetName === activeSubset);
 
-    const allCards =
-        activeSubset === 'All Subsets'
-            ? flashcard.subsets?.flatMap(subset => subset.cards)
-            : null;
+    const allCards = flashcard.subsets?.flatMap(subset => subset.cards) || [];
 
     const noCardsAvailable = activeSubset === 'All Subsets'
         ? !allCards || allCards.length === 0
         : activeSubsetData && (!activeSubsetData.cards || activeSubsetData.cards.length === 0);
+
+    // AddCard component navigate
+    const handleAddCard = () => {
+        console.log('Active Subset:', activeSubset);
+        console.log('Category ID:', categoryId);
+        console.log('Flashcard Data:', flashcard);
+
+        const subsetId = activeSubset === 'All Subsets' 
+            ? flashcard.subsets[0]._id  // Default to first subset if 'All Subsets' is selected
+            : flashcard.subsets.find(subset => subset.subsetName === activeSubset)?._id;
+        
+        console.log('Selected Subset ID:', subsetId);   
+
+        if (categoryId && subsetId) {
+            console.log('Navigating to:', `/flashcardcollection/${categoryId}/${subsetId}`);
+            navigate(`/flashcardcollection/${categoryId}/${subsetId}`);
+        } else {
+            console.error('Missing categoryId or subsetId');
+            if (!categoryId) console.error('categoryId is missing or invalid');
+            if (!subsetId) console.error('subsetId is missing or invalid');
+        }
+    };
 
     // Render logic
     if (!flashcard.statistics || flashcard.statistics.totalCards === 0) {
         return (
             <div className="flearn--content">
                 <img src="https://via.placeholder.com/100" alt="Anatomy graphic" />
-                    <button onClick={() => navigate(`/flashcardcollection/${categoryId}/${activeSubset}`)}>
+                    <button onClick={handleAddCard}>
                         Add <Icon icon="material-symbols-light:add" />
                     </button>
             </div>
