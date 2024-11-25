@@ -122,7 +122,7 @@ function App() {
       )
     },
     {
-      path: '/class/classcontent',
+      path: '/class/classcontent/:classId',
       element: (
         <ProtectedRoute>
           <ClassPageContent />
