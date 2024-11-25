@@ -217,22 +217,61 @@ router.get('/cards/:categoryId', verifyToken, async (req, res) => {
             });
         }
 
-        // Format response
+        let totalCards = 0;
+        let learnedCards = 0;
+
         const formattedCategory = {
+            _id: category._id,
             name: category.name,
-            subsets: category.subsets.map(subset => ({
-                subsetName: subset.subsetName,
-                cards: subset.cards.map(card => ({
-                    question: card.question,
-                    answer: card.answer,
-                    isLearned: card.learnVal
-                })),
-            })),
+            subsets: category.subsets.map(subset => {
+                let subsetTotalCards = 0;
+                let subsetLearnedCards = 0;
+
+                const cards = subset.cards.map(card => {
+                    totalCards++;
+                    subsetTotalCards++;
+                    if (card.learnVal) {
+                        learnedCards++;
+                        subsetLearnedCards++;
+                    }
+
+                    return {
+                        _id: card._id,
+                        question: card.question,
+                        answer: card.answer,
+                        isLearned: card.learnVal,
+                        cardId: card.CardId
+                    };
+                });
+
+                const subsetLearnedPercentage = subsetTotalCards > 0 
+                    ? (subsetLearnedCards / subsetTotalCards) * 100 
+                    : 0;
+
+                return {
+                    _id: subset._id,
+                    subsetName: subset.subsetName,
+                    cards,
+                    statistics: {
+                        totalCards: subsetTotalCards,
+                        learnedCards: subsetLearnedCards,
+                        learnedPercentage: subsetLearnedPercentage.toFixed(2),
+                    },
+                };
+            }),
+        };
+
+        const learnedPercentage = totalCards > 0 ? (learnedCards / totalCards) * 100 : 0;
+
+        formattedCategory.statistics = {
+            totalCards,
+            learnedCards,
+            learnedPercentage: learnedPercentage.toFixed(2),
         };
 
         res.status(200).json({
             success: true,
-            data: category
+            data: formattedCategory
         });
 
 
@@ -363,59 +402,7 @@ router.post('/cards/addflashcard', verifyToken, async (req, res) => {
 });
 
 // repo adding flashcard
-router.post('/cards/:categoryId/:subsetId', async (req, res) => {
-    console.log("Recieved request on adding flashcard");
 
-    try {
-        const userId = req.userId;
-
-        const { categoryId, subsetId } = req.params;
-        console.log("Category id:", categoryId);
-        console.log("Subset id:", subsetId);
-
-        const { question, answer} = req.body;
-
-        if (!userId || !categoryId || !subsetId) {
-            return res.status(400).json({ success: false, message: "Missing required parameters." });
-        }
-
-        if (!question || !answer) {
-            return res.status(400).json({ success: false, message: "Question and answer are required." });
-        }
-
-        // Find the card set by categoryId and subsetId
-        const category = await Card.findOne({ _id: categoryId, userId: userId });
-
-        if (!category) {
-            return res.status(404).json({ success: false, message: "Category not found." });
-        }
-
-        // Find the subset
-        const subset = category.subsets.id(subsetId);
-        if (!subset) {
-            return res.status(404).json({ success: false, message: "Subset not found." });
-        }
-
-        // Add new flashcard to the subset
-        const newCard = {
-            question,
-            answer
-        };
-        subset.cards.push(newCard);
-
-        // Save the changes to the database
-        await category.save();
-
-        res.status(201).json({
-            success: true,
-            message: "Flashcard added successfully.",
-            category,
-        });
-    } catch (error) {
-        console.error("Error adding flashcard:", error);
-        res.status(500).json({ success: false, message: "Server error." });
-    }
-});
 
 // fetching the flashcards
 router.get('/cards/:categoryId/:subsetId', verifyToken, async (req, res) => {

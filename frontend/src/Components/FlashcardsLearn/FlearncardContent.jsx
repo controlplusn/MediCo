@@ -4,8 +4,6 @@ import axios from 'axios';
 import { Icon } from '@iconify/react';
 
 const FlearncardContent = ({ activeSubset, categoryId, category }) => {
-    console.log('FlearncardContent props:', { activeSubset, categoryId, category });
-
     const [flashcard, setFlashcard] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -61,10 +59,16 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
         fetchFlashcardData();
     }, [userId, categoryId]);
 
+    console.log('Current flashcard state:', flashcard);
+
     // loading and error handling
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
-    if (!flashcard) return <div>No flashcard data available</div>;
+
+    if (!flashcard) {
+        console.log('Flashcard is null or undefined');
+        return <div>No flashcard data available</div>;
+    }
     
 
     // Data processing
@@ -102,60 +106,50 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
 
     console.log('Cards to display:', cardsToDisplay);
 
+    console.log('Flashcard before render:', flashcard);
+    console.log('Flashcard statistics:', flashcard.statistics);
+
     // Render logic
-    if (!flashcard.statistics || flashcard.statistics.totalCards === 0) {
+    if (!flashcard || !flashcard.statistics) {
+        console.log('No statistics available or totalCards is undefined');
         return (
             <div className="flearn--content">
                 <img src="https://via.placeholder.com/100" alt="Anatomy graphic" />
-                    <button onClick={handleAddCard}>
-                        Add <Icon icon="material-symbols-light:add" />
-                    </button>
+                <button onClick={handleAddCard}>
+                    Add <Icon icon="material-symbols-light:add" />
+                </button>
             </div>
         );
     }
+    
+    console.log('Flashcard Statistics:', flashcard.statisticss);
 
 
     return (
         <section>
-            {noCardsAvailable ? (
-                <div>
-                    <h4>No cards available for the selected subset.</h4>
-                </div>
-            ) : activeSubset === 'all' ? (
-                <div className="Card--Container">
-                    {cardsToDisplay.map(card => (
-                        <div key={card.cardId} className="Card">
-                            <label>
-                                <div className="tagname">
-                                    {card.isLearned ? <h6>Learned</h6> : <h6>On Progress</h6>}
-                                </div>
-                            </label>
-                            <h4>Question: {card.question}</h4>
-                            <hr style={{ width: '100%' }} />
-                            <h4>Answer: {card.answer}</h4>
-                        </div>
-                    ))}
-                </div>
-            ) : activeSubsetData ? (
-                <div className="Card--Container">
-                    {activeSubsetData.cards.map(card => (
-                        <div key={card.cardId} className="Card">
-                            <label>
-                                <div className="tagname">
-                                    {card.isLearned ? <h6>Learned</h6> : <h6>On Progress</h6>}
-                                </div>
-                            </label>
-                            <h4>Question: {card.question}</h4>
-                            <hr style={{ width: '100%' }} />
-                            <h4>Answer: {card.answer}</h4>
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                <div>
-                    <h4>No cards available for the selected subset.</h4>
-                </div>
-            )}
+            {cardsToDisplay.length === 0 ? (
+            <div>
+                <h4>No cards available for the selected subset.</h4>
+                <button onClick={handleAddCard}>
+                    Add <Icon icon="material-symbols-light:add" />
+                </button>
+            </div>
+        ) : (
+            <div className="Card--Container">
+                {cardsToDisplay.map(card => (
+                    <div key={card._id || card.cardId} className="Card">
+                        <label>
+                            <div className="tagname">
+                                <h6>{card.isLearned ? "Learned" : "On Progress"}</h6>
+                            </div>
+                        </label>
+                        <h4>Question: {card.question}</h4>
+                        <hr style={{ width: '100%' }} />
+                        <h4>Answer: {card.answer}</h4>
+                    </div>
+                ))}
+            </div>
+        )}
         </section>
     );
 };
