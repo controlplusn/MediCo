@@ -223,6 +223,75 @@ router.delete('/deleteClass/:id', verifyToken, async (req, res) => {
     }
 });
 
+// get classes based on username and class id
+router.get('/:username/:id', verifyToken, async (req, res) => {
+    try {
+        const { username, id } = req.params;
+
+        console.log("Username:", username);
+        console.log('Class id:', id);
+
+        const userId = req.userId;
+        console.log("User id retrieved in fetching classes based on username:", userId);
+
+        if (!userId) {
+            return res.status(404).json({
+                success: false,
+                message: 'User id required'
+            });
+        }
+
+        console.log("Fetching class for user:", username);
+
+        // fetch class where username is either in people or is the host
+        const classData = await Class.findOne({
+            $or: [
+                { people: username },
+                { host: username }
+            ],
+            _id: id
+        });
+
+        if (!classData) {
+            return res.status(404).json({ success: false, message: 'Class not found' });
+        }
+
+        // process data and calculate statistics
+        const totalDiscussions = classData.discussion.length;
+        const totalPeople = classData.people.length + 1; // +1 for the host
+
+        const processedClass = {
+            _id: classData._id,
+            title: classData.title,
+            host: classData.host,
+            people: classData.people,
+            statistics: {
+                totalDiscussions,
+                totalPeople,
+            },
+            discussions: classData.discussion.map(discussion => ({
+                _id: discussion._id,
+                title: discussion.title,
+                author: discussion.author,
+                date: discussion.date,
+                content: discussion.content,
+                likes: discussion.likes.length,
+                comments: discussion.comments.length
+            }))
+        };
+
+        // respond with processed data and statistics
+        return res.status(200).json({
+            success: true,
+            data: processedClass
+        });
+
+    } catch (error) {
+        console.error("Error loading class:", error);
+        res.status(500).json({ success: false, message: "Server error. Please try again later." });    
+    }
+});
+
 
 
 export default router;
