@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import '../../styles/classcontent.css';
 
@@ -226,44 +227,48 @@ const ClassContent = () => {
             {/* Class Cards */}
             <section className="Card--section">
               {classData.map((card) => (
-                <button className="Card" key={card._id}>
-                  <div className="flashcard--head">
-                    <img src={'https://via.placeholder.com/50'} alt="profile" />
-                    <button onClick={() => toggleDropdown(card._id)}>
-                      <Icon icon="oi:ellipses" />
-                    </button>
-                    {dropdownState[card._id] && (
-                      <div className="dropdown-menu">
-                        <ul>
-                          <li
-                            onClick={() => {
-                              setSelectedClass(card);
-                              setNewClassTitle(card.title);
-                              setIsEditModalOpen(true);
-                            }}
-                          >
-                            Edit  
-                          </li>
-                          <li
-                            onClick={() => {
-                              setSelectedClass(card);
-                              setIsDeleteModalOpen(true);
-                            }}
-                          >
-                            Delete
-                          </li>
-                          <li>Share</li>
-                        </ul>
+
+                <Link to="/class/classcontent">
+                    <button className="Card" key={card._id}>
+                      <div className="flashcard--head">
+                        <img src={'https://via.placeholder.com/50'} alt="profile" />
+                        <button onClick={() => toggleDropdown(card._id)}>
+                          <Icon icon="oi:ellipses" />
+                        </button>
+                        {dropdownState[card._id] && (
+                          <div className="dropdown-menu">
+                            <ul>
+                              <li
+                                onClick={() => {
+                                  setSelectedClass(card);
+                                  setNewClassTitle(card.title);
+                                  setIsEditModalOpen(true);
+                                }}
+                              >
+                                Edit  
+                              </li>
+                              <li
+                                onClick={() => {
+                                  setSelectedClass(card);
+                                  setIsDeleteModalOpen(true);
+                                }}
+                              >
+                                Delete
+                              </li>
+                              <li>Share</li>
+                            </ul>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                  <div className="flashcard--body">
-                    <h5>{card.title}</h5>
-                    <div className="content--h6">
-                      <h6>By {card.host}</h6>
-                    </div>
-                  </div>
-                </button>
+                      <div className="flashcard--body">
+                        <h5>{card.title}</h5>
+                        <div className="content--h6">
+                          <h6>By {card.host}</h6>
+                        </div>
+                      </div>
+                    </button>
+                </Link>
+
               ))}
           </section>
     </div>
