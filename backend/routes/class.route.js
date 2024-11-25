@@ -292,6 +292,59 @@ router.get('/:username/:id', verifyToken, async (req, res) => {
     }
 });
 
+// Add a comment to a specific disccusion
+router.post('/addComment/:classId/:DiscussionId', verifyToken, async (req, res) => {
+    const { classId, DiscussionId } = req.params;
+    const { commentContent, author } = req.body;
+  
+    try {
+      // Validate input
+      if (!commentContent || !author) {
+        return res.status(400).json({ message: 'Comment content and author are required' });
+      }
+  
+      // Validate class ID and discussion ID
+      if (!mongoose.Types.ObjectId.isValid(classId) || !mongoose.Types.ObjectId.isValid(DiscussionId)) {
+        return res.status(400).json({ message: 'Invalid class or discussion ID' });
+      }
+  
+      // Find the class by ID
+      const classData = await Class.findById(classId);
+      if (!classData) {
+        return res.status(404).json({ message: 'Class not found' });
+      }
+  
+      // Find the specific discussion by its id
+      const discussion = classData.discussion.id(DiscussionId);
+      if (!discussion) {
+        return res.status(404).json({ message: 'Discussion not found' });
+      }
+  
+      // Create a new comment
+      const newComment = {
+        content: commentContent,
+        author,
+        time: new Date(), // Add timestamp
+        _id: new mongoose.Types.ObjectId(), // Ensure unique ID
+      };
+  
+      // Push the new comment to the comments array of the selected discussion
+      discussion.comments.push(newComment);
+  
+      // Save the updated class document
+      await classData.save();
+  
+      res.status(201).json({
+        message: 'Comment added successfully',
+        comment: newComment,
+      });
+    } catch (error) {
+      console.error('Error adding comment:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+
 // Add a like to a specific discussion
 router.post('/likeDiscussion/:classId/:DiscussionId/:username', verifyToken, async (req, res) => {
     const { classId, DiscussionId, username } = req.params;

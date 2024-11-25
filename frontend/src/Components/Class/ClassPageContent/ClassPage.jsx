@@ -33,6 +33,9 @@ const ClassPage = ({ classId, username }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Add new comment states
+    const [expandedThreads, setExpandedThreads] = useState({});
+
     // fetch class data
     const fetchClassData = async () => {
         try {
@@ -76,7 +79,49 @@ const ClassPage = ({ classId, username }) => {
         }
     };
 
+    // Toggle comments section
+    // const toggleComments = (threadId) => {
+    //     setExpandedThreads(prev => ({
+    //         ...prev,
+    //         [threadId]: !prev[threadId]
+    //     }));
+    // };
+
     // Add new comment to a thread
+    const handleAddComment = async (e) => {
+        e.preventDefault();
+        if (!newComment.body || !newComment.threadId) return;
+
+        console.log("New comment id:", newComment.threadId);
+
+        try {
+            const response = await axios.post(
+                `http://localhost:3001/api/class/addComment/${classId}/${newComment.threadId}`,
+                { 
+                    commentContent: newComment.body, 
+                    author: username 
+                },
+                { withCredentials: true }
+            );
+
+            if (response.status === 201) {
+                const updatedClassData = { ...classData };
+                const thread = updatedClassData.discussion.find((d) => d._id.toString() === newComment.threadId);
+                
+                if (thread) {
+                    thread.comments.push(response.data.comment);
+                }
+                
+                setNewComment({ body: '', threadId: null });
+                setClassData(updatedClassData);
+            }
+        } catch (error) {
+            console.error('Failed to add comment:', error);
+            // Optionally set an error state to show to the user
+        }
+    };
+
+
 
 
 
