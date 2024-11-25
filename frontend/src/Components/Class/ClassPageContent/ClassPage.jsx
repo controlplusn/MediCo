@@ -51,6 +51,35 @@ const ClassPage = ({ classId, username }) => {
 
     const handleTabChange = (tab) => setActiveTab(tab);
 
+    // Toggle like/unlike on discussion threads
+    const toggleHeart = async (threadId, isOn) => {
+        try {
+            const threadIndex = classData.discussion.findIndex((d) => d._id.toString() === threadId);
+            if (threadIndex === -1) return;
+
+            const thread = { ...classData.discussion[threadIndex] };
+            const response = isOn
+                ? await axios.delete(`http://localhost:3001/api/class/unlikeDiscussion/${classId}/${threadId}/${username}`, { withCredentials: true })
+                : await axios.post(`http://localhost:3001/api/class/likeDiscussion/${classId}/${threadId}/${username}`, {}, { withCredentials: true });
+
+            if (response.status === 200) {
+                thread.likes = isOn
+                    ? thread.likes.filter((user) => user !== username)
+                    : [...thread.likes, username];
+
+                const updatedDiscussion = [...classData.discussion];
+                updatedDiscussion[threadIndex] = thread;
+                setClassData({ ...classData, discussion: updatedDiscussion });
+            }
+        } catch (error) {
+            console.error('Error toggling like:', error);
+        }
+    };
+
+    // Add new comment to a thread
+
+
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
     if (!classData) return <div>No class data found</div>;
@@ -67,6 +96,13 @@ const ClassPage = ({ classId, username }) => {
                 </div>
               </div>
             </section>
+
+
+            <nav>
+                <h5 onClick={() => handleTabChange('discussion')} className={activeTab === 'discussion' ? 'active' : ''}>Discussion</h5>
+                <h5 onClick={() => handleTabChange('people')} className={activeTab === 'people' ? 'active' : ''}>People</h5>
+                <h5 onClick={() => handleTabChange('classwork')} className={activeTab === 'classwork' ? 'active' : ''}>Classwork</h5>
+            </nav>
         
         </div>
     );
