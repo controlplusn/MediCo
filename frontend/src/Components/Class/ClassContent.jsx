@@ -228,7 +228,7 @@ const ClassContent = () => {
             <section className="Card--section">
               {classData.map((card) => (
 
-                <Link to="/class/classcontent">
+                <Link to={`/class/classcontent/${card._id}`}>
                     <button className="Card" key={card._id}>
                       <div className="flashcard--head">
                         <img src={'https://via.placeholder.com/50'} alt="profile" />
