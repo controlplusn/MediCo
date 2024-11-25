@@ -5,7 +5,7 @@ export const ClassPageHeader = () => {
   return (
     <div className="headerclass">
         <h5>Class</h5>
-        <hr />
+        <hr/>
     </div>
   )
 }
