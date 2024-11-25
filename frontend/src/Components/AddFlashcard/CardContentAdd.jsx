@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import '../../styles/cardcontentadd.css';
 
-const CardContentAdd = ({ userId, categoryId, subsetId, activeCard }) => {
+const CardContentAdd = ({ userId, categoryId, subsetId, activeCard, triggerCardUpdate }) => {
     const [question, setQuestion] = useState('');
     const [answer, setAnswer] = useState('');
     const [formData, setFormData] = useState({
@@ -54,15 +54,16 @@ const CardContentAdd = ({ userId, categoryId, subsetId, activeCard }) => {
             );
 
             if (response.data.success) {
-                alert('Flashcard added successfully!');
+                console.log('Flashcard added successfully!');
                 setQuestion('');
                 setAnswer('');
+                triggerCardUpdate();
             } else {
-                alert(response.data.message || 'Failed to add flashcard.');
+                console.log(response.data.message || 'Failed to add flashcard.');
             }
         } catch (error) {
             console.error('Error adding flashcard:', error);
-            alert('An error occurred while adding the flashcard.');
+            console.log('An error occurred while adding the flashcard.');
         }
     };
 

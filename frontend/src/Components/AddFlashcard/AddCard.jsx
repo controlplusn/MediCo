@@ -7,9 +7,9 @@ import CardSide from './CardSide';
 
 const AddCard = () => {
     const { categoryId, subsetId } = useParams(); // getting the categoryId and subsetId from the url
-    console.log(`Params in AddCard: ${ categoryId }, ${ subsetId }`);
     const [userId, setUserId] = useState(null);
     const [activeCard, setActiveCard] = useState(null);
+    const [cardUpdateTrigger, setCardUpdateTrigger] = useState(0);
 
     // fetch authenticated user id
     useEffect(() => {
@@ -29,12 +29,29 @@ const AddCard = () => {
         fetchUserId();
     }, []);
 
+    const triggerCardUpdate = () => {
+        setCardUpdateTrigger(prev => prev + 1);
+    };
+
 
 
     return (
         <div className="addcrd-container">
-            <CardSide setActiveCard={setActiveCard} userId={userId} categoryId={categoryId} subsetId={subsetId} />
-            <CardContentAdd userId={userId} categoryId={categoryId} subsetId={subsetId} activeCard={activeCard} />
+            <CardSide 
+                setActiveCard={setActiveCard} 
+                userId={userId} 
+                categoryId={categoryId} 
+                subsetId={subsetId}
+                triggerCardUpdate={triggerCardUpdate}
+                cardUpdateTrigger={cardUpdateTrigger}
+            />
+            <CardContentAdd 
+                userId={userId} 
+                categoryId={categoryId} 
+                subsetId={subsetId} 
+                activeCard={activeCard} 
+                triggerCardUpdate={triggerCardUpdate}
+            />
         </div>
     )
 }

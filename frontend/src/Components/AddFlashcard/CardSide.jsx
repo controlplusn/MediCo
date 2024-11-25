@@ -12,7 +12,7 @@ const Card = ({ card, onClick }) => (
     </div>
 );
 
-const CardSide = ({ setActiveCard, userId, categoryId, subsetId }) => {
+const CardSide = ({ setActiveCard, userId, categoryId, subsetId, triggerCardUpdate, cardUpdateTrigger }) => {
     const [cards, setCards] = useState([]);
 
     // fetching cards data
@@ -37,7 +37,7 @@ const CardSide = ({ setActiveCard, userId, categoryId, subsetId }) => {
         if (userId && categoryId && subsetId) {
           fetchCards();
         }
-      }, [userId, categoryId, subsetId]);
+      }, [userId, categoryId, subsetId, cardUpdateTrigger]);
     
       const handleAddClick = () => {
         setActiveCard(null);
