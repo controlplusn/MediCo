@@ -292,6 +292,82 @@ router.get('/:username/:id', verifyToken, async (req, res) => {
     }
 });
 
+// Add a like to a specific discussion
+router.post('/likeDiscussion/:classId/:DiscussionId/:username', verifyToken, async (req, res) => {
+    const { classId, DiscussionId, username } = req.params;
+
+    console.log("Class id:", classId);
+    console.log("Discussion id:", DiscussionId);
+    console.log("Username:", username);
+  
+    try {
+      if (!mongoose.Types.ObjectId.isValid(classId) || !mongoose.Types.ObjectId.isValid(DiscussionId)) {
+        return res.status(400).json({ message: 'Invalid class or discussion ID' });
+      }
+  
+      const classData = await Class.findById(classId);
+      if (!classData) {
+        return res.status(404).json({ message: 'Class not found' });
+      }
+  
+      const discussion = classData.discussion.id(DiscussionId);
+      if (!discussion) {
+        return res.status(404).json({ message: 'Discussion not found' });
+      }
+  
+      if (discussion.likes.includes(username)) {
+        return res.status(400).json({ message: 'You have already liked this discussion' });
+      }
+  
+      discussion.likes.push(username);
+      await classData.save();
+  
+      res.status(200).json({
+        message: 'Discussion liked successfully',
+        likesCount: discussion.likes.length,
+      });
+    } catch (error) {
+      console.error('Error liking discussion:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
+// Remove a like from a specific discussion
+router.delete('/unlikeDiscussion/:classId/:DiscussionId/:username', verifyToken, async (req, res) => {
+    const { classId, DiscussionId, username } = req.params;
+  
+    try {
+      if (!mongoose.Types.ObjectId.isValid(classId) || !mongoose.Types.ObjectId.isValid(DiscussionId)) {
+        return res.status(400).json({ message: 'Invalid class or discussion ID' });
+      }
+  
+      const classData = await Class.findById(classId);
+      if (!classData) {
+        return res.status(404).json({ message: 'Class not found' });
+      }
+  
+      const discussion = classData.discussion.id(DiscussionId);
+      if (!discussion) {
+        return res.status(404).json({ message: 'Discussion not found' });
+      }
+  
+      if (!discussion.likes.includes(username)) {
+        return res.status(400).json({ message: 'You have not liked this discussion yet' });
+      }
+  
+      discussion.likes = discussion.likes.filter(user => user !== username);
+      await classData.save();
+  
+      res.status(200).json({
+        message: 'Like removed successfully',
+        likesCount: discussion.likes.length,
+      });
+    } catch (error) {
+      console.error('Error unliking discussion:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+
 
 
 export default router;
