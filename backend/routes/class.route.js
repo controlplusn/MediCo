@@ -344,6 +344,55 @@ router.post('/addComment/:classId/:DiscussionId', verifyToken, async (req, res) 
     }
 });
 
+// Add discussion
+router.post('/addDiscussion/:classId', verifyToken, async (req, res) => {
+    const { classId } = req.params;
+    const { title, author, content } = req.body;
+  
+    try {
+      // Validate input
+      if (!title || !author || !content) {
+        return res.status(400).json({ message: 'All fields are required' });
+      }
+  
+      // Validate class ID
+      if (!mongoose.Types.ObjectId.isValid(classId)) {
+        return res.status(400).json({ message: 'Invalid class ID' });
+      }
+  
+      // Find the class by ID
+      const classData = await Class.findById(classId);
+      if (!classData) {
+        return res.status(404).json({ message: 'Class not found' });
+      }
+  
+      // Create a new discussion
+      const newDiscussion = {
+        title,
+        author,
+        content,
+        date: new Date(),
+        likes: [],
+        comments: [],
+        _id: new mongoose.Types.ObjectId(), // Generate a unique ID for the discussion
+      };
+  
+      // Add the discussion to the class
+      classData.discussion.push(newDiscussion);
+  
+      // Save the updated class document
+      await classData.save();
+  
+      res.status(201).json({
+        message: 'Discussion added successfully',
+        discussion: newDiscussion,
+      });
+    } catch (error) {
+      console.error('Error adding discussion:', error);
+      res.status(500).json({ message: 'Internal Server Error' });
+    }
+});
+  
 
 // Add a like to a specific discussion
 router.post('/likeDiscussion/:classId/:DiscussionId/:username', verifyToken, async (req, res) => {

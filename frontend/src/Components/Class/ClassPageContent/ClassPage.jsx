@@ -39,7 +39,9 @@ const ClassPage = ({ classId, username }) => {
     // fetch class data
     const fetchClassData = async () => {
         try {
-            const response = await axios.get(`http://localhost:3001/api/class/${username}/${classId}`);
+            const response = await axios.get(`http://localhost:3001/api/class/${username}/${classId}`, {
+                withCredentials: true
+            });
             setClassData(response.data[0]);
             setLoading(false);
         } catch (err) {
@@ -121,7 +123,41 @@ const ClassPage = ({ classId, username }) => {
         }
     };
 
+    // Add a new discussionn thread
+    const handleFormSubmit = async (e) => {
+        e.preventDefault();
+        
+        // Validate input
+        if (!newThread.subject.trim() || !newThread.content.trim()) {
+            alert('Please fill in all fields');
+            return;
+        }
 
+        try {
+            const response = await axios.post(
+                `http://localhost:3001/api/class/addDiscussion/${classId}`, 
+                {
+                    title: newThread.subject,
+                    author: username, // Use current username instead of classData.host
+                    content: newThread.content,
+                },
+                { withCredentials: true }
+            );
+
+            if (response.status === 201) {
+                // Update local state with new discussion
+                const updatedDiscussion = [...classData.discussion, response.data.discussion];
+                setClassData({ ...classData, discussion: updatedDiscussion });
+                
+                // Reset form and close dialog
+                setNewThread({ subject: '', content: '' });
+                setIsDialogOpen(false);
+            }
+        } catch (error) {
+            console.error('Failed to add thread:', error);
+            alert('Failed to add thread. Please try again.');
+        }
+    };
 
 
 
@@ -148,7 +184,96 @@ const ClassPage = ({ classId, username }) => {
                 <h5 onClick={() => handleTabChange('people')} className={activeTab === 'people' ? 'active' : ''}>People</h5>
                 <h5 onClick={() => handleTabChange('classwork')} className={activeTab === 'classwork' ? 'active' : ''}>Classwork</h5>
             </nav>
-        
+
+            <div className="content--content">
+                {activeTab === 'discussion' && (
+                  <div className="thread">
+                    <button onClick={() => setIsDialogOpen(true)}>Add a new thread</button>
+                  </div>
+                )}
+
+                {isDialogOpen && (
+                  <div className="dialog" onClick={() => setIsDialogOpen(false)}>
+                    <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
+                      <h3>Add New Thread</h3>
+                      <form onSubmit={handleFormSubmit}>
+                        <label>Subject</label>
+                        <textarea name="subject" value={newThread.subject} onChange={(e) => setNewThread({ ...newThread, subject: e.target.value })} required />
+                        <label>Content</label>
+                        <textarea name="content" value={newThread.content} onChange={(e) => setNewThread({ ...newThread, content: e.target.value })} required />
+                        <div className="dialog-buttons">
+                          <button type="submit">Add Thread</button>
+                          <button type="button" onClick={() => setIsDialogOpen(false)} className="cancel-button">Cancel</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                )}
+
+                {activeTab === 'discussion' && classData.discussion.map((thread) => (
+                  <div key={thread.DiscussionId} className="classpost">
+                    <div className="class-userinfo">
+                      <img src="https://via.placeholder.com/50" alt="User profile" />
+                      <div className="user-details">
+                        <h6>{thread.author}</h6>
+                        <h6>{timeAgo(thread.date)}</h6>
+                      </div>
+                    </div>
+                    <div className="class-thread">
+                      <h6>{thread.title}</h6>
+                      <p>{thread.content}</p>
+                    </div>
+                    <div className="actions">
+                      <button className="heartBtn" onClick={() => toggleHeart(thread.DiscussionId, thread.likes.includes(username))}>
+                        <Icon icon={thread.likes.includes(username) ? 'fluent-emoji-flat:heart-suit' : 'fluent-mdl2:heart'} />
+                      </button>
+                      <h6 className="heart-count">{thread.likes.length}</h6>
+                      <button className="btncomment" onClick={() => setNewComment({ threadId: thread.DiscussionId, body: '' })}>
+                        <Icon icon="meteor-icons:message-dots" />
+                      </button>
+                    </div>
+                
+                    {thread.comments.length > 0 && (
+                      <div className="class-comments">
+                        {thread.comments.map((comment) => (
+                          <div key={comment.CommentId} className="comment">
+                            <h3>{comment.author}</h3>
+                            <p>{comment.content}</p>
+                            <h6>{timeAgo(comment.time)}</h6>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                ))}
+
+                {activeTab === 'people' && (
+                  <div className="people-list">
+                    <div className="people">
+                        <img src="https://via.placeholder.com/50" alt={classData.host} className='people--img'/>
+                        <h6>{classData.host} (host)</h6> 
+                      </div>
+                    {classData.people.map((person, index) => (
+                      <div key={index} className="people">
+                        <img src="https://via.placeholder.com/50" alt={person} className='people--img' />
+                        <h6>{person}</h6> {/* Display the person's name */}
+                      </div>
+                    ))}
+                  </div>
+                )}
+      
+
+                {newComment.threadId && (
+                  <div className="dialog" onClick={() => setNewComment({ body: '', threadId: null })}>
+                    <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
+                      <h3>New Comment</h3>
+                      <textarea value={newComment.body} onChange={(e) => setNewComment({ ...newComment, body: e.target.value })} required />
+                      <button onClick={handleAddComment}>Add Comment</button>
+                      <button onClick={() => setNewComment({ body: '', threadId: null })} className="cancel-button">Cancel</button>
+                    </div>
+                  </div>
+                )}
+            </div>
         </div>
     );
 }
