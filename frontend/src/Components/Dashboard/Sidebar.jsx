@@ -46,20 +46,6 @@ const Sidebar = () => {
                         {!isCollapsed && 'Flash Cards'}
                     </ul>
                 </Link>
-                <ul
-                    className={`item ${activeItem === 'notes' ? 'active' : ''}`}
-                    onClick={() => handleItemClick('notes')}
-                >
-                    <Icon icon="oui:index-edit" />
-                    {!isCollapsed && 'Notes'}
-                </ul>
-                <ul
-                    className={`item ${activeItem === 'graphs' ? 'active' : ''}`}
-                    onClick={() => handleItemClick('graphs')}
-                >
-                    <Icon icon="game-icons:anatomy" />
-                    {!isCollapsed && 'Graphs'}
-                </ul>
 
                 <Link to="/community">
                     <ul
