@@ -1,3 +1,8 @@
+.classpage-container {
+  height: 100vh;
+  overflow-y: scroll;
+}
+
 .class2-content {
     font-family: Arial, sans-serif;
     background-color: #F0F5F9;

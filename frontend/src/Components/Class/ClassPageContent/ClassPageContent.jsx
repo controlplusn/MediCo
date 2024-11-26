@@ -3,6 +3,7 @@ import ClassPageHeader from './ClassPageHeader';
 import ClassPage from './ClassPage';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import '../../../styles/classpage.css';
 
 export const ClassPageContent = () => {
     // fetch class id and username
@@ -35,7 +36,7 @@ export const ClassPageContent = () => {
  
 
     return (
-      <div>
+      <div className='classpage-container'>
         <ClassPageHeader />
         <ClassPage classId={classId} username={username} />
       </div>
