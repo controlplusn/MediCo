@@ -232,7 +232,11 @@ const ClassContent = () => {
                     <button className="Card" key={card._id}>
                       <div className="flashcard--head">
                         <img src={'https://via.placeholder.com/50'} alt="profile" />
-                        <button onClick={() => toggleDropdown(card._id)}>
+                        <button onClick={(e) =>  {
+                          e.preventDefault();
+                          e.stopPropagation();
+                          toggleDropdown(card._id)
+                        }}>
                           <Icon icon="oi:ellipses" />
                         </button>
                         {dropdownState[card._id] && (
