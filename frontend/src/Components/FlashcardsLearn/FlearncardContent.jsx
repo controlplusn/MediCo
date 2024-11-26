@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Icon } from '@iconify/react';
 
@@ -136,6 +136,14 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
             </div>
         ) : (
             <div className="Card--Container">
+                <button onClick={handleAddCard}>
+                    Add <Icon icon="material-symbols-light:add" />
+                </button>
+
+                <Link to="/flearn">
+                    <button>Learn</button>
+                </Link>
+                
                 {cardsToDisplay.map(card => (
                     <div key={card._id || card.cardId} className="Card">
                         <label>
