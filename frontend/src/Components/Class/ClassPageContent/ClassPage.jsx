@@ -64,42 +64,47 @@ const ClassPage = ({ classId, username }) => {
 
     // Toggle like/unlike on discussion threads
     const toggleHeart = async (threadId, isCurrentlyLiked) => {
-        try {
+        try {   
+            console.log('ToggleHeart called with:', { threadId, isCurrentlyLiked });
             const threadIndex = classData.discussions.findIndex((d) => d._id === threadId);
-            if (threadIndex === -1) return;
+            if (threadIndex === -1) {
+                console.log('Thread not found');
+                return;
+            }
+
+            const thread = classData.discussions[threadIndex];
+            console.log('Thread before update:', thread);
+        
+            if (!Array.isArray(thread.likes)) {
+                console.error('thread.likes is not an array:', thread.likes);
+                return;
+            }
     
             const response = isCurrentlyLiked
                 ? await axios.delete(`http://localhost:3001/api/class/unlikeDiscussion/${classId}/${threadId}/${username}`, { withCredentials: true })
                 : await axios.post(`http://localhost:3001/api/class/likeDiscussion/${classId}/${threadId}/${username}`, {}, { withCredentials: true });
     
+            console.log('API response:', response.data);
+
             if (response.status === 200) {
-                // Create a copy of discussions to update
-                const updatedDiscussions = [...classData.discussions];
-                updatedDiscussions[threadIndex] = {
-                    ...updatedDiscussions[threadIndex],
-                    likes: isCurrentlyLiked 
-                        ? updatedDiscussions[threadIndex].likes - 1 
-                        : updatedDiscussions[threadIndex].likes + 1
-                };
-    
-                // Update class data
-                setClassData(prevData => ({
-                    ...prevData,
-                    discussions: updatedDiscussions
-                }));
+                setClassData(prevData => {
+                    const updatedDiscussions = [...prevData.discussions];
+                    updatedDiscussions[threadIndex] = {
+                        ...updatedDiscussions[threadIndex],
+                        likes: response.data.likes,
+                        likesCount: response.data.likesCount
+                    };
+                    console.log('Updated thread:', updatedDiscussions[threadIndex]);
+                    return {
+                        ...prevData,
+                        discussions: updatedDiscussions
+                    };
+                });
             }
         } catch (error) {
             console.error('Error toggling like:', error);
         }
     };
-
-    // Toggle comments section
-    // const toggleComments = (threadId) => {
-    //     setExpandedThreads(prev => ({
-    //         ...prev,
-    //         [threadId]: !prev[threadId]
-    //     }));
-    // };
 
     // Add new comment to a thread
     const handleAddComment = async (e) => {
@@ -174,7 +179,6 @@ const ClassPage = ({ classId, username }) => {
     };
 
 
-
     if (loading) return <div>Loading...</div>;
     if (error) return <div>{error}</div>;
     if (!classData) return <div>No class data found</div>;
@@ -239,13 +243,12 @@ const ClassPage = ({ classId, username }) => {
                                     <p>{thread.content}</p>
                                 </div>
                                 <div className="actions">
-                                    <button className="heartBtn" onClick={() => toggleHeart(thread._id, thread.likes.includes(username))}>
-                                        <Icon icon={'fluent-mdl2:heart'} />
+
+                                    <button className="heartBtn" onClick={() => toggleHeart(thread.DiscussionId, thread.likes.includes(username))}>
+                                      <Icon icon={'fluent-mdl2:heart'} />
                                     </button>
-                                    <h6 className="heart-count">{thread.likes.length}</h6>
-                                    <button className="btncomment" onClick={() => setNewComment({ threadId: thread._id, body: '' })}>
-                                        <Icon icon="meteor-icons:message-dots" />
-                                    </button>
+                                    <h6 className="heart-count">{thread.likesCount || 0}</h6>
+
                                 </div>
                         
                                 {thread.comments && thread.comments.length > 0 && (
@@ -266,35 +269,6 @@ const ClassPage = ({ classId, username }) => {
                     )
                 )}
 
-                {activeTab === 'people' && (
-                    <div className="people-list">
-                        <div className="people">
-                            <img src="https://via.placeholder.com/50" alt={classData.host} className='people--img'/>
-                            <h6>{classData.host} (host)</h6> 
-                        </div>
-                        {classData.people && classData.people.length > 0 ? (
-                            classData.people.map((person, index) => (
-                                <div key={index} className="people">
-                                    <img src="https://via.placeholder.com/50" alt={person} className='people--img' />
-                                    <h6>{person}</h6>
-                                </div>
-                            ))
-                        ) : (
-                            <div>No other people in this class</div>
-                        )}
-                    </div>
-                )}
-
-                {newComment.threadId && (
-                    <div className="dialog" onClick={() => setNewComment({ body: '', threadId: null })}>
-                        <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
-                          <h3>New Comment</h3>
-                          <textarea value={newComment.body} onChange={(e) => setNewComment({ ...newComment, body: e.target.value })} required />
-                          <button onClick={handleAddComment}>Add Comment</button>
-                          <button onClick={() => setNewComment({ body: '', threadId: null })} className="cancel-button">Cancel</button>
-                        </div>
-                    </div>
-                )}
             </div>
         </div>
     );

@@ -60,16 +60,20 @@ router.get('/:username', verifyToken, async (req, res) => {
                     totalPeople,
                 },
                 discussions: classItem.discussion.map(discussion => ({
-                    _id: discussion._id,
-                    title: discussion.title,
-                    author: discussion.author,
-                    date: discussion.date,
-                    content: discussion.content,
-                    likes: discussion.likes.length,
-                    comments: discussion.comments.length
-                }))
+                  _id: discussion._id,
+                  title: discussion.title,
+                  author: discussion.author,
+                  date: discussion.date,
+                  content: discussion.content,
+                  likes: Array.isArray(discussion.likes) ? discussion.likes : [], // Ensure likes is always an array
+                  likesCount: Array.isArray(discussion.likes) ? discussion.likes.length : 0,
+                  comments: discussion.comments,
+                  commentsCount: discussion.comments.length
+              }))
             };
         });
+
+        console.log('Processed classes:', JSON.stringify(processedClasses, null, 2));
 
         // respond with process data and statistics
         return res.status(200).json({
@@ -416,14 +420,22 @@ router.post('/likeDiscussion/:classId/:DiscussionId/:username', verifyToken, asy
       if (discussion.likes.includes(username)) {
         return res.status(400).json({ message: 'You have already liked this discussion' });
       }
+
+      console.log('Before like:', discussion.likes);
+
+      if (!discussion.likes.includes(username)) {
+        discussion.likes.push(username);
+        await classData.save();
+        console.log('After like:', discussion.likes);
   
-      discussion.likes.push(username);
-      await classData.save();
-  
-      res.status(200).json({
-        message: 'Discussion liked successfully',
-        likesCount: discussion.likes.length,
-      });
+        res.status(200).json({
+          message: 'Discussion liked successfully',
+          likes: discussion.likes,
+          likesCount: discussion.likes.length,
+        });
+      } else {
+        res.status(400).json({ message: 'You have already liked this discussion' });
+      }
     } catch (error) {
       console.error('Error liking discussion:', error);
       res.status(500).json({ message: 'Internal Server Error' });
@@ -449,15 +461,18 @@ router.delete('/unlikeDiscussion/:classId/:DiscussionId/:username', verifyToken,
         return res.status(404).json({ message: 'Discussion not found' });
       }
   
-      if (!discussion.likes.includes(username)) {
-        return res.status(400).json({ message: 'You have not liked this discussion yet' });
-      }
-  
       discussion.likes = discussion.likes.filter(user => user !== username);
       await classData.save();
-  
+
+      console.log('Before unlike:', discussion.likes);
+      discussion.likes = discussion.likes.filter(user => user !== username);
+      await classData.save();
+      console.log('After unlike:', discussion.likes);
+
+
       res.status(200).json({
         message: 'Like removed successfully',
+        likes: discussion.likes,
         likesCount: discussion.likes.length,
       });
     } catch (error) {
