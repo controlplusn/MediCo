@@ -283,7 +283,20 @@ router.get('/:username/:id', verifyToken, async (req, res) => {
         // respond with processed data and statistics
         return res.status(200).json({
             success: true,
-            data: processedClass
+            data: {
+                _id: classData._id,
+                title: classData.title,
+                host: classData.host,
+                discussions: classData.discussion.map(discussion => ({
+                    _id: discussion._id,
+                    title: discussion.title,
+                    author: discussion.author,
+                    date: discussion.date,
+                    content: discussion.content,
+                    likes: discussion.likes.length,
+                    comments: discussion.comments.length
+                }))
+            }
         });
 
     } catch (error) {

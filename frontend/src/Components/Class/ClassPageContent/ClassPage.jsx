@@ -38,13 +38,19 @@ const ClassPage = ({ classId, username }) => {
 
     // fetch class data
     const fetchClassData = async () => {
+        console.log("Username on class page:", username);
+        console.log("Class id on class page:", classId);
+
         try {
             const response = await axios.get(`http://localhost:3001/api/class/${username}/${classId}`, {
                 withCredentials: true
             });
-            setClassData(response.data[0]);
+            console.log('Response:', response.data);
+
+            setClassData(response.data.data);
             setLoading(false);
         } catch (err) {
+            console.error('Error fetching class data:', err.response ? err.response.data : err.message);
             setError('Failed to fetch class data');
             setLoading(false);
         }
@@ -57,24 +63,30 @@ const ClassPage = ({ classId, username }) => {
     const handleTabChange = (tab) => setActiveTab(tab);
 
     // Toggle like/unlike on discussion threads
-    const toggleHeart = async (threadId, isOn) => {
+    const toggleHeart = async (threadId, isCurrentlyLiked) => {
         try {
-            const threadIndex = classData.discussion.findIndex((d) => d._id.toString() === threadId);
+            const threadIndex = classData.discussions.findIndex((d) => d._id === threadId);
             if (threadIndex === -1) return;
-
-            const thread = { ...classData.discussion[threadIndex] };
-            const response = isOn
+    
+            const response = isCurrentlyLiked
                 ? await axios.delete(`http://localhost:3001/api/class/unlikeDiscussion/${classId}/${threadId}/${username}`, { withCredentials: true })
                 : await axios.post(`http://localhost:3001/api/class/likeDiscussion/${classId}/${threadId}/${username}`, {}, { withCredentials: true });
-
+    
             if (response.status === 200) {
-                thread.likes = isOn
-                    ? thread.likes.filter((user) => user !== username)
-                    : [...thread.likes, username];
-
-                const updatedDiscussion = [...classData.discussion];
-                updatedDiscussion[threadIndex] = thread;
-                setClassData({ ...classData, discussion: updatedDiscussion });
+                // Create a copy of discussions to update
+                const updatedDiscussions = [...classData.discussions];
+                updatedDiscussions[threadIndex] = {
+                    ...updatedDiscussions[threadIndex],
+                    likes: isCurrentlyLiked 
+                        ? updatedDiscussions[threadIndex].likes - 1 
+                        : updatedDiscussions[threadIndex].likes + 1
+                };
+    
+                // Update class data
+                setClassData(prevData => ({
+                    ...prevData,
+                    discussions: updatedDiscussions
+                }));
             }
         } catch (error) {
             console.error('Error toggling like:', error);
@@ -138,7 +150,7 @@ const ClassPage = ({ classId, username }) => {
                 `http://localhost:3001/api/class/addDiscussion/${classId}`, 
                 {
                     title: newThread.subject,
-                    author: username, // Use current username instead of classData.host
+                    author: username,
                     content: newThread.content,
                 },
                 { withCredentials: true }
@@ -146,8 +158,10 @@ const ClassPage = ({ classId, username }) => {
 
             if (response.status === 201) {
                 // Update local state with new discussion
-                const updatedDiscussion = [...classData.discussion, response.data.discussion];
-                setClassData({ ...classData, discussion: updatedDiscussion });
+                setClassData(prevData => ({
+                    ...prevData,
+                    discussions: [...prevData.discussions, response.data.discussion]
+                }));
                 
                 // Reset form and close dialog
                 setNewThread({ subject: '', content: '' });
@@ -178,13 +192,12 @@ const ClassPage = ({ classId, username }) => {
               </div>
             </section>
 
-
             <nav>
                 <h5 onClick={() => handleTabChange('discussion')} className={activeTab === 'discussion' ? 'active' : ''}>Discussion</h5>
                 <h5 onClick={() => handleTabChange('people')} className={activeTab === 'people' ? 'active' : ''}>People</h5>
                 <h5 onClick={() => handleTabChange('classwork')} className={activeTab === 'classwork' ? 'active' : ''}>Classwork</h5>
             </nav>
-
+            
             <div className="content--content">
                 {activeTab === 'discussion' && (
                   <div className="thread">
@@ -210,68 +223,77 @@ const ClassPage = ({ classId, username }) => {
                   </div>
                 )}
 
-                {activeTab === 'discussion' && classData.discussion.map((thread) => (
-                  <div key={thread.DiscussionId} className="classpost">
-                    <div className="class-userinfo">
-                      <img src="https://via.placeholder.com/50" alt="User profile" />
-                      <div className="user-details">
-                        <h6>{thread.author}</h6>
-                        <h6>{timeAgo(thread.date)}</h6>
-                      </div>
-                    </div>
-                    <div className="class-thread">
-                      <h6>{thread.title}</h6>
-                      <p>{thread.content}</p>
-                    </div>
-                    <div className="actions">
-                      <button className="heartBtn" onClick={() => toggleHeart(thread.DiscussionId, thread.likes.includes(username))}>
-                        <Icon icon={thread.likes.includes(username) ? 'fluent-emoji-flat:heart-suit' : 'fluent-mdl2:heart'} />
-                      </button>
-                      <h6 className="heart-count">{thread.likes.length}</h6>
-                      <button className="btncomment" onClick={() => setNewComment({ threadId: thread.DiscussionId, body: '' })}>
-                        <Icon icon="meteor-icons:message-dots" />
-                      </button>
-                    </div>
-                
-                    {thread.comments.length > 0 && (
-                      <div className="class-comments">
-                        {thread.comments.map((comment) => (
-                          <div key={comment.CommentId} className="comment">
-                            <h3>{comment.author}</h3>
-                            <p>{comment.content}</p>
-                            <h6>{timeAgo(comment.time)}</h6>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                {activeTab === 'discussion' && (
+                    classData.discussions && classData.discussions.length > 0 ? (
+                        classData.discussions.map((thread) => (
+                            <div key={thread._id} className="classpost">
+                                <div className="class-userinfo">
+                                    <img src="https://via.placeholder.com/50" alt="User profile" />
+                                    <div className="user-details">
+                                        <h6>{thread.author}</h6>
+                                        <h6>{timeAgo(thread.date)}</h6>
+                                    </div>
+                                </div>
+                                <div className="class-thread">
+                                    <h6>{thread.title}</h6>
+                                    <p>{thread.content}</p>
+                                </div>
+                                <div className="actions">
+                                    <button className="heartBtn" onClick={() => toggleHeart(thread._id, thread.likes.includes(username))}>
+                                        <Icon icon={'fluent-mdl2:heart'} />
+                                    </button>
+                                    <h6 className="heart-count">{thread.likes.length}</h6>
+                                    <button className="btncomment" onClick={() => setNewComment({ threadId: thread._id, body: '' })}>
+                                        <Icon icon="meteor-icons:message-dots" />
+                                    </button>
+                                </div>
+                        
+                                {thread.comments && thread.comments.length > 0 && (
+                                    <div className="class-comments">
+                                        {thread.comments.map((comment) => (
+                                            <div key={comment._id} className="comment">
+                                                <h3>{comment.author}</h3>
+                                                <p>{comment.content}</p>
+                                                <h6>{timeAgo(comment.date)}</h6>
+                                            </div>
+                                        ))}
+                                    </div>
+                                )}
+                            </div>
+                        ))
+                    ) : (
+                        <div>No discussions found</div>
+                    )
+                )}
 
                 {activeTab === 'people' && (
-                  <div className="people-list">
-                    <div className="people">
-                        <img src="https://via.placeholder.com/50" alt={classData.host} className='people--img'/>
-                        <h6>{classData.host} (host)</h6> 
-                      </div>
-                    {classData.people.map((person, index) => (
-                      <div key={index} className="people">
-                        <img src="https://via.placeholder.com/50" alt={person} className='people--img' />
-                        <h6>{person}</h6> {/* Display the person's name */}
-                      </div>
-                    ))}
-                  </div>
+                    <div className="people-list">
+                        <div className="people">
+                            <img src="https://via.placeholder.com/50" alt={classData.host} className='people--img'/>
+                            <h6>{classData.host} (host)</h6> 
+                        </div>
+                        {classData.people && classData.people.length > 0 ? (
+                            classData.people.map((person, index) => (
+                                <div key={index} className="people">
+                                    <img src="https://via.placeholder.com/50" alt={person} className='people--img' />
+                                    <h6>{person}</h6>
+                                </div>
+                            ))
+                        ) : (
+                            <div>No other people in this class</div>
+                        )}
+                    </div>
                 )}
-      
 
                 {newComment.threadId && (
-                  <div className="dialog" onClick={() => setNewComment({ body: '', threadId: null })}>
-                    <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
-                      <h3>New Comment</h3>
-                      <textarea value={newComment.body} onChange={(e) => setNewComment({ ...newComment, body: e.target.value })} required />
-                      <button onClick={handleAddComment}>Add Comment</button>
-                      <button onClick={() => setNewComment({ body: '', threadId: null })} className="cancel-button">Cancel</button>
+                    <div className="dialog" onClick={() => setNewComment({ body: '', threadId: null })}>
+                        <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
+                          <h3>New Comment</h3>
+                          <textarea value={newComment.body} onChange={(e) => setNewComment({ ...newComment, body: e.target.value })} required />
+                          <button onClick={handleAddComment}>Add Comment</button>
+                          <button onClick={() => setNewComment({ body: '', threadId: null })} className="cancel-button">Cancel</button>
+                        </div>
                     </div>
-                  </div>
                 )}
             </div>
         </div>
