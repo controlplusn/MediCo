@@ -131,7 +131,7 @@ function App() {
       )
     },
     {
-      path: '/flearn',
+      path: '/flearn/:subsetId',
       element: (
         <ProtectedRoute>
           <Flearn />
