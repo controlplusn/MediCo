@@ -6,8 +6,7 @@ const { Schema, model } = mongoose;
 const CommentSchema = new Schema({
     content: { type: String, required: true },
     author: { type: String, required: true },
-    time: { type: Date, default: Date.now },
-    _id: { type: mongoose.Types.ObjectId, default:new mongoose.Types.ObjectId ,unique:true} // Automatically generated ObjectId
+    time: { type: Date, default: Date.now }
   });
   
   // Discussion Schema
@@ -17,8 +16,7 @@ const CommentSchema = new Schema({
     date: { type: Date, default: Date.now },
     content: { type: String, required: true },
     likes: { type: [String], default: [] },
-    comments: { type: [CommentSchema], default: [] },
-    _id: { type: mongoose.Types.ObjectId, default:new mongoose.Types.ObjectId, unique:true } // Automatically generated ObjectId
+    comments: { type: [CommentSchema], default: [] }
   });
   
 

@@ -29,7 +29,6 @@ router.get('/:username', verifyToken, async (req, res) => {
         const { username } = req.params;
 
         const userId = req.userId;
-        console.log("User id retrieved in fetching classes based on username:", userId);
 
         if (!userId) {
             return res.status(404).json({
@@ -37,8 +36,6 @@ router.get('/:username', verifyToken, async (req, res) => {
                 message: 'User id required'
             });
         }
-
-        console.log("Fetching classes for user:", username);
 
         // fetch classes where username is either in people or is the host
         const classes = await Class.find({
@@ -137,9 +134,6 @@ router.put('/editClass/:id', verifyToken, async (req, res) => {
         // Find the class and check if the user is the host
         const classToUpdate = await Class.findById(id);
 
-        console.log("User ID:", userId);
-        console.log("Class to update:", classToUpdate);
-
         if (!classToUpdate) {
             return res.status(404).json({
                 success: false,
@@ -228,20 +222,13 @@ router.get('/:username/:id', verifyToken, async (req, res) => {
     try {
         const { username, id } = req.params;
 
-        console.log("Username:", username);
-        console.log('Class id:', id);
-
         const userId = req.userId;
-        console.log("User id retrieved in fetching classes based on username:", userId);
-
         if (!userId) {
             return res.status(404).json({
                 success: false,
                 message: 'User id required'
             });
         }
-
-        console.log("Fetching class for user:", username);
 
         // fetch class where username is either in people or is the host
         const classData = await Class.findOne({
@@ -410,10 +397,6 @@ router.post('/addDiscussion/:classId', verifyToken, async (req, res) => {
 // Add a like to a specific discussion
 router.post('/likeDiscussion/:classId/:DiscussionId/:username', verifyToken, async (req, res) => {
     const { classId, DiscussionId, username } = req.params;
-
-    console.log("Class id:", classId);
-    console.log("Discussion id:", DiscussionId);
-    console.log("Username:", username);
   
     try {
       if (!mongoose.Types.ObjectId.isValid(classId) || !mongoose.Types.ObjectId.isValid(DiscussionId)) {

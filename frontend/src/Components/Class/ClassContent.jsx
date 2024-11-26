@@ -71,6 +71,8 @@ const ClassContent = () => {
 
     // Add a new class
     const handleAddClass = async () => {
+      console.log('New class title:', newClassTitle);
+
       if (!newClassTitle.trim()) return;
 
       try {
