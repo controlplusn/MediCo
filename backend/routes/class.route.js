@@ -423,12 +423,9 @@ router.post('/likeDiscussion/:classId/:DiscussionId/:username', verifyToken, asy
         return res.status(400).json({ message: 'You have already liked this discussion' });
       }
 
-      console.log('Before like:', discussion.likes);
-
       if (!discussion.likes.includes(username)) {
         discussion.likes.push(username);
         await classData.save();
-        console.log('After like:', discussion.likes);
   
         res.status(200).json({
           message: 'Discussion liked successfully',
@@ -466,10 +463,8 @@ router.delete('/unlikeDiscussion/:classId/:DiscussionId/:username', verifyToken,
       discussion.likes = discussion.likes.filter(user => user !== username);
       await classData.save();
 
-      console.log('Before unlike:', discussion.likes);
       discussion.likes = discussion.likes.filter(user => user !== username);
       await classData.save();
-      console.log('After unlike:', discussion.likes);
 
 
       res.status(200).json({
