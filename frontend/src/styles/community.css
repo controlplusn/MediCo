@@ -1,3 +1,7 @@
+.community-page-container {
+    display: flex;
+}
+
 .community-body {
     margin: 0;
     padding: 0;

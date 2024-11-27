@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import '../../styles/community.css';
 import { Icon } from '@iconify/react';
+import Sidebar from '../Dashboard/Sidebar';
 
 export const Community = ({ username }) => {
   const [threads, setThreads] = useState([]);
@@ -237,7 +238,10 @@ export const Community = ({ username }) => {
   
 
   return (
-    <div className="community-body">
+    <div className="community-page-container">
+      <Sidebar />
+
+      <div className="community-body">
         <div className="community-container">
           <div className="community--header">
             <img src="https://via.placeholder.com/50" alt="profile"></img> 
@@ -356,7 +360,7 @@ export const Community = ({ username }) => {
             ))}
         </div>
     </div>
-
+    </div>
   );
 };
 
