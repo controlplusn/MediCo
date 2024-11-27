@@ -269,7 +269,12 @@ router.get('/:username/:id', verifyToken, async (req, res) => {
                 likes: discussion.likes,
                 likesCount: discussion.likes.length,
                 isLikedByUser: discussion.likes.includes(username),
-                comments: discussion.comments.length
+                comments: discussion.comments.map(comment => ({
+                  _id: comment._id,
+                  author: comment.author,
+                  content: comment.content,
+                  time: comment.time
+              }))
             }))
         };
 

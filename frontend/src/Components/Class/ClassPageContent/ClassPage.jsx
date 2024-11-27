@@ -102,8 +102,6 @@ const ClassPage = ({ classId, username }) => {
         e.preventDefault();
         if (!newComment.body || !newComment.threadId) return;
 
-        console.log("New comment id:", newComment.threadId);
-
         try {
             const response = await axios.post(
                 `http://localhost:3001/api/class/addComment/${classId}/${newComment.threadId}`,
@@ -115,19 +113,22 @@ const ClassPage = ({ classId, username }) => {
             );
 
             if (response.status === 201) {
-                const updatedClassData = { ...classData };
-                const thread = updatedClassData.discussion.find((d) => d._id.toString() === newComment.threadId);
-                
-                if (thread) {
-                    thread.comments.push(response.data.comment);
-                }
+                setClassData(prevData => {
+                    const updatedDiscussions = prevData.discussions.map(thread => 
+                        thread._id === newComment.threadId
+                            ? { 
+                                ...thread, 
+                                comments: [...thread.comments, response.data.comment]
+                              }
+                            : thread
+                    );
+                    return { ...prevData, discussions: updatedDiscussions };
+                });
                 
                 setNewComment({ body: '', threadId: null });
-                setClassData(updatedClassData);
             }
         } catch (error) {
             console.error('Failed to add comment:', error);
-            // Optionally set an error state to show to the user
         }
     };
 
@@ -243,7 +244,7 @@ const ClassPage = ({ classId, username }) => {
                                     </button>
                                     <h6 className="heart-count">{thread.likes}</h6>
 
-                                    <button className="btncomment" onClick={() => setNewComment({ threadId: thread.DiscussionId, body: '' })}>
+                                    <button className="btncomment" onClick={() => setNewComment({ threadId: thread._id, body: '' })}>
                                       <Icon icon="meteor-icons:message-dots" />
                                     </button>
 
@@ -260,6 +261,38 @@ const ClassPage = ({ classId, username }) => {
                                         ))}
                                     </div>
                                 )}
+
+                                {activeTab === 'people' && (
+                                  <div className="people-list">
+                                    <div className="people">
+                                        <img src="https://via.placeholder.com/50" alt={classData.host} className='people--img'/>
+                                        <h6>{classData.host} (host)</h6> 
+                                      </div>
+                                    {classData.people.map((person, index) => (
+                                      <div key={index} className="people">
+                                        <img src="https://via.placeholder.com/50" alt={person} className='people--img' />
+                                        <h6>{person}</h6> {/* Display the person's name */}
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+
+                                {newComment.threadId && (
+                                    <div className="dialog" onClick={() => setNewComment({ body: '', threadId: null })}>
+                                      <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
+                                        <h3>New Comment</h3>
+                                        <textarea 
+                                          value={newComment.body} 
+                                          onChange={(e) => setNewComment({ ...newComment, body: e.target.value })} 
+                                          required 
+                                        />
+                                        <button onClick={handleAddComment}>Add Comment</button>
+                                        <button onClick={() => setNewComment({ body: '', threadId: null })} className="cancel-button">Cancel</button>
+                                      </div>
+                                    </div>
+                                )}
+                                
+
                             </div>
                         ))
                     ) : (
@@ -272,4 +305,4 @@ const ClassPage = ({ classId, username }) => {
     );
 }
 
-export default ClassPage;
+export default ClassPage;   
