@@ -45,7 +45,6 @@ const ClassPage = ({ classId, username }) => {
             const response = await axios.get(`http://localhost:3001/api/class/${username}/${classId}`, {
                 withCredentials: true
             });
-            console.log('Response:', response.data);
 
             setClassData(response.data.data);
             setLoading(false);
@@ -73,26 +72,18 @@ const ClassPage = ({ classId, username }) => {
             }
 
             const thread = classData.discussions[threadIndex];
-            console.log('Thread before update:', thread);
-        
-            if (!Array.isArray(thread.likes)) {
-                console.error('thread.likes is not an array:', thread.likes);
-                return;
-            }
     
             const response = isCurrentlyLiked
                 ? await axios.delete(`http://localhost:3001/api/class/unlikeDiscussion/${classId}/${threadId}/${username}`, { withCredentials: true })
                 : await axios.post(`http://localhost:3001/api/class/likeDiscussion/${classId}/${threadId}/${username}`, {}, { withCredentials: true });
-    
-            console.log('API response:', response.data);
 
             if (response.status === 200) {
                 setClassData(prevData => {
                     const updatedDiscussions = [...prevData.discussions];
                     updatedDiscussions[threadIndex] = {
                         ...updatedDiscussions[threadIndex],
-                        likes: response.data.likes,
-                        likesCount: response.data.likesCount
+                        likes: response.data.likesCount,
+                        isLikedByUser: !isCurrentlyLiked
                     };
                     console.log('Updated thread:', updatedDiscussions[threadIndex]);
                     return {
@@ -244,10 +235,17 @@ const ClassPage = ({ classId, username }) => {
                                 </div>
                                 <div className="actions">
 
-                                    <button className="heartBtn" onClick={() => toggleHeart(thread.DiscussionId, thread.likes.includes(username))}>
-                                      <Icon icon={'fluent-mdl2:heart'} />
+                                    <button 
+                                        className="heartBtn" 
+                                        onClick={() => toggleHeart(thread._id, thread.isLikedByUser)}
+                                    >
+                                        <Icon icon={thread.isLikedByUser ? 'fluent-emoji-flat:heart-suit' : 'fluent-mdl2:heart'} />
                                     </button>
-                                    <h6 className="heart-count">{thread.likesCount || 0}</h6>
+                                    <h6 className="heart-count">{thread.likes}</h6>
+
+                                    <button className="btncomment" onClick={() => setNewComment({ threadId: thread.DiscussionId, body: '' })}>
+                                      <Icon icon="meteor-icons:message-dots" />
+                                    </button>
 
                                 </div>
                         

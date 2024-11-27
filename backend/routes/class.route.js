@@ -266,7 +266,9 @@ router.get('/:username/:id', verifyToken, async (req, res) => {
                 author: discussion.author,
                 date: discussion.date,
                 content: discussion.content,
-                likes: discussion.likes.length,
+                likes: discussion.likes,
+                likesCount: discussion.likes.length,
+                isLikedByUser: discussion.likes.includes(username),
                 comments: discussion.comments.length
             }))
         };

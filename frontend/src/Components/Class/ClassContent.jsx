@@ -245,7 +245,9 @@ const ClassContent = () => {
                           <div className="dropdown-menu">
                             <ul>
                               <li
-                                onClick={() => {
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
                                   setSelectedClass(card);
                                   setNewClassTitle(card.title);
                                   setIsEditModalOpen(true);
@@ -254,14 +256,15 @@ const ClassContent = () => {
                                 Edit  
                               </li>
                               <li
-                                onClick={() => {
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
                                   setSelectedClass(card);
                                   setIsDeleteModalOpen(true);
                                 }}
                               >
                                 Delete
                               </li>
-                              <li>Share</li>
                             </ul>
                           </div>
                         )}
