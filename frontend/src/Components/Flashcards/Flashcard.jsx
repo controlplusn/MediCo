@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import Sidebar from '../Dashboard/Sidebar';
 import { useNavigate } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import '../../styles/flashcards.css';
@@ -195,7 +196,11 @@ const Flashcard = () => {
   if (error) return <div>Error: {error.message}</div>;
 
   return (
-    <div className="flashcard--container">
+    <div className="flashcard-page-container">
+      <Sidebar />
+
+      <div className="flashcard--container">  
+      
       <div className="flashcard--header">
         <h4>Flash Cards</h4>
       </div>
@@ -318,6 +323,8 @@ const Flashcard = () => {
         </div>
       )}
     </div>
+    </div>
+    
   );
 };
 
