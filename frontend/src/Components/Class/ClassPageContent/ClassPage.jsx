@@ -191,7 +191,6 @@ const ClassPage = ({ classId, username }) => {
             <nav>
                 <h5 onClick={() => handleTabChange('discussion')} className={activeTab === 'discussion' ? 'active' : ''}>Discussion</h5>
                 <h5 onClick={() => handleTabChange('people')} className={activeTab === 'people' ? 'active' : ''}>People</h5>
-                <h5 onClick={() => handleTabChange('classwork')} className={activeTab === 'classwork' ? 'active' : ''}>Classwork</h5>
             </nav>
             
             <div className="content--content">
@@ -262,21 +261,6 @@ const ClassPage = ({ classId, username }) => {
                                     </div>
                                 )}
 
-                                {activeTab === 'people' && (
-                                  <div className="people-list">
-                                    <div className="people">
-                                        <img src="https://via.placeholder.com/50" alt={classData.host} className='people--img'/>
-                                        <h6>{classData.host} (host)</h6> 
-                                      </div>
-                                    {classData.people.map((person, index) => (
-                                      <div key={index} className="people">
-                                        <img src="https://via.placeholder.com/50" alt={person} className='people--img' />
-                                        <h6>{person}</h6> {/* Display the person's name */}
-                                      </div>
-                                    ))}
-                                  </div>
-                                )}
-
                                 {newComment.threadId && (
                                     <div className="dialog" onClick={() => setNewComment({ body: '', threadId: null })}>
                                       <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
@@ -298,6 +282,21 @@ const ClassPage = ({ classId, username }) => {
                     ) : (
                         <div>No discussions found</div>
                     )
+                )}
+
+                {activeTab === 'people' && (
+                  <div className="people-list">
+                    <div className="people">
+                        <img src="https://via.placeholder.com/50" alt={classData.host} className='people--img'/>
+                        <h6>{classData.host} (host)</h6> 
+                      </div>
+                    {classData.people.map((person, index) => (
+                      <div key={index} className="people">
+                        <img src="https://via.placeholder.com/50" alt={person} className='people--img' />
+                        <h6>{person}</h6> {/* Display the person's name */}
+                      </div>
+                    ))}
+                  </div>
                 )}
 
             </div>
