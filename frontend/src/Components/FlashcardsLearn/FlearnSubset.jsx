@@ -6,7 +6,6 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 const FlearnSubset = ({ activeSubset }) => {
     const { categoryId } = useParams();
     const [categoryData, setCategoryData] = useState(null);
-    const [flashcard, setFlashcard] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -14,11 +13,9 @@ const FlearnSubset = ({ activeSubset }) => {
         const fetchCategoryData = async () => {
           try {
             const response = await axios.get(`http://localhost:3001/api/flashcard/cards/${categoryId}`);
-                
 
             if (response.data.success) {
               setCategoryData(response.data.data);
-            
             } else {
               setError(new Error(response.data.message));
             }
@@ -28,25 +25,32 @@ const FlearnSubset = ({ activeSubset }) => {
             setLoading(false);
           }
         };
-    
+
         fetchCategoryData();
     }, [categoryId]); 
 
-    // Calculate progress percentage
-    const progressPercentage = categoryData 
-    ? (activeSubset.name === 'All Subsets'
-        ? categoryData.statistics.learnedPercentage // If 'All Subsets' is active, use the learned percentage from the category's statistics
-        : categoryData.subsets.find(subset => subset.subsetName === activeSubset.name).statistics.learnedPercentage // If a specific subset is active, find its learned percentage
-    ) 
-    : 0.00;
-            
-    console.log('hdaosjdoa: ',categoryData);
+    // Calculate progress percentage safely
+    const getProgressPercentage = () => {
+        if (!categoryData) return 0;
+
+        const subsets = categoryData.subsets || [];
+        const statistics = categoryData.statistics || {};
+
+        if (activeSubset.name === 'All Subsets') {
+            return statistics.learnedPercentage || 0; // Fallback to 0 if the percentage is missing
+        }
+
+        const subset = subsets.find(subset => subset.subsetName === activeSubset.name);
+        return subset ? (subset.statistics.learnedPercentage || 0) : 0; // Fallback if subset doesn't exist or lacks data
+    };
+
+    const progressPercentage = getProgressPercentage();
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
 
-
     return (
-      <div className="progress--container">
+        <div className="progress--container">
             <h5>Progress</h5>
             <CircularProgressbar
                 value={parseFloat(progressPercentage)} // Ensure it's a number
@@ -62,7 +66,7 @@ const FlearnSubset = ({ activeSubset }) => {
                 })}
             />
         </div>
-    )
-}
+    );
+};
 
-export default FlearnSubset
+export default FlearnSubset;

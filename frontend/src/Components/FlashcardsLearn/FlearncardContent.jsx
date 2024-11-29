@@ -122,7 +122,7 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
         );
     }
     
-    console.log('Flashcard Statistics:', flashcard.statisticss);
+    //console.log('Flashcard Statistics:', flashcard.statistics);
 
 
     return (
