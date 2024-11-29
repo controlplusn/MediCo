@@ -11,6 +11,9 @@ const AddCard = () => {
     const [activeCard, setActiveCard] = useState(null);
     const [cardUpdateTrigger, setCardUpdateTrigger] = useState(0);
 
+
+    console.log('Active Card:', activeCard);
+
     // fetch authenticated user id
     useEffect(() => {
         const fetchUserId = async () => {

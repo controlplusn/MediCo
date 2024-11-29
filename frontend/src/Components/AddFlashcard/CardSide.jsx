@@ -14,17 +14,17 @@ const Card = ({ card, onClick }) => (
 
 const CardSide = ({ setActiveCard, userId, categoryId, subsetId, triggerCardUpdate, cardUpdateTrigger }) => {
     const [cards, setCards] = useState([]);
-
+    
     // fetching cards data
     useEffect(() => {
         const fetchCards = async () => {
           try {
             
             const response = subsetId !== 'all'
-            ? await axios.get(`http://localhost:3001/api/flashcard/cards/${categoryId}/${subsetId}`, {
+            ? await axios.get(`http://localhost:3001/api/flashcard/cards/${categoryId}/${subsetId}`, {//this will fetch the specific card set
                 withCredentials: true
               })
-            : await axios.get(`http://localhost:3001/api/flashcard/cards/${categoryId}`, {
+            : await axios.get(`http://localhost:3001/api/flashcard/cards/${categoryId}`, { // this will fetch all cards
                 withCredentials: true
               });
             if (!response.data.success) {

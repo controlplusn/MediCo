@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../styles/cardcontentadd.css';
 
 const CardContentAdd = ({ userId, categoryId, subsetId, activeCard, triggerCardUpdate }) => {
-    const [question, setQuestion] = useState('');
-    const [answer, setAnswer] = useState('');
     const [formData, setFormData] = useState({
         question: '',
         answer: ''
     });
+    //console.log('subsetId:', subsetId);
 
     useEffect(() => {
         if (activeCard) {
@@ -24,74 +23,110 @@ const CardContentAdd = ({ userId, categoryId, subsetId, activeCard, triggerCardU
         }
     }, [activeCard]);
 
-
     const handleSubmit = async (e) => {
         e.preventDefault();
-
+        const { question, answer } = formData;
         const trimmedQuestion = question.trim();
         const trimmedAnswer = answer.trim();
-
-        if (!userId || !categoryId || !subsetId || !trimmedQuestion || !trimmedAnswer) {
+    
+        // Validation check for required fields
+        if (!userId || !categoryId || !trimmedQuestion || !trimmedAnswer) {
             alert('All fields are required');
             return;
         }
-
-        console.log("Sending data:", { cardSetId: categoryId, subsetId, question: trimmedQuestion, answer: trimmedAnswer });
-
+    
+        let targetSubsetId = subsetId; // Default to provided subsetId
+    
         try {
-
-            const response = await axios.post(
-                `http://localhost:3001/api/flashcard/cards/addflashcard`,
-                { 
-                    cardSetId: categoryId, // Use categoryId as cardSetId
-                    subsetId,
-                    question: trimmedQuestion,
-                    answer: trimmedAnswer  
-                },
-                { 
-                    withCredentials: true,
+            // If subsetId is not provided, fetch the "All Subsets" subset
+            if (subsetId == 'all') {
+                console.log("Subset ID not provided. Looking for 'All Subsets'...");
+                const response = await axios.get(
+                    `http://localhost:3001/api/flashcard/cards/${categoryId}`,
+                    { withCredentials: true }
+                );
+    
+                const cardSet = response.data.data; // Assuming API returns the card set
+                const allSubsets = cardSet.subsets.find(subset => subset.subsetName === "All Subsets");
+    
+                if (!allSubsets) {
+                    alert("'All Subsets' subset not found. Please select a valid subset.");
+                    return;
                 }
-            );
-
-            if (response.data.success) {
-                console.log('Flashcard added successfully!');
-                setQuestion('');
-                setAnswer('');
-                triggerCardUpdate();
-            } else {
-                console.log(response.data.message || 'Failed to add flashcard.');
+    
+                targetSubsetId = allSubsets._id; // Use the ID of "All Subsets"
+                console.log("Using subset ID:", targetSubsetId);
             }
+    
+            let response;
+    
+            if (activeCard) {
+                // Update existing card if activeCard exists
+                response = await axios.put(
+                    `http://localhost:3001/api/flashcard/UpdateCards/${categoryId}/${targetSubsetId}/${activeCard._id}`,
+                    { question: trimmedQuestion, answer: trimmedAnswer },
+                    { withCredentials: true }
+                );
+    
+                if (response.data.success) {
+                    console.log('Flashcard updated successfully!');
+                }
+            } else {
+                // Add new flashcard if no activeCard exists
+                response = await axios.post(
+                    `http://localhost:3001/api/flashcard/cards/addflashcard`,
+                    {
+                        cardSetId: categoryId,
+                        subsetId: targetSubsetId,
+                        question: trimmedQuestion,
+                        answer: trimmedAnswer
+                    },
+                    { withCredentials: true }
+                );
+    
+                if (response.data.success) {
+                    console.log('Flashcard added successfully!');
+                }
+            }
+    
+            // Reset form and trigger card update after success
+            setFormData({ question: '', answer: '' });
+            triggerCardUpdate();
         } catch (error) {
-            console.error('Error adding flashcard:', error);
-            console.log('An error occurred while adding the flashcard.');
+            console.error('Error submitting flashcard:', error);
+            alert('An error occurred while submitting the flashcard.');
         }
     };
+    
+
+   
+    
 
     return (
         <div className="cardcontentadd">
             <div className="cardquestion">
-              <input
-                type="text"
-                value={question}
-                onChange={(e) => setQuestion(e.target.value)}
-                placeholder="Enter the question"
-              />
-              <h5>Question</h5>
+                <h5>Question</h5>
+                <input
+                    type="text"
+                    value={formData.question}
+                    onChange={(e) => setFormData({ ...formData, question: e.target.value })}
+                    placeholder="Enter the question"
+                />
             </div>
             <div className="cardanswer">
-              <input
-                type="text"
-                value={answer}
-                onChange={(e) => setAnswer(e.target.value)}
-                placeholder="Enter the answer"
-              />
-              <h5>Answer</h5>
+                <h5>Answer</h5>
+                <input
+                    type="text"
+                    value={formData.answer}
+                    onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
+                    placeholder="Enter the answer"
+                />
             </div>
             <button onClick={handleSubmit}>
-                Add Flashcard
+                {activeCard ? 'Update Flashcard' : 'Add Flashcard'}
             </button>
         </div>
     );
-}
+};
 
 export default CardContentAdd;
