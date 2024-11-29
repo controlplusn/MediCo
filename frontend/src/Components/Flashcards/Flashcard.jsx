@@ -95,6 +95,35 @@ const Flashcard = () => {
   };
 
 
+  // Function to toggle the archived state of a category
+const handleArchiveToggle = async (category) => {
+  const { _id, isArchived } = category;
+
+  try {
+    const response = await axios.put('http://localhost:3001/api/flashcard/updateArchiveStatus', {
+      id: _id,
+      isArchived: !isArchived, // Toggle the archive state
+    });
+
+    if (response.data.success) {
+      // Update the local state
+      const updatedData = data.map((item) =>
+        item._id === _id ? { ...item, isArchived: !isArchived } : item
+      );
+      setData(updatedData);
+      console.log(`Category ${isArchived ? 'unarchived' : 'archived'} successfully!`);
+    } else {
+      alert('Failed to update archive status');
+    }
+  } catch (error) {
+    console.error('Error updating archive status:', error);
+    alert('An error occurred while updating archive status.');
+  }
+
+  closeDropdown();
+};
+
+
   // Function to toggle the dropdown visibility for a specific card
   const toggleDropdown = (index, e) => {
     e.stopPropagation();
@@ -237,7 +266,7 @@ const Flashcard = () => {
                 <Icon
                   icon="oi:ellipses"
                   onClick={(e) => toggleDropdown(index, e)} // Pass index to toggleDropdown
-                />
+                  />
                 {openDropdown === index && (
                   <div className="dropdown-menu">
                     <ul>
@@ -245,7 +274,12 @@ const Flashcard = () => {
                       <hr className="borderline" />
                       <li>Quiz</li>
                       <hr className="borderline" /> 
-                      <li>Archived</li>
+                      <li onClick={(e) => { 
+                          e.stopPropagation(); 
+                          handleArchiveToggle(category); 
+                      }}>
+                        {category.isArchived ? 'Unarchive' : 'Archive'}
+                      </li>
                       <hr className="borderline" />
                       <li onClick={(e) => {e.stopPropagation(); handleDelete(category._id)}}>Delete</li>
                       <hr className="borderline" />

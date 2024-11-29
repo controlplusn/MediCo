@@ -200,6 +200,45 @@ router.put("/renameCard", async (req, res) => {
     }
 });
 
+router.put("/updateArchiveStatus", async (req, res) => {
+    try {
+        const { id, isArchived } = req.body;
+
+        // Validate input
+        if (!id || typeof isArchived !== 'boolean') {
+            return res.status(400).send({ 
+                success: false, 
+                message: "ID and isArchived (boolean) value are required" 
+            });
+        }
+
+        // Update the isArchived field for the specified document
+        const result = await Card.updateOne({ _id: id }, { $set: { isArchived: isArchived } });
+
+        // Check if any document was modified
+        if (result.nModified === 0) {
+            return res.status(404).send({ 
+                success: false, 
+                message: "No record found to update or no changes made" 
+            });
+        }
+
+        // Successfully updated
+        res.send({ 
+            success: true, 
+            message: "Archive status updated successfully" 
+        });
+
+    } catch (error) {
+        console.error("Error updating archive status:", error);
+        res.status(500).send({ 
+            success: false, 
+            message: "Server error" 
+        });
+    }
+});
+
+
 /// category-based flashcard
 router.get('/cards/:categoryId', verifyToken, async (req, res) => {
     const { categoryId } = req.params // from req parameter
