@@ -19,16 +19,33 @@ const CardSide = ({ setActiveCard, userId, categoryId, subsetId, triggerCardUpda
     useEffect(() => {
         const fetchCards = async () => {
           try {
-            const response = await axios.get(`http://localhost:3001/api/flashcard/cards/${categoryId}/${subsetId}`, {
-              withCredentials: true
-            });
             
+            const response = subsetId !== 'all'
+            ? await axios.get(`http://localhost:3001/api/flashcard/cards/${categoryId}/${subsetId}`, {
+                withCredentials: true
+              })
+            : await axios.get(`http://localhost:3001/api/flashcard/cards/${categoryId}`, {
+                withCredentials: true
+              });
             if (!response.data.success) {
               console.error('Failed to fetch cards:', response.data.message);
               return;
             }
             
-            setCards(response.data.data.cards || []);
+            if(subsetId === 'all'){
+              const allCards = response.data.data.subsets.reduce((acc, subset) => {
+                return acc.concat(subset.cards); // Add all cards from each subset
+            }, []);
+        
+            setCards(allCards); // Set the combined list of all cards
+            console.log(`Fetching all cards\n Cards:`, allCards);
+            }
+            else{
+              setCards(response.data.data.cards || []);
+              console.log(`Fetching cards for subsetId: ${subsetId} \n Cards:`, response.data.data.cards);
+            }
+
+            
           } catch (error) {
             console.error('Error fetching cards:', error);
           }
@@ -43,6 +60,10 @@ const CardSide = ({ setActiveCard, userId, categoryId, subsetId, triggerCardUpda
         setActiveCard(null);
       };
 
+    
+
+    
+
     return (
         <div className="fcards-container">
             <div className="fcards-header">
@@ -53,6 +74,7 @@ const CardSide = ({ setActiveCard, userId, categoryId, subsetId, triggerCardUpda
             <div className="cards-list">
               {cards.length > 0 ? (
                 cards.map((card) => (
+                
                   <React.Fragment key={card.CardId}>
                     <Card card={card} onClick={setActiveCard} />
                     <hr />

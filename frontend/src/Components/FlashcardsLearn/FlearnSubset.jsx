@@ -18,6 +18,7 @@ const FlearnSubset = ({ activeSubset }) => {
 
             if (response.data.success) {
               setCategoryData(response.data.data);
+            
             } else {
               setError(new Error(response.data.message));
             }
@@ -32,12 +33,14 @@ const FlearnSubset = ({ activeSubset }) => {
     }, [categoryId]); 
 
     // Calculate progress percentage
-    const progressPercentage =
-        activeSubset === 'All Subsets'
-            ? flashcard?.statistics?.learnedPercentage || '0.00'
-            : flashcard?.subsets?.find(subset => subset.subsetName === activeSubset)?.statistics?.learnedPercentage || '0.00';
-
-
+    const progressPercentage = categoryData 
+    ? (activeSubset.name === 'All Subsets'
+        ? categoryData.statistics.learnedPercentage // If 'All Subsets' is active, use the learned percentage from the category's statistics
+        : categoryData.subsets.find(subset => subset.subsetName === activeSubset.name).statistics.learnedPercentage // If a specific subset is active, find its learned percentage
+    ) 
+    : 0.00;
+            
+    console.log('hdaosjdoa: ',categoryData);
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
 

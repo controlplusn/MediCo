@@ -27,6 +27,7 @@ function MainFlashCardLearn() {
 
     fetchCategory();
   }, [categoryId]);
+  console.log('Category:', category)
 
   return (
     <div className="flearnempty--container">
