@@ -3,25 +3,81 @@
 }
 
 .react-calendar {
+    border: none !important; 
     border-radius: 10px;
     width: 100%;
-    max-width: 320px; 
-    margin-top: 20px;
-    margin-bottom: 20px;  
-    margin-left:10px;
+    max-width: 320px;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    box-shadow: none !important;
 }
 
 .react-calendar__tile {
     font-family: Arial, sans-serif;
-    font-size: 12px;
+    font-size: 14px;
     background-color: #F0F5F9;
-    padding: 8px;
+    padding: 10px;
     transition: background-color 0.3s ease;
+    border: none !important; 
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px; 
+}
+
+.react-calendar__month-view__weekdays__weekday {
+    visibility: hidden;  
+}
+
+.react-calendar__month-view__weekdays__weekday:nth-child(1)::after {
+    content: "S"; 
+    visibility: visible; 
+}
+
+.react-calendar__month-view__weekdays__weekday:nth-child(2)::after {
+    content: "M"; 
+    visibility: visible;
+}
+
+.react-calendar__month-view__weekdays__weekday:nth-child(3)::after {
+    content: "T"; 
+    visibility: visible;
+}
+
+.react-calendar__month-view__weekdays__weekday:nth-child(4)::after {
+    content: "W"; 
+    visibility: visible;
+}
+
+.react-calendar__month-view__weekdays__weekday:nth-child(5)::after {
+    content: "T"; 
+    visibility: visible;
+}
+
+.react-calendar__month-view__weekdays__weekday:nth-child(6)::after {
+    content: "F"; 
+    visibility: visible;
+}
+
+.react-calendar__month-view__weekdays__weekday:nth-child(7)::after {
+    content: "S"; 
+    visibility: visible;
+}
+
+.react-calendar__month-view__weekdays__weekday::after {
+    font-size: 16px; 
+    font-weight:500; 
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    height: 40px; 
+    text-align: center;  
 }
 
 .react-calendar__tile--active {
     background-color: #C9D6DF;
-    color: #F0F5F9;
+    color: #1e345a;
 }
 
 .react-calendar__tile--now {
@@ -30,17 +86,25 @@
 }
 
 .react-calendar__navigation__label {
-    font-size: 12px;
+    font-size: 16px;
     font-weight: bold;
     color: #1E2022;
     visibility: visible;
     margin-bottom: 20px;
+}
 
+.react-calendar__navigation {
+    display: flex; 
+    justify-content: flex-end; 
+    align-self: flex-end;
+    visibility: hidden;
+    width: 100%; 
 }
 
 .react-calendar__navigation button {
-    background-color: transparent;
     border: none;
-    font-size: 15px;
-    margin-bottom: 5px;
+    display: block;
+    background-color: transparent;
+    margin-right: 10px; 
+    font-size: 18px;
 }

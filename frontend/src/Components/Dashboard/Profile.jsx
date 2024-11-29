@@ -6,7 +6,7 @@ import ToDoList from './ToDoList';
 const Profile = () => {
     return <div className="profile"> 
         <User />
-        <Calendar  />
+        <Calendar  locale="en-US" />
         <ToDoList />
     </div>;
 
