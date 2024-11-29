@@ -80,10 +80,12 @@ const ClassPage = ({ classId, username }) => {
             if (response.status === 200) {
                 setClassData(prevData => {
                     const updatedDiscussions = [...prevData.discussions];
+                    const likeCount = (isCurrentlyLiked) ? -1 : 1;
                     updatedDiscussions[threadIndex] = {
                         ...updatedDiscussions[threadIndex],
                         likes: response.data.likesCount,
-                        isLikedByUser: !isCurrentlyLiked
+                        isLikedByUser: !isCurrentlyLiked,
+                        likesCount: updatedDiscussions[threadIndex].likesCount + likeCount
                     };
                     console.log('Updated thread:', updatedDiscussions[threadIndex]);
                     return {
@@ -96,6 +98,8 @@ const ClassPage = ({ classId, username }) => {
             console.error('Error toggling like:', error);
         }
     };
+
+    console.log('ClassData:', classData);
 
     // Add new comment to a thread
     const handleAddComment = async (e) => {
@@ -241,7 +245,7 @@ const ClassPage = ({ classId, username }) => {
                                     >
                                         <Icon icon={thread.isLikedByUser ? 'fluent-emoji-flat:heart-suit' : 'fluent-mdl2:heart'} />
                                     </button>
-                                    <h6 className="heart-count">{thread.likes}</h6>
+                                    <h6 className="heart-count">{thread.likesCount}</h6>
 
                                     <button className="btncomment" onClick={() => setNewComment({ threadId: thread._id, body: '' })}>
                                       <Icon icon="meteor-icons:message-dots" />

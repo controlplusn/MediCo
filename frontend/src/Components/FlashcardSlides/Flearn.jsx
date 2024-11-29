@@ -7,13 +7,14 @@ import '../../styles/flearn.css';
 
 
 export const Flearn = () => {
-    const { subsetId } = useParams();
+    const { subsetId, categoryId } = useParams();
+
 
     return (
       <div>
           <FlearnHeader />
           <div style={{ display: 'flex', width: '100%' }}>
-              <FlearnContent subsetId={subsetId} />
+              <FlearnContent categoryId={categoryId} subsetId={subsetId} />
               <FlearnSide />
           </div>
       </div>

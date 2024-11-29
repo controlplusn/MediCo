@@ -140,7 +140,7 @@ const FlearncardContent = ({ activeSubset, categoryId, category }) => {
                     Add <Icon icon="material-symbols-light:add" />
                 </button>
 
-                <Link to={`/flearn/${activeSubset.id}`}>
+                <Link to={`/flearn/${categoryId}/${activeSubset.id}`}>
                     <button>Learn</button>
                 </Link>
                 

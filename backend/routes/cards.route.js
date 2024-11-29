@@ -563,4 +563,82 @@ router.put('/UpdateCards/:cardSetId/:subsetId/:cardId', verifyToken, async (req,
     }
 });
 
+router.put('/UpdateLearn/:cardSetId/:subsetId/:cardId', verifyToken, async (req, res) => {
+    console.log('Retrieved updating of flashcards');
+    try {
+        const { cardSetId, subsetId, cardId } = req.params;
+        const { learnVal } = req.body; // Extract learnVal from the request body
+        const userId = req.userId; // Extracted from the JWT token middleware
+
+        console.log('CardSetId:', cardSetId);
+        console.log('SubsetId:', subsetId);
+        console.log('CardId:', cardId);
+
+        // Validation checks
+        if (!cardSetId || !subsetId || !cardId) {
+            return res.status(400).json({ success: false, message: "Missing required parameters." });
+        }
+
+        // Validate learnVal is a boolean
+        if (typeof learnVal !== 'boolean') {
+            return res.status(400).json({ success: false, message: "learnVal must be a boolean." });
+        }
+
+        // Find the card set by cardSetId and userId
+        const cardSet = await Card.findOne({ _id: cardSetId, userId: userId });
+        if (!cardSet) {
+            return res.status(404).json({ success: false, message: "Card set not found." });
+        }
+
+        console.log("Card set:", cardSet);
+        console.log("Subset ID to find:", subsetId);
+
+        let subset;
+        let card;
+
+        if (subsetId === 'all') {
+            // Handle the 'all' case
+            // Find the card across all subsets
+            for (const s of cardSet.subsets) {
+                card = s.cards.find(c => c.CardId.toString() === cardId);
+                if (card) {
+                    subset = s;
+                    break;
+                }
+            }
+        } else {
+            // Find the specific subset
+            subset = cardSet.subsets.find(s => s._id.toString() === subsetId);
+            if (subset) {
+                card = subset.cards.find(c => c.CardId.toString() === cardId);
+            }
+        }
+        console.log("Card:", card);
+        console.log("Subset:", subset);
+        if (!subset || !card) {
+            console.log("Subsets in card set:", cardSet.subsets.map(s => ({ id: s._id.toString(), name: s.subsetName })));
+            return res.status(404).json({ success: false, message: "Subset or card not found." });
+        }
+        
+        console.log("Found subset:", subset);
+        console.log("Found card:", card);
+
+        // Update the learnVal field of the card
+        card.learnVal = learnVal;
+
+        // Save the changes to the database
+        await cardSet.save();
+
+        res.status(200).json({
+            success: true,
+            message: "Flashcard learnVal updated successfully.",
+            updatedCard: card,
+        });
+    } catch (error) {
+        console.error("Error updating flashcard:", error);
+        res.status(500).json({ success: false, message: "Server error." });
+    }
+});
+
+
 export default router;
