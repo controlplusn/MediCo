@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import FlearnHeader from './FlearnHeader'; 
 import FlearnContent from './FlearnContent';
-// import FlearnSide from './FlearnSide';
+import FlearnSide from './FlearnSide';
 import '../../styles/flearn.css';
 
 
@@ -14,6 +14,7 @@ export const Flearn = () => {
           <FlearnHeader />
           <div style={{ display: 'flex', width: '100%' }}>
               <FlearnContent subsetId={subsetId} />
+              <FlearnSide />
           </div>
       </div>
     );
