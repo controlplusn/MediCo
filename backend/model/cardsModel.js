@@ -34,7 +34,8 @@ const collectionSchema = new mongoose.Schema({
   name: { type: String, required: true },
   subsets: [subsetSchema], // Array of Subset subdocuments
   isArchived: { type: Boolean, default: false }
-});
+
+},{timestamps: true});
 
 // Model
 const Card = mongoose.model('cards', collectionSchema);

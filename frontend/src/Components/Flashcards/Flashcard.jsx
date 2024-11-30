@@ -296,7 +296,7 @@ const handleArchiveToggle = async (category) => {
                 </progress>
                 <div className="content--h6">
                   <h6>
-                    {category.subsets?.length || 0} Subsets{' '}
+                    {category.subsets?.filter(subset => subset.subsetName != "All Subsets").length || 0} Subsets{' '}
                     <span className="vertical-line"></span>
                     {category.statistics?.totalCards || 0} Flashcards
                   </h6>
