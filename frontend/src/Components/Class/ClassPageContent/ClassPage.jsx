@@ -184,10 +184,13 @@ const ClassPage = ({ classId, username }) => {
         <div className="class2-content">
             <section className="ClassCard">
               <div className="CardDetails">
+                <div className="CardDetails2">
                 <img src="https://via.placeholder.com/50" alt="Profile" />
                 <div className="subnauthor">
                   <h5>{classData.title}</h5>
                   <h6>By {classData.host}</h6>
+                </div>
+                
                 </div>
               </div>
             </section>
