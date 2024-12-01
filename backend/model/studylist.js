@@ -5,17 +5,6 @@ const Slist = new mongoose.Schema({
         type: Date,
         required: true,
     },
-    progress: {
-        type: Number,
-        min: 0, // Minimum progress value
-        max: 100, // Maximum progress value
-        required: true,
-    },
-    status: {
-        type: String,
-        enum: ['Done', 'Not Done','Pending'], // Possible values for status
-        required: true,
-    },
     subject: {
         type: String,
         required: true, 
@@ -26,7 +15,7 @@ const Slist = new mongoose.Schema({
         required: true,
     },
     FlashCard: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId, // Reference to the User collection
         required: true,
     },
     userId: {
