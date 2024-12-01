@@ -252,7 +252,7 @@ const handleArchiveToggle = async (category) => {
         <button onClick={() => openCreateDialog({})}>
           <h5 style={{ margin: '0 5px 0 0', padding: '8px' }}>Add</h5>
           <div>
-            <Icon icon="ic:twotone-plus" />
+            <Icon icon="ic:twotone-plus"  />
           </div>
         </button>
       </div>
@@ -262,11 +262,11 @@ const handleArchiveToggle = async (category) => {
           .filter(category => (activeTab === 'active' ? !category.isArchived : category.isArchived))
           .map((category, index) => (
             <div className="Card" key={index} onClick={() => handleCardClick(category._id)}>
-              <div className="flashcard--head">
+              <div className="flashcard--head2">
                 <Icon
                   icon="oi:ellipses"
                   onClick={(e) => toggleDropdown(index, e)} // Pass index to toggleDropdown
-                  />
+                  className="ellipsesbtn" />
                 {openDropdown === index && (
                   <div className="dropdown-menu">
                     <ul>
@@ -288,7 +288,7 @@ const handleArchiveToggle = async (category) => {
                   </div>
                 )}
               </div>
-              <div className="flashcard--body">
+              <div className="flashcard--body2">
                 <h5>{category.name}</h5>
                 <progress 
                   value={category.statistics?.learnedPercentage || 0} 

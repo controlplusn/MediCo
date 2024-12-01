@@ -136,10 +136,11 @@ function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId 
 
   return (
     <div className='flearn--header'>
+      <Icon icon="weui:back-outlined"/>
       <h5>{flashcard?.name}</h5> {/* Display the active subset */}
             <button onClick={toggleDropdown}>
                 {activeSubset.name || 'Select Subset'} <Icon icon="fe:arrow-down" />
-            </button>
+            </button>      
             {isDropdownOpen && (
                 <div className="dropdown">
                     <ul>

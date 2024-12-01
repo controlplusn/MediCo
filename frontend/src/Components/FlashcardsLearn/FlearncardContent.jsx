@@ -118,6 +118,7 @@ const FlearncardContent = ({ activeSubset, categoryId}) => {
                 <button onClick={handleAddCard}>
                     Add <Icon icon="material-symbols-light:add" />
                 </button>
+                
             </div>
         );
     }
@@ -128,21 +129,28 @@ const FlearncardContent = ({ activeSubset, categoryId}) => {
     return (
         <section>
             {cardsToDisplay.length === 0 ? (
-            <div>
+            <div className="left--sideflearn">
+                <img src="../assets/flearnimage.jpg" alt="Anatomy graphic" />
                 <h4>No cards available for the selected subset.</h4>
-                <button onClick={handleAddCard}>
+                <button onClick={handleAddCard} className="btnflearn">
                     Add <Icon icon="material-symbols-light:add" />
                 </button>
             </div>
         ) : (
             <div className="Card--Container">
+                <div className="Card--Container2">
                 <button onClick={handleAddCard}>
                     Add <Icon icon="material-symbols-light:add" />
                 </button>
-
+                <div className="Card--Container3">
                 <Link to={`/flearn/${categoryId}/${activeSubset.id}`}>
                     <button>Learn</button>
                 </Link>
+                </div>
+
+                
+                </div>
+                
                 
                 {cardsToDisplay.map(card => (
                     <div key={card._id || card.cardId} className="Card">

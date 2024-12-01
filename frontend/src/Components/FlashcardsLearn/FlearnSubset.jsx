@@ -53,18 +53,20 @@ const FlearnSubset = ({ activeSubset }) => {
         <div className="progress--container">
             <h5>Progress</h5>
             <CircularProgressbar
-                value={parseFloat(progressPercentage)} // Ensure it's a number
-                text={`${progressPercentage}%`}
-                styles={buildStyles({
-                    rotation: 0.25,
-                    strokeLinecap: 'round',
-                    pathColor: '#4caf50',
-                    textColor: '#1E2022',
-                    trailColor: '#d6d6d6',
-                    textSize: '20px',
-                    backgroundColor: '#f3f3f3',
-                })}
-            />
+    value={parseFloat(progressPercentage)} // Ensure it's a number
+    text={`${progressPercentage}%`}
+    styles={buildStyles({
+        rotation: 0.25,
+        strokeLinecap: 'round',
+        pathColor: '#4caf50',
+        textColor: '#1E2022',
+        trailColor: '#d6d6d6',
+        textSize: '16px', // Decrease the text size
+        backgroundColor: '#f3f3f3',
+  
+    })}
+/>
+
         </div>
     );
 };

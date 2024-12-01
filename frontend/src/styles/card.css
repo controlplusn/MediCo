@@ -13,6 +13,8 @@
     width: 100%; 
 }
 
+
+
 .cards {
     display: flex;
     flex-direction: row; 

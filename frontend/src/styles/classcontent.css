@@ -68,6 +68,18 @@
   color: #333;
 }
 
+.flashcard--head2 {
+  display: flex;
+  justify-content: flex-end;
+  position: static;
+  top: 10px;
+  width: 90%;
+  right: 10px;
+  cursor: pointer;
+  font-size: 20px;
+  color: #333;
+}
+
 .flashcard--head img {
   border-radius: 50%;
   width: 50px;
@@ -93,6 +105,7 @@
   border: none;
   background-color: transparent;
   cursor: pointer;
+  justify-content: flex-end;
 }
 
 .flashcard--body h5 {
