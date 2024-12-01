@@ -311,9 +311,7 @@ export const Community = ({ username }) => {
 
             {threads.map((thread) => (
               <div key={thread.id} className="community--thread">
-                <div className="communityheader--thread">
-                  <h5>{thread.title}</h5>
-                </div>
+               
                 <div className="communityuser--thread">
                   <img src={"https://via.placeholder.com/30"} alt="User " />
                   <div className="community--userinfo">
@@ -323,6 +321,9 @@ export const Community = ({ username }) => {
                   <div className="community--label">
                     <h6>{thread.label}</h6>
                   </div>
+                </div>
+                <div className="communityheader--thread">
+                  <h5>{thread.title}</h5>
                 </div>
                 <div className="thread--content">
                   <h6>{thread.content}</h6>
