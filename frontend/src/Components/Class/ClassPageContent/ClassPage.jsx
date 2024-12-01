@@ -4,23 +4,8 @@ import axios from 'axios';
 import '../../../styles/classpage.css';
 import { useParams } from 'react-router-dom';
 
-// Function to calculate time difference
-const timeAgo = (timestamp) => {
-    const now = new Date();
-    const then = new Date(timestamp);
-    const diffInSeconds = Math.floor((now - then) / 1000);
-  
-    const days = Math.floor(diffInSeconds / (24 * 60 * 60));
-    const hours = Math.floor((diffInSeconds % (24 * 60 * 60)) / 3600);
-    const minutes = Math.floor((diffInSeconds % 3600) / 60);
-    const seconds = diffInSeconds % 60;
-  
-    if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
-    if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    if (seconds > 0) return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
-    return 'Just now';
-};
+
+
 
 
 const ClassPage = ({ classId, username }) => {
@@ -32,6 +17,32 @@ const ClassPage = ({ classId, username }) => {
     const [newComment, setNewComment] = useState({ body: '', threadId: null });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    // Function to calculate time difference
+    const timeAgo = (timestamp) => {
+        console.log(`Timestamp: ${timestamp}`);
+        const now = new Date();
+        const then = new Date(timestamp);
+
+        // Handle invalid dates
+        if (isNaN(then)) {
+            return 'Invalid date';
+        }
+
+        const diffInSeconds = Math.floor((now - then) / 1000);
+
+        const days = Math.floor(diffInSeconds / (24 * 60 * 60));
+        const hours = Math.floor((diffInSeconds % (24 * 60 * 60)) / 3600);
+        const minutes = Math.floor((diffInSeconds % 3600) / 60);
+        const seconds = diffInSeconds % 60;
+
+        if (days > 0) return `${days} day${days > 1 ? 's' : ''} ago`;
+        if (hours > 0) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+        if (minutes > 0) return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+        if (seconds > 0) return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+
+        return 'Just now';
+    };
 
     // Add new comment states
     const [expandedThreads, setExpandedThreads] = useState({});
@@ -260,9 +271,9 @@ const ClassPage = ({ classId, username }) => {
                                     <div className="class-comments">
                                         {thread.comments.map((comment) => (
                                             <div key={comment._id} className="comment">
-                                                <h3>{comment.author}</h3>
+                                                <h3>{console.log("Comments:",comment)}{comment.author}</h3>
                                                 <p>{comment.content}</p>
-                                                <h6>{timeAgo(comment.date)}</h6>
+                                                <h6>{timeAgo(comment.createdAt)}</h6>
                                             </div>
                                         ))}
                                     </div>

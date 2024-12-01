@@ -23,9 +23,9 @@ router.get("/studylist", verifyToken, async (req, res) => {
 });
 
 router.post("/add", verifyToken, async (req,res) => {
-    const { date, progress, status, subject, type, FlashCard } = req.body;
+    const { date, subject, type, FlashCard } = req.body;
 
-    if (!date || !progress || !status || !subject || !type || !FlashCard) {
+    if (!date ||  !subject || !type || !FlashCard) {
         return res.status(400).json({
             success: false,
             message: "All fields are required to create a study list."
@@ -39,12 +39,10 @@ router.post("/add", verifyToken, async (req,res) => {
         // Create new study list 
         const newStudy = new studList({
             date,
-            progress,
-            status,
             subject,
             type,
             FlashCard,
-            userId
+            userId  
         });
 
         const saveStudy = await newStudy.save();
@@ -79,8 +77,6 @@ router.put("/update", verifyToken, async (req, res) => {
 
         // Update the fields
         studyItem.date = date || studyItem.date;  // Update date if provided, otherwise keep the old value
-        studyItem.progress = progress || studyItem.progress;
-        studyItem.status = status || studyItem.status;
         studyItem.subject = subject || studyItem.subject;
         studyItem.type = type || studyItem.type;
         studyItem.FlashCard = FlashCard || studyItem.FlashCard;

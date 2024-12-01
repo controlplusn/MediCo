@@ -273,7 +273,7 @@ router.get('/:username/:id', verifyToken, async (req, res) => {
                   _id: comment._id,
                   author: comment.author,
                   content: comment.content,
-                  time: comment.time
+                  createdAt: comment.createdAt
               }))
             }))
         };

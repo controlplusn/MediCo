@@ -71,6 +71,8 @@ router.get("/cards", verifyToken, async (req, res) => {
                     learnedPercentage: learnedPercentage.toFixed(2), // Format percentage to 2 decimal places
                 },
                 isArchived: data_item.isArchived,
+                updatedAt: data_item.updatedAt,
+                createdAt: data_item.createdAt,
             };
         });
 

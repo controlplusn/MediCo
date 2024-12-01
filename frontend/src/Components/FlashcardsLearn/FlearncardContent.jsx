@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Icon } from '@iconify/react';
 
-const FlearncardContent = ({ activeSubset, categoryId, category }) => {
+const FlearncardContent = ({ activeSubset, categoryId}) => {
     const [flashcard, setFlashcard] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);

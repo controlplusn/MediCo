@@ -1,52 +1,97 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import '../../styles/card.css';
 
 const Card = () => {
     const handleCardClick = (subject) => {
         console.log(`${subject} card clicked`);
     };
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [userId, setUserId] = useState(null);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+          try {
+            const response = await axios.get('http://localhost:3001/api/auth/check-auth', {
+              withCredentials: true,
+            });
+            if (response.data.user) {
+              setUserId(response.data.user._id);
+            }
+          } catch (err) {
+            console.error('Error checking authentication:', err);
+          }
+        };
+    
+        fetchUser();
+      }, []);
+
+        // Fetch data from the API
+  useEffect(() => {
+    if (userId) {
+      // Only fetch the cards if userId is available
+      const fetchData = async () => {
+        try {
+          const response = await axios.get(`http://localhost:3001/api/flashcard/cards`, {
+            params: { userId },
+            withCredentials: true
+          });
+
+          console.log("Fetched data:", response.data.data);
+  
+          if (response.data.success) {
+            setData(response.data.data); // Set the data in state
+          } else {
+            console.error("Failed to fetch data:", response.data.message);
+            setError(new Error(response.data.message));
+          }
+  
+        } catch (err) {
+          setError(err);
+        } finally {
+          setLoading(false);
+        }
+      };
+  
+      fetchData();
+    }
+  }, [userId]);
+
+  //console.log("Data:", data);
+
 
     return (
         <div className="card--container">
             <h5 className="card--header">Recent Task</h5>
             <div className="cards">
-                <button className="card--item" onClick={() => handleCardClick('Biochemistry')}>
-                    <div className="images--icon">
-                        <img src="https://via.placeholder.com/10" alt="Biochemistry icon" />
-                        <img src="https://via.placeholder.com/10" alt="Biochemistry icon" />
-                        <img src="https://via.placeholder.com/10" alt="Biochemistry icon" />
-                    </div>
-                    <h2>Biochemistry</h2>
-                    <progress value={0.3} max={1}></progress>
-                    <h5>
-                        5 tasks <span className="vertical-line"></span> 30%
-                    </h5>
-                </button>
-                <button className="card--item" onClick={() => handleCardClick('Anatomy')}>
-                    <div className="images--icon">
-                        <img src="https://via.placeholder.com/10" alt="Anatomy icon" />
-                        <img src="https://via.placeholder.com/10" alt="Anatomy icon" />
-                        <img src="https://via.placeholder.com/10" alt="Anatomy icon" />
-                    </div>
-                    <h2>Anatomy</h2>
-                    <progress value={0.8} max={1}></progress>
-                    <h5>
-                        25 tasks <span className="vertical-line"></span> 80%
-                    </h5>
-                </button>
-                <button className="card--item" onClick={() => handleCardClick('Physiology')}>
-                    <div className="images--icon">
-                        <img src="https://via.placeholder.com/10" alt="Physiology icon" />
-                        <img src="https://via.placeholder.com/10" alt="Physiology icon" />
-                        <img src="https://via.placeholder.com/10" alt="Physiology icon" />
-                    </div>
-                    <h2>Physiology</h2>
-                    <progress value={0.5} max={1}></progress>
-                    <h5>
-                        15 tasks <span className="vertical-line"></span> 50%
-                    </h5>
-                </button>
-            </div>
+                {data && data.length > 0 ? (
+                    [...data]
+                    .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)) // Sort by most recent
+                    .slice(0, Math.min(data.length, 3)) // Select top 1, 2, or 3 cards
+                    .map((item) => (
+                        <button
+                        key={item._id}
+                        className="card--item"
+                        onClick={() => handleCardClick(item.name)}
+                        >
+                        <h2>{item.name}</h2>
+                        <progress
+                            value={parseFloat(item.statistics.learnedPercentage) / 100}
+                            max={1}
+                        ></progress>
+                        <h5>
+                            {item.subsets?.filter(subset => subset.subsetName != "All Subsets").length || 0} Subsets{' '}
+                            <span className="vertical-line"></span>{" "}
+                            {item.statistics?.totalCards || 0} Flashcards
+                        </h5>
+                        </button>
+                    ))
+                ) : (
+                    <div className="no-recent-task">No recent tasks</div>
+                )}
+                </div>
         </div>
     );
 };

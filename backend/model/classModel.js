@@ -6,8 +6,8 @@ const { Schema, model } = mongoose;
 const CommentSchema = new Schema({
     content: { type: String, required: true },
     author: { type: String, required: true },
-    time: { type: Date, default: Date.now }
-  });
+    
+  },{timestamps:true});
   
   // Discussion Schema
   const DiscussionSchema = new Schema({

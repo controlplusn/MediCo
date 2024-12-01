@@ -158,10 +158,6 @@ router.get("/comment/:commentId", async (req,res) =>{
   try{
     const data = await Comment.find({ commentId : commentId});
 
-    if (data.length === 0) {
-      return res.status(404).json({ success: false, message: "No comments found" });
-    }
-
     res.json({ success: true, data: data });
 
   }catch(e){

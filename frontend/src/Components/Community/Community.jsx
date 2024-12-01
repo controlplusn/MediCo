@@ -244,12 +244,8 @@ export const Community = ({ username }) => {
       <div className="community-body">
         <div className="community-container">
           <div className="community--header">
-            <h4>Community</h4>
-            <div className="community--header2">
             <img src="https://via.placeholder.com/50" alt="profile"></img> 
-            <h5>John Doe</h5> 
-            </div>
-             
+            <h5>John Doe</h5>  
           </div>
           <hr className="borderline"/>  
             <div className="search-box">
@@ -291,10 +287,8 @@ export const Community = ({ username }) => {
                     placeholder="Enter content"
                     required
                   />
-                  <div className="btns">
                   <button onClick={handleFormSubmit}>Add Thread</button>
                   <button onClick={() => setIsDialogOpen(false)}>Cancel</button>
-                </div>
                 </div>
               </div>
             )}
@@ -309,65 +303,61 @@ export const Community = ({ username }) => {
                     placeholder="Write your comment here"
                     required
                   ></textarea>
-                  <div className="btns">
                   <button onClick={handleAddComment}>Submit Comment</button>
                   <button onClick={() => setIsCommentDialogOpen(false)}>Cancel</button>
-                </div>
                 </div>
               </div>
             )}
 
             {threads.map((thread) => (
               <div key={thread.id} className="community--thread">
-  <div className="communityheader--thread">
-    <h5>{thread.title}</h5>
-  </div>
-  <div className="communityuser--thread">
-    <img src={"https://via.placeholder.com/30"} alt="User " />
-    <div className="community--userinfo">
-      <h6 className="username">{thread.username}</h6>
-      <h6 className="userinfo--time">{thread.time}</h6>
-    </div>
-    <div className="community--label">
-      <h6>{thread.label}</h6>
-    </div>
-  </div>
-  <div className="thread--content">
-    <h6>{thread.content}</h6>
-  </div>
-  <div className="community--icon">
-    <button
-      className="heartBtn"
-      onClick={() => toggleHeart(thread.heartId, thread.isLiked)}
-    >
-      <Icon
-        icon={thread.isLiked ? "fluent-emoji-flat:heart-suit" : "fluent-mdl2:heart"}
-      />
-    </button>
-    <h6 className="heart-count">{thread.heartCount}</h6>
-    <button onClick={() => handleOpenCommentDialog(thread.commentId)}>
-      <Icon icon="meteor-icons:message-dots" />
-    </button>
-  </div>
+               
+                <div className="communityuser--thread">
+                  <img src={"https://via.placeholder.com/30"} alt="User " />
+                  <div className="community--userinfo">
+                    <h6 className="username">{thread.username}</h6>
+                    <h6 className="userinfo--time">{thread.time}</h6>
+                  </div>
+                  <div className="community--label">
+                    <h6>{thread.label}</h6>
+                  </div>
+                </div>
+                <div className="communityheader--thread">
+                  <h5>{thread.title}</h5>
+                </div>
+                <div className="thread--content">
+                  <h6>{thread.content}</h6>
+                </div>
+                <div className="community--icon">
+                  <button
+                    className="heartBtn"
+                    onClick={() => toggleHeart(thread.heartId, thread.isLiked)}
+                  >
+                    <Icon
+                      icon={thread.isLiked ? "fluent-emoji-flat:heart-suit" : "fluent-mdl2:heart"}
+                    />
+                  </button>
+                  <h6 className="heart-count">{thread.heartCount}</h6>
+                  <button onClick={() => handleOpenCommentDialog(thread.commentId)}>
+                    <Icon icon="meteor-icons:message-dots" />
+                  </button>
+                </div>
 
-  <hr />
-  <div className="community--comments">
-    {Array.isArray(thread.comments) && thread.comments.length > 0 ? (
-      thread.comments.map((comment) => (
-        <div key={comment.id} className="comment">
-          <div className="comment-header">
-            <h3>{comment.username}</h3>
-            <span className="comment-time">{comment.time}</span>
-          </div>
-          <p>{comment.body}</p>
-        </div>
-      ))
-    ) : (
-      <p>No comments yet.</p>
-    )}
-  </div>
-</div>
-
+                <hr />
+                <div className="community--comments">
+                  {Array.isArray(thread.comments) && thread.comments.length > 0 ? (
+                    thread.comments.map((comment) => (
+                      <div key={comment.id} className="comment">
+                        <h3>{comment.username}</h3>
+                        <p>{comment.body}</p>
+                        <span className="comment-time">{comment.time}</span>
+                      </div>
+                    ))
+                  ) : (
+                    <p></p>
+                  )}
+                  </div>
+              </div>
             ))}
         </div>
     </div>

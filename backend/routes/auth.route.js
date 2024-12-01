@@ -101,4 +101,22 @@ router.get('/check-auth', verifyToken, async (req, res) => {
     }
 });
 
+router.get('/get-username/:id', async (req, res) => {
+    const userId = req.params.id; // Get the _id from the request params
+
+    try {
+        // Find user by ID and select only the username field
+        const user = await UserModel.findById(userId).select("username");
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        res.status(200).json({ success: true, username: user.username });
+    } catch (err) {
+        console.error("Error fetching username:", err);
+        res.status(500).json({ success: false, message: "Internal Server Error" });
+    }
+});
+
 export default router;
