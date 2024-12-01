@@ -43,6 +43,7 @@ const Card = () => {
   
           if (response.data.success) {
             setData(response.data.data); // Set the data in state
+            console.log("Data:", data);
           } else {
             console.error("Failed to fetch data:", response.data.message);
             setError(new Error(response.data.message));
@@ -59,7 +60,7 @@ const Card = () => {
     }
   }, [userId]);
 
-  //console.log("Data:", data);
+
 
 
     return (
