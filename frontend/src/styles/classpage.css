@@ -113,9 +113,8 @@ nav h5:hover {
   color: #F0F5F9;
   margin: 0;
   white-space: nowrap;
-  text-overflow: ellipsis;
   overflow: hidden; /* Ensure ellipsis works */
-  max-width: 100%;
+  max-width: 500px;
 }
 
 .subnauthor h6 {
@@ -135,7 +134,7 @@ nav h5:hover {
   border-radius: 10px;
   box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 1300px;
+  max-width: 1500px;
   margin: 20px auto;
   transition: all 0.3s ease;
 }
@@ -186,6 +185,7 @@ nav h5:hover {
   margin-bottom: 5px;
   margin: 0;
   white-space: nowrap;
+  max-width: 1000px;
   text-overflow: ellipsis;
   overflow: hidden;
 }
@@ -195,18 +195,18 @@ nav h5:hover {
   color: #555;
   line-height: 1.5;
   margin: 0;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  white-space: normal; /* Ensures text wraps */
+  max-width: 1400px; /* Limits the text width */
+  word-wrap: break-word;
 }
 
 .actions {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: flex-start;
   font-size: 20px;
-  border-bottom: 1px solid #333;
-  width: 1300px;
+  border-bottom: 1px solid #52616B;
+  width: 1420px;
   color: #555;
 
 }
@@ -299,7 +299,7 @@ nav h5:hover {
 .dialog-content h3 {
   margin-bottom: 20px;
   font-size: 18px;
-  color: #333;
+  color: #1E2022;
   text-align: center; /* Center-align the heading */
 }
 
@@ -384,7 +384,7 @@ nav h5:hover {
 .content--content button {
   max-width: 100%;
   height: 40px;
-  background-color: #fff;
+  background-color: #fff  ;
   color: #52616B;
   border: 1px solid #ccc;
   border-radius: 10px;
@@ -404,24 +404,37 @@ nav h5:hover {
   margin-top: 15px; 
   font-size: 14px;
   color: #555;
+  overflow: scroll;
+  max-width: 1400px;
+  width: 100%;
 }
 
+.class-comments::-webkit-scrollbar{
+  display: none;
+}
 
 .class-comments p {
   font-size: 14px;
   color: #555;
   margin: 0;
+  max-width: 1200px;
+  width: 100%;
 }
 
 .comment {
-  display: flex;               
-  flex-direction: row;       
-  align-items: center;          
-  justify-content: flex-start;      
-  gap: 15px;                    
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between; /* Space between items */
+  gap: 15px;
   padding: 15px;
-  width: 100%;                 
+  width: 100%;
+  max-width: 1420px;
   background-color: transparent;
+}
+
+.comment h6{
+  margin-left: auto;
 }
 
 .comment-user {
@@ -450,14 +463,95 @@ nav h5:hover {
   color: #999;
   margin: 0;
 }
-
-.comment p {
-  font-size: 14px;
-color: #555;
-line-height: 1.5;
-text-align: center;           
-margin: 0;
+/* Container that will hold the dialog, used for centering and overlay */
+.dialog2 {
+  display: flex;
+  justify-content: center;       /* Center the content horizontally */
+  align-items: center;           /* Center the content vertically */
+  position: fixed;               /* Fixed position to stay in place on screen */
+  top: 0;
+  left: 0;
+  width: 100vw;                  /* Full viewport width */
+  height: 100vh;                 /* Full viewport height */
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background for overlay effect */
+  z-index: 9999;                 /* Make sure the modal appears above other content */
 }
+
+/* The dialog content box */
+.dialog-content2 {
+  background-color: #fff;        /* White background */
+  padding: 20px;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 500px;              /* Max width of the dialog */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow around the dialog */
+  display: flex;
+  flex-direction: column;        /* Column layout for text area and buttons */
+  align-items: flex-start;       /* Align items to the left */
+  position: relative;            /* Position relative for any absolute children */
+  gap: 15px;                     /* Gap between elements */
+}
+
+/* Heading inside the dialog */
+.dialog-content2 h3 {
+  margin-bottom: 15px;            /* Space below the heading */
+  font-size: 18px;                /* Font size for the heading */
+  color: #1E2022;                 /* Dark text color */
+  text-align: center;             /* Center-align the heading */
+}
+
+/* Styling for the text area */
+.dialog-content2 textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+  box-sizing: border-box;
+  resize: vertical;              /* Allow vertical resize */
+  min-height: 100px;             /* Minimum height for textarea */
+}
+
+/* Styling for the buttons inside the dialog */
+.btns {
+  display: flex;
+  justify-content: space-between; /* Space out buttons */
+  width: 100%;                    /* Ensure the buttons take full width */
+  gap: 10px;                      /* Add gap between buttons */
+}
+
+/* Common button styles */
+.btns button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #0F1035;
+  color: #F0F5F9;
+  transition: background-color 0.3s ease; /* Smooth transition on hover */
+}
+
+/* Add Comment button */
+.btns button[type="submit"] {
+  background-color: #0F1035;
+  color: white;
+  border: none; /* Remove border for the submit button */
+}
+
+/* Cancel button with specific styles */
+.btns .cancel-button {
+  color: white;
+  background-color: #52616B;
+  border: none;                  /* Remove border */
+}
+
+/* Hover effects for buttons */
+.btns button:hover {
+  opacity: 0.8;     
+  background-color: #52616B;
+  color: #1E2022;             /* Slightly transparent on hover */
+}
+
 
 
 

@@ -38,6 +38,7 @@ export const ClassPageContent = () => {
     return (
       <div className='classpage-container'>
         <ClassPageHeader />
+        <hr/>
         <ClassPage classId={classId} username={username} />
       </div>
     );

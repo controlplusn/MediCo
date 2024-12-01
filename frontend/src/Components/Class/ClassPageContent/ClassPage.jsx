@@ -269,16 +269,18 @@ const ClassPage = ({ classId, username }) => {
                                 )}
 
                                 {newComment.threadId && (
-                                    <div className="dialog" onClick={() => setNewComment({ body: '', threadId: null })}>
-                                      <div className="dialog-content" onClick={(e) => e.stopPropagation()}>
+                                    <div className="dialog2" onClick={() => setNewComment({ body: '', threadId: null })}>
+                                      <div className="dialog-content2" onClick={(e) => e.stopPropagation()}>
                                         <h3>New Comment</h3>
                                         <textarea 
                                           value={newComment.body} 
                                           onChange={(e) => setNewComment({ ...newComment, body: e.target.value })} 
                                           required 
                                         />
+                                        <div className="btns">
                                         <button onClick={handleAddComment}>Add Comment</button>
                                         <button onClick={() => setNewComment({ body: '', threadId: null })} className="cancel-button">Cancel</button>
+                                      </div>
                                       </div>
                                     </div>
                                 )}
