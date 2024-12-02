@@ -188,6 +188,7 @@
   align-items: center;
   align-content: center;
   gap: 10px;
+  color: #1E2022;
   cursor: pointer;
   font-size: 20px;
   padding: 20px;
@@ -231,12 +232,8 @@
   display: flex;
   margin-left: 20px;
   position: relative;
-  text-decoration: none; 
 }
 
-.flearn--header button.learnbtn {
-  text-decoration: none;
-}
 
 .learnbtn:hover {
   text-decoration: none; 

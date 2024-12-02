@@ -64,7 +64,7 @@ const CardSide = ({ setActiveCard, userId, categoryId, subsetId, triggerCardUpda
     return (
         <div className="fcards-container">
           <div className="back-btn">
-          <Icon icon="weui:back-outlined" className="back-btn"/>
+          <Icon icon="weui:back-outlined"/>
         <h6>Go back</h6>
       </div>
             <div className="fcards-header">

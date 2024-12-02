@@ -5,7 +5,7 @@ export const FlearnHeader = () => {
   return (
     <div className="flearn--header">
         <div className="back-btn">
-          <Icon icon="weui:back-outlined" className="back-btn"/>
+          <Icon icon="weui:back-outlined"/>
         <h6>Go back</h6>
       </div>
       <div className="flearn--header2">
