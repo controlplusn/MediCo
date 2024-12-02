@@ -1,10 +1,16 @@
 import React from 'react';
+import {Icon} from '@iconify/react';
 
 export const FlearnHeader = () => {
   return (
     <div className="flearn--header">
+        <div className="back-btn">
+          <Icon icon="weui:back-outlined" className="back-btn"/>
+        <h6>Go back</h6>
+      </div>
+      <div className="flearn--header2">
       <h5>Flashcard</h5>
-      <hr className="borderline"/>
+    </div>
     </div>
   );
 };

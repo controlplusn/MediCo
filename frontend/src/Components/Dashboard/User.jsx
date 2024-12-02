@@ -48,7 +48,6 @@ const User = () => {
         <div className="user">
             <h2>
                 Profile
-                <Icon icon="basil:edit-outline" className="icon" />
             </h2>
             <div className="profile--user">
                 <img src={profileImg} alt="User" />

@@ -121,39 +121,37 @@
     display: flex;
     align-items: center; 
     justify-content: flex-start; 
-    gap: 0; 
     border-radius: 15px;
     margin-top: auto; 
-    margin-right: 5px;
-    padding: 5px;
+    margin-left: 5px;
     cursor: pointer;
 
 }   
 
 .logout--dropdown {
-    margin-left: 150px;
-    margin-bottom: 50px;
+    margin-bottom: 100px;
     position: absolute;
-    background-color: #365486;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: transparent;
     padding: 8px 12px;
     border-radius: 5px;
     z-index: 10;
+    width: 100px;
 }
 
 .logout--dropdown button {
-    background-color: #F0F5F9;
-    color: #0F1035;
+    background-color: #365486;
+    color: #F0F5F9;
     border: none;
-    padding: 8px 12px;
+    padding: 8px 20px;         
     border-radius: 5px;
     cursor: pointer;
     font-size: 14px;
+    width: 150px;              
 }
 
 .logout--dropdown button:hover {
-    background-color: #0F1035;
-    color: #F0F5F9;
+    background-color: #F0F5F9;
+    color: #0F1035;
 }
 
 .user--sidebar img {

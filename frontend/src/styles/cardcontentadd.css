@@ -15,19 +15,24 @@
     display: flex;
     margin-top: 50px;
     flex-direction: column;
-    width: 80%;
+    width: 100%;             
     margin-bottom: 20px;
     position: relative;
-  }
-  
-  .cardquestion input, .cardanswer input {
-    padding: 70px;
-    font-size: 17px;
+    padding: 20px;            
+}
+
+.cardquestion textarea, .cardanswer textarea {
+    padding: 20px;            
+    font-size: 15px;          
     border: 1px solid #ccc;
     border-radius: 5px;
-    margin-top: 5px;
+    margin-top: 10px;        
     background-color: #fff;
-  }
+    width: 100%;              
+    box-sizing: border-box;   
+    min-height: 150px;         
+}
+
   
   .cardquestion input:focus, .cardanswer input:focus {
     border-color: #0F1035;
@@ -60,6 +65,30 @@
     color:#1e2020;
     transform: translateY(0);
   }
+
+  .btncardcontent {
+    background-color: #0F1035; 
+    color: #F0F5F9;              
+    padding: 10px 20px;        
+    font-size: 16px;           
+    font-weight: bold;         
+    border: none;              
+    border-radius: 5px;       
+    cursor: pointer;          
+    transition: background-color 0.3s ease, transform 0.2s ease; 
+}
+
+.btncardcontent:hover {
+    background-color: #52616B; 
+    transform: scale(1.05);     
+}
+
+.btncardcontent:active {
+    background-color: #0F1035; 
+    transform: scale(0.98);     
+}
+
+
   
   @media (max-width: 600px) {
     .cardcontentadd {

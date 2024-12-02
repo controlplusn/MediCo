@@ -142,7 +142,7 @@
 /* Flashcard content */
 .back-btn {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   align-content: center;
   gap: 10px;
@@ -155,7 +155,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 25px;
   width: 100%;
   background-color: #F0F5F9;
   padding: 20px;

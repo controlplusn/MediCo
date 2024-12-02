@@ -63,6 +63,10 @@ const CardSide = ({ setActiveCard, userId, categoryId, subsetId, triggerCardUpda
 
     return (
         <div className="fcards-container">
+          <div className="back-btn">
+          <Icon icon="weui:back-outlined" className="back-btn"/>
+        <h6>Go back</h6>
+      </div>
             <div className="fcards-header">
               <button onClick={handleAddClick}>
                 <Icon icon="material-symbols:add" />
@@ -76,7 +80,6 @@ const CardSide = ({ setActiveCard, userId, categoryId, subsetId, triggerCardUpda
                 
                   <React.Fragment key={card.CardId}>
                     <Card card={card} onClick={setActiveCard} />
-                    <hr />
                   </React.Fragment>
                 ))
               ) : (

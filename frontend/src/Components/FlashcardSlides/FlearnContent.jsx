@@ -210,14 +210,14 @@ const FlearnContent = ({ subsetId, categoryId }) => {
 
             <hr className="borderline" />
             <div className="prevnnext">
-              <Icon icon="ep:arrow-left" onClick={handlePrevious} />
+              <Icon icon="ep:arrow-left" onClick={handlePrevious}  className="prevbtn"/>
               <h5>{flashcard[currentIndex].answer}</h5>
-              <Icon icon="ep:arrow-right" onClick={handleNext} />
+              <Icon icon="ep:arrow-right" onClick={handleNext} className="nextbtn"/>
             </div>
 
-            <div>
-              <button onClick={handleGood}>Good</button>
-              <button onClick={handleBad}>Bad</button>
+            <div className="btnflearn">
+              <button onClick={handleGood} className="goodbtn">Good</button>
+              <button onClick={handleBad} className="badbtn">Bad</button>
             </div>
         </div>
     );

@@ -243,7 +243,6 @@ export const Community = ({ username }) => {
 
       <div className="community-body">
         <div className="community-container">
-        <Icon icon="weui:back-outlined" className="backbtn"/>
           <div className="community--header2">
           <h4>Community</h4>
           <div className="community--header">

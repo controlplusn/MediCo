@@ -106,7 +106,7 @@ const CardContentAdd = ({ userId, categoryId, subsetId, activeCard, triggerCardU
         <div className="cardcontentadd">
             <div className="cardquestion">
                 <h5>Question</h5>
-                <input
+                <textarea
                     type="text"
                     value={formData.question}
                     onChange={(e) => setFormData({ ...formData, question: e.target.value })}
@@ -115,15 +115,15 @@ const CardContentAdd = ({ userId, categoryId, subsetId, activeCard, triggerCardU
             </div>
             <div className="cardanswer">
                 <h5>Answer</h5>
-                <input
+                <textarea
                     type="text"
                     value={formData.answer}
                     onChange={(e) => setFormData({ ...formData, answer: e.target.value })}
                     placeholder="Enter the answer"
                 />
             </div>
-            <button onClick={handleSubmit}>
-                {activeCard ? 'Update Flashcard' : 'Add Flashcard'}
+            <button onClick={handleSubmit} className="btncardcontent">
+                {activeCard ? 'Update Flashcard' : 'Add Flashcard'} 
             </button>
         </div>
     );
