@@ -101,6 +101,10 @@ body {
 
   .prevnnext h5{
     font-size: 25px;
+    white-space: normal;      
+    overflow-wrap: break-word; 
+    word-wrap: break-word;    
+    width: 100%;
   }
   
   .flearn--content--container progress {
