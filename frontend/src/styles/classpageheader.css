@@ -1,14 +1,12 @@
 .headerclass {
   display: flex;                /* Enable flexbox */
   align-items: center;          /* Vertically align items in the center */
-  background-color: #F0F5F9;
+  background-color: transparent;
   color: #1E2022;
   padding: 20px;
   justify-content: flex-start;  /* Align content to the start (left side) */
   gap: 15px;                    /* Adjust the gap between icon and h5 */
   text-align: left;             /* Align text to the left */
-  border-radius: 10px;
-  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .headerclass h5 {
