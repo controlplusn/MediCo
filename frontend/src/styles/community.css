@@ -15,11 +15,11 @@
 .community-container {
     display: block;
     flex-direction: column;
-    gap: 15px;
+    gap: 5px;
     width: 100%;
     max-width: 1300px;
     height: 100vh;
-    padding: 15px;
+    padding: 10px;
     background-color: #F0F5F9;
     overflow-y: auto;
     overflow-x: hidden;
@@ -32,22 +32,22 @@
 
 .community--header2 {
     display: flex;
-    flex-direction: column; 
+    flex-direction: row; 
     align-items: center; 
-    justify-content: flex-end; 
+    justify-content: space-between; 
     background-color: transparent; 
     padding: 5px; 
-}
+    }
 
 .community--header {
     display: flex;
     flex-direction: column; 
-    align-items: flex-end; 
-    justify-content: space-between; 
+    align-items: center; 
+    justify-content: center; 
     background-color: transparent; 
 }
 
-.community--header h4{
+.community--header2 h4{
     font-size: 25px;
     margin-top: 30px;
 
@@ -62,12 +62,15 @@
     justify-content: center; 
   }
   
+  .backbtn{
+    font-size: 20px;
+  }
   
   .community--header button:focus {
     outline: none; 
   }
   
-  .community--header .icon {
+  .community--header2 .icon {
     color: #1E2022; 
     font-size: 24px; 
     transition: color 0.3s ease; 
@@ -289,11 +292,36 @@
 }
 
 .community--comments {
-  margin-top: 10px;
-  margin-left: 5px;
-  overflow: auto;
-  max-height: 220px;
-}
+    margin-top: 10px;
+    margin-left: 5px;
+    overflow: auto;
+    max-height: 220px;
+  }
+  
+  .community--commentsuserinfo {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: row;
+  }
+  
+  .community--commentscontent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; 
+    justify-content: flex-start; 
+    margin-top: 10px;
+    margin-left: 5px;
+    overflow: auto;
+    max-height: 220px;
+  }
+  
+  .community--commentscontent .p {
+    font-size: 10px;
+    margin: 0; 
+    padding: 0; 
+    align-self: flex-start; 
+  }
+  
 
 .community--comments::-webkit-scrollbar {
     display: none;  
@@ -331,10 +359,10 @@
     margin: 0 0 5px;
   }
   
-  .comment .comment-time {
+  .community--comments .comment-time {
     margin-left: auto; 
   white-space: nowrap; 
-  text-align: right;
+  text-align: left;
   font-size: 10px;
   }
   
@@ -358,6 +386,9 @@
     color: #1E2022; 
     font-style: italic;
   }
+
+  
+
   
 @media (max-width: 768px) {
     .search-box {

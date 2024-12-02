@@ -243,9 +243,14 @@ export const Community = ({ username }) => {
 
       <div className="community-body">
         <div className="community-container">
+        <Icon icon="weui:back-outlined" className="backbtn"/>
+          <div className="community--header2">
+          <h4>Community</h4>
           <div className="community--header">
-            <img src="https://via.placeholder.com/50" alt="profile"></img> 
+          <img src="https://via.placeholder.com/50" alt="profile"></img> 
             <h5>John Doe</h5>  
+          </div>
+            
           </div>
           <hr className="borderline"/>  
             <div className="search-box">
@@ -287,8 +292,10 @@ export const Community = ({ username }) => {
                     placeholder="Enter content"
                     required
                   />
+                  <div className="btns">
                   <button onClick={handleFormSubmit}>Add Thread</button>
                   <button onClick={() => setIsDialogOpen(false)}>Cancel</button>
+                </div>
                 </div>
               </div>
             )}
@@ -303,8 +310,10 @@ export const Community = ({ username }) => {
                     placeholder="Write your comment here"
                     required
                   ></textarea>
+                  <div className="btns">
                   <button onClick={handleAddComment}>Submit Comment</button>
                   <button onClick={() => setIsCommentDialogOpen(false)}>Cancel</button>
+                </div>
                 </div>
               </div>
             )}
@@ -347,11 +356,15 @@ export const Community = ({ username }) => {
                 <div className="community--comments">
                   {Array.isArray(thread.comments) && thread.comments.length > 0 ? (
                     thread.comments.map((comment) => (
-                      <div key={comment.id} className="comment">
+                      <div key={comment.id} className="community--commentsuserinfo">
+                        <div className="communitycomments--userinfo">
                         <h3>{comment.username}</h3>
-                        <p>{comment.body}</p>
                         <span className="comment-time">{comment.time}</span>
-                      </div>
+                        </div>
+                        <div className="community--commentscontent">
+                        <p>{comment.body}</p>
+                        </div>
+                        </div>
                     ))
                   ) : (
                     <p></p>
