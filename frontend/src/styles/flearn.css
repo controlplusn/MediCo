@@ -30,7 +30,9 @@ body {
   
   .flearn--header h5 {
     margin: 0;
-    font-size: 20px;
+    font-size: 25px;
+    align-items: center;
+    justify-content: center;
   }
   
   .borderline {

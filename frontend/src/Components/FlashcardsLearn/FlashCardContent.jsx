@@ -197,8 +197,8 @@ function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId 
               </button>
 
               {/* Learn button */}
-              <Link to={`/flearn/${categoryId}/${activeSubset.id}`}>
-                <button>Learn</button>
+              <Link to={`/flearn/${categoryId}/${activeSubset.id}`} >
+                <button className="learnbtn">Learn</button>
               </Link>
 
           </div>

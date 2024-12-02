@@ -48,6 +48,12 @@
   border-radius: 8px; 
 }
 
+.labelh4 {
+  font-size: 18px;                    
+  color: #F0F5F9;                     
+  margin: 15px 0;                     
+}
+
 .left--sideflearn h4 {
   font-size: 34px;
   color: #333;
@@ -75,18 +81,47 @@
   margin-left: 10px; 
 }
 
-
-
-.Card--Container {
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;  
-  width: 100%;  
-  height: auto; 
-  gap: 20px;  
+.Card--flearn {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
   padding: 20px;
-  overflow-x: auto; 
-  
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.Card--flearn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.tagname {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 12px;
+  border-radius: 20px;
+  background-color: #7FC7D9;
+  margin-bottom: 15px;
+}
+
+.tagname h6 {
+  font-size: 14px;
+  color: #1E2022;
+  margin: 0;
+}
+
+.CardFlearn--Container {
+  display: grid; 
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+  gap: 20px; 
+  padding: 20px; 
+  max-width: 1000px; 
+  margin: 0 auto; 
+  overflow: scroll;
+}
+
+.CardFlearn--Container::-webkit-scrollbar{
+  display: none;
 }
 
 
@@ -115,10 +150,19 @@
   color: #333;
 }
 
-.Card {
-  flex: 1 1 200px; 
-  max-width: 300px;  
+.Card--flearn {
+  width: 300px;  
+  height: 400px; 
   margin: 10px;
+  background-color: #0F1035;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .Card--Container2 button {
@@ -138,8 +182,6 @@
 }
 
 
-
-/* Flashcard content */
 .back-btn {
   display: flex;
   justify-content: flex-start;
@@ -148,6 +190,7 @@
   gap: 10px;
   cursor: pointer;
   font-size: 20px;
+  padding: 20px;
 }
 
 .flearn--header {
@@ -158,11 +201,12 @@
   width: 100%;
   background-color: #F0F5F9;
   padding: 20px;
+  gap:10px;
   box-sizing: border-box;
 }
 
 .flearn--header h5 {
-  font-size: 24px;
+  font-size: 30px;
   font-weight: bold;
   color: #1E2022;
   margin: 0;
@@ -176,7 +220,7 @@
 }
 
 .flearn--header button {
-  background: #1E2022;
+  background: #0F1035;
   border: 1px solid;
   border-radius: 10px;
   font-size: 16px;
@@ -187,11 +231,22 @@
   display: flex;
   margin-left: 20px;
   position: relative;
+  text-decoration: none; 
 }
 
+.flearn--header button.learnbtn {
+  text-decoration: none;
+}
+
+.learnbtn:hover {
+  text-decoration: none; 
+}
+
+
 .flearn--header button:hover {
-  color: #1E2022;
-  background-color: #F0F5F9;
+  color: #F0F5F9;
+  background-color: #52616B;
+  text-decoration: none;
 }
 
 .flearn--header button .svg {
@@ -356,6 +411,12 @@
   flex-shrink: 0;
   position: relative;
   text-align: center; 
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 15px 0;
 }
 
 .progress--container h5 {

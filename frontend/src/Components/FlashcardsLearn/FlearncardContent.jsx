@@ -127,17 +127,17 @@ const FlearncardContent = ({ activeSubset, categoryId}) => {
                 <h4>No cards available for the selected subset.</h4>
             </div>
         ) : (
-            <div className="Card--Container">
+            <div className="CardFlearn--Container">
                 {cardsToDisplay.map(card => (
-                    <div key={card._id || card.cardId} className="Card">
+                    <div key={card._id || card.cardId} className="Card--flearn">
                         <label>
                             <div className="tagname">
                                 <h6>{card.isLearned ? "Learned" : "On Progress"}</h6>
                             </div>
                         </label>
-                        <h4>Question: {card.question}</h4>
+                        <h4 className="labelh4">Question: {card.question}</h4>
                         <hr style={{ width: '100%' }} />
-                        <h4>Answer: {card.answer}</h4>
+                        <h4 className="labelh4">Answer: {card.answer}</h4>
                     </div>
                 ))}
             </div>
