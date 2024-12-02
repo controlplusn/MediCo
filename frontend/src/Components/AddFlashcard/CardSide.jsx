@@ -59,9 +59,6 @@ const CardSide = ({ setActiveCard, userId, categoryId, subsetId, triggerCardUpda
       const handleAddClick = () => {
         setActiveCard(null);
       };
-
-    
-
     
 
     return (
@@ -70,6 +67,8 @@ const CardSide = ({ setActiveCard, userId, categoryId, subsetId, triggerCardUpda
               <button onClick={handleAddClick}>
                 <Icon icon="material-symbols:add" />
               </button>
+
+              <h3>Flashcards</h3>
             </div>
             <div className="cards-list">
               {cards.length > 0 ? (

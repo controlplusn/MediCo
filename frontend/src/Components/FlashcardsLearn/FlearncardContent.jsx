@@ -115,16 +115,10 @@ const FlearncardContent = ({ activeSubset, categoryId}) => {
         return (
             <div className="flearn--content">
                 <img src="https://via.placeholder.com/100" alt="Anatomy graphic" />
-                <button onClick={handleAddCard}>
-                    Add <Icon icon="material-symbols-light:add" />
-                </button>
                 
             </div>
         );
     }
-    
-    //console.log('Flashcard Statistics:', flashcard.statistics);
-
 
     return (
         <section>
@@ -132,26 +126,9 @@ const FlearncardContent = ({ activeSubset, categoryId}) => {
             <div className="left--sideflearn">
                 <img src="../assets/flearnimage.jpg" alt="Anatomy graphic" />
                 <h4>No cards available for the selected subset.</h4>
-                <button onClick={handleAddCard} className="btnflearn">
-                    Add <Icon icon="material-symbols-light:add" />
-                </button>
             </div>
         ) : (
             <div className="Card--Container">
-                <div className="Card--Container2">
-                <button onClick={handleAddCard}>
-                    Add <Icon icon="material-symbols-light:add" />
-                </button>
-                <div className="Card--Container3">
-                <Link to={`/flearn/${categoryId}/${activeSubset.id}`}>
-                    <button>Learn</button>
-                </Link>
-                </div>
-
-                
-                </div>
-                
-                
                 {cardsToDisplay.map(card => (
                     <div key={card._id || card.cardId} className="Card">
                         <label>

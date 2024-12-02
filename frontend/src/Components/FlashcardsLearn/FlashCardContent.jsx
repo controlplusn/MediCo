@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 
 function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId }) {
@@ -14,6 +14,7 @@ function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [subsetName, setSubsetName] = useState('');
   const [userId, setUserId] = useState(null);
+  const navigate = useNavigate();
 
   // fetch the user Id from JWT
   useEffect(() => {
@@ -128,6 +129,28 @@ function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId 
     }
   };
 
+  // Add flashcard function
+  const handleAddCard = () => {
+    console.log('Active Subset:', activeSubset);
+    console.log('Category ID:', categoryId);
+    console.log('Flashcard Data:', flashcard);
+
+    const subsetId = activeSubset.id === 'All Subsets' 
+        ? flashcard.subsets[0]?._id  // Default to first subset if 'All Subsets' is selected
+        : activeSubset.id;
+    
+    console.log('Selected Subset ID:', subsetId);   
+
+    if (categoryId && subsetId) {
+        console.log('Navigating to:', `/flashcardcollection/${categoryId}/${subsetId}`);
+        navigate(`/flashcardcollection/${categoryId}/${subsetId}`);
+    } else {
+        console.error('Missing categoryId or subsetId');
+        if (!categoryId) console.error('categoryId is missing or invalid');
+        if (!subsetId) console.error('subsetId is missing or invalid');
+    }
+  };
+
 
   // Error and loading handling
   if (loading) return <div>Loading...</div>;
@@ -136,28 +159,49 @@ function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId 
 
   return (
     <div className='flearn--header'>
-      <Icon icon="weui:back-outlined"/>
+
+      <div className="back-btn">
+        <Link to="/flashcards">
+          <Icon icon="weui:back-outlined"/>
+        </Link> 
+        <h6>Go back</h6>
+      </div>
+
       <h5>{flashcard?.name}</h5> {/* Display the active subset */}
+
+          <div className="flearn-option-container">
             <button onClick={toggleDropdown}>
                 {activeSubset.name || 'Select Subset'} <Icon icon="fe:arrow-down" />
-            </button>      
-            {isDropdownOpen && (
-                <div className="dropdown">
-                    <ul>
-                        <li onClick={() => selectSubset({ id: 'all', name: 'All Subsets' })}>All Subsets</li>
-                        {flashcard?.subsets
-                          ?.filter(subset => subset.subsetName !== 'All Subsets')
-                          .map(subset => (
-                            <li key={subset._id} onClick={() => selectSubset({ id: subset._id, name: subset.subsetName })}>
-                              {subset.subsetName}
-                            </li>
-                          ))
-                        }
-                        <button onClick={openModal}>Add Subsets</button>
-                    </ul>
-                </div>
-            )}
+            </button>    
 
+              {isDropdownOpen && (
+                  <div className="dropdown">
+                      <ul>
+                          <li onClick={() => selectSubset({ id: 'all', name: 'All Subsets' })}>All Subsets</li>
+                          {flashcard?.subsets
+                            ?.filter(subset => subset.subsetName !== 'All Subsets')
+                            .map(subset => (
+                              <li key={subset._id} onClick={() => selectSubset({ id: subset._id, name: subset.subsetName })}>
+                                {subset.subsetName}
+                              </li>
+                            ))
+                          }
+                          <button onClick={openModal}>Add Subsets</button>
+                      </ul>
+                  </div>
+              )}
+
+              {/* Add flashcard button */}
+              <button onClick={handleAddCard}>
+                Add <Icon icon="material-symbols-light:add" />
+              </button>
+
+              {/* Learn button */}
+              <Link to={`/flearn/${categoryId}/${activeSubset.id}`}>
+                <button>Learn</button>
+              </Link>
+
+          </div>
             {isModalOpen && (
                 <div className="modal-overlay">
                     <div className="modal-content">
