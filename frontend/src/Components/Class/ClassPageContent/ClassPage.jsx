@@ -269,14 +269,21 @@ const ClassPage = ({ classId, username }) => {
                         
                                 {thread.comments && thread.comments.length > 0 && (
                                     <div className="class-comments">
-                                        {thread.comments.map((comment) => (
-                                            <div key={comment._id} className="comment">
-                                                <h3>{console.log("Comments:",comment)}{comment.author}</h3>
-                                                <p>{comment.content}</p>
-                                                <h6>{timeAgo(comment.createdAt)}</h6>
-                                            </div>
-                                        ))}
-                                    </div>
+                                    {thread.comments.map((comment) => (
+                                      <div key={comment._id} className="commentclass">
+                                        <div className="commentclass3">
+                                          <div className="commentclass-info">
+                                            <h3>{comment.author}</h3>
+                                            <h6>{timeAgo(comment.createdAt)}</h6>
+                                          </div>
+                                          <div className="commentclass2">
+                                            <p>{comment.content}</p>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                  
                                 )}
 
                                 {newComment.threadId && (
