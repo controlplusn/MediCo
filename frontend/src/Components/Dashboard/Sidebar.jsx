@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { Icon } from '@iconify/react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthStore } from '../../store/authStore';
 import logo from '../../assets/logo.png';
 import '../../styles/sidebar.css'
 
 const Sidebar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [activeItem, setActiveItem] = useState(null);
+    const [showLogout, setShowLogout] = useState(false);
+    const { logout } = useAuthStore();
+    const navigate = useNavigate();
 
     const toggleSidebar = () => {
         setIsCollapsed(!isCollapsed);
@@ -15,6 +19,14 @@ const Sidebar = () => {
     const handleItemClick = (item) => {
         setActiveItem(item);
     };
+
+    const toggleLogout = () => {
+        setShowLogout((prevState) => !prevState);
+    }
+
+    const handleLogout = () => {
+        logout();
+    }
 
     return (
         <div className={`menu ${isCollapsed ? 'collapsed' : ''}`}>
@@ -68,9 +80,14 @@ const Sidebar = () => {
                 </Link>
             </div>
 
-            <div className="user--sidebar">
-            <img src="https://via.placeholder.com/50" alt="User" />
-            <h6>John Doe</h6>
+            <div className="user--sidebar" onClick={toggleLogout}>
+                <img src="https://via.placeholder.com/50" alt="User" />
+                <h6>John Doe</h6>
+                {showLogout && (
+                    <div className="logout--dropdown">
+                        <button onClick={handleLogout}>Logout</button>
+                    </div>
+                )}
             </div>
         </div>
     );

@@ -126,8 +126,35 @@
     margin-top: auto; 
     margin-right: 5px;
     padding: 5px;
+    cursor: pointer;
 
 }   
+
+.logout--dropdown {
+    margin-left: 150px;
+    margin-bottom: 50px;
+    position: absolute;
+    background-color: #365486;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 8px 12px;
+    border-radius: 5px;
+    z-index: 10;
+}
+
+.logout--dropdown button {
+    background-color: #F0F5F9;
+    color: #0F1035;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.logout--dropdown button:hover {
+    background-color: #0F1035;
+    color: #F0F5F9;
+}
 
 .user--sidebar img {
     width: 30px;
