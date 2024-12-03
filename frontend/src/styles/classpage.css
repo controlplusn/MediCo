@@ -33,18 +33,18 @@ nav h5 {
 
 nav h5.active {
   font-weight: bold;
-  color: #00253e;
-  border-bottom: 2px solid #00253e;
+  color: #0F1035;
+  border-bottom: 2px solid #0F1035;
 }
 
 nav h5:hover {
-  color: #00253e;
+  color: #0F1035;
 }
 
 .ClassCard {
   display: flex;
   flex-direction: column;
-  background-color: #00253e;
+  background-color: #0F1035;
   border-radius: 15px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
@@ -56,7 +56,7 @@ nav h5:hover {
 }
 
 .ClassCardBehind {
-  background-color: #00253e;
+  background-color: #0F1035;
   height: 220px;
   position: absolute;
   top: 0;
@@ -66,7 +66,7 @@ nav h5:hover {
 }
 
 .ClassCardAbove {
-  background-color: #00253e;
+  background-color: #0F1035;
   bottom: 0;
   display: flex;
   flex-direction: column;
@@ -90,7 +90,7 @@ nav h5:hover {
 }
 
 .CardDetails2 img {
-  background-color: #00253e;
+  background-color: #0F1035;
   width: 50px;
   height: 50px;
   border-radius: 50%;
@@ -338,7 +338,7 @@ nav h5:hover {
 }
 
 .dialog-buttons button[type="submit"] {
-  background-color: #00253e;
+  background-color: #0F1035;
   color: white;
 }
 
@@ -556,13 +556,13 @@ nav h5:hover {
   font-size: 14px;
   border-radius: 5px;
   cursor: pointer;
-  background-color: #00253e;
+  background-color: #0F1035;
   color: #F0F5F9;
   transition: background-color 0.3s ease; 
 }
 
 .btns button[type="submit"] {
-  background-color: #00253e;
+  background-color: #0F1035;
   color: white;
   border: none; 
 }

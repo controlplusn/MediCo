@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: #00253e;
+    background-color: #0F1035;
     transition: width 0.3s ease-in-out; 
     width: 230px; 
 }
@@ -156,7 +156,7 @@
 
 .logout--dropdown button:hover {
     background-color: #F0F5F9;
-    color: #00253e;
+    color: #0F1035;
 }
 
 .user--sidebar img {
