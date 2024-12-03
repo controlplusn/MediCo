@@ -35,7 +35,7 @@
 
   
   .cardquestion input:focus, .cardanswer input:focus {
-    border-color: #0F1035;
+    border-color: #00253e;
     outline: none;
   }
   
@@ -49,7 +49,7 @@
   .addflashcard--btn button {
     padding: 12px 20px;
     font-size: 16px;
-    background-color: #0F1035;
+    background-color: #00253e;
     color: white;
     border: none;
     border-radius: 8px;
@@ -67,7 +67,7 @@
   }
 
   .btncardcontent {
-    background-color: #0F1035; 
+    background-color: #00253e; 
     color: #F0F5F9;              
     padding: 10px 20px;        
     font-size: 16px;           
@@ -84,7 +84,7 @@
 }
 
 .btncardcontent:active {
-    background-color: #0F1035; 
+    background-color: #00253e; 
     transform: scale(0.98);     
 }
 

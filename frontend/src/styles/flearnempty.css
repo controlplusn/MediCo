@@ -23,7 +23,7 @@
     width: 100vw;  
     height: 100vh; 
     max-width: 100vw;  
-    overflow: hidden; 
+    overflow: scroll; 
     box-sizing: border-box; 
     flex-wrap: wrap; 
   }
@@ -51,7 +51,9 @@
 .labelh4 {
   font-size: 18px;                    
   color: #F0F5F9;                     
-  margin: 15px 0;                     
+  margin: 15px 0; 
+  white-space: normal;  
+  word-wrap: break-word;                    
 }
 
 .left--sideflearn h4 {
@@ -117,7 +119,8 @@
   padding: 20px; 
   max-width: 1000px; 
   margin: 0 auto; 
-  overflow: scroll;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .CardFlearn--Container::-webkit-scrollbar{
@@ -154,7 +157,7 @@
   width: 300px;  
   height: 400px; 
   margin: 10px;
-  background-color: #0F1035;
+  background-color: #00253e;
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 20px;
@@ -163,10 +166,15 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  overflow: scroll;
+}
+
+.Card--flearn::-webkit-scrollbar{
+  display: none;
 }
 
 .Card--Container2 button {
-  background-color: #0F1035;
+  background-color: #00253e;
   color: white;
   border: none;
   padding: 12px 20px;
@@ -221,7 +229,7 @@
 }
 
 .flearn--header button {
-  background: #0F1035;
+  background: #00253e;
   border: 1px solid;
   border-radius: 10px;
   font-size: 16px;
