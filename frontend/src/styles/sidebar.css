@@ -104,8 +104,13 @@
     cursor: pointer;
 }
 
-.sidenavbar{
+.sidenavbar {
     font-size: 20px;
+}
+
+.sidenavbar a {
+    text-decoration: none;
+    list-style: none;
 }
 
 .sidenavbar .item:hover, .sidenavbar .item.active {
