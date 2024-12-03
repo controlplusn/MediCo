@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import axios from 'axios';
 import '../../styles/card.css';
 
 const Card = () => {
-    const handleCardClick = (subject) => {
-        console.log(`${subject} card clicked`);
-    };
+  const navigate = useNavigate(); 
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -60,8 +59,9 @@ const Card = () => {
     }
   }, [userId]);
 
-
-
+  const handleCardClick = (itemId) => {
+    navigate(`/flashcardcontent/${itemId}`); // Navigate to the specified URL
+};
 
     return (
         <div className="card--container">
@@ -72,10 +72,11 @@ const Card = () => {
                     .sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt)) // Sort by most recent
                     .slice(0, Math.min(data.length, 3)) // Select top 1, 2, or 3 cards
                     .map((item) => (
+                    
                         <button
                         key={item._id}
                         className="card--item"
-                        onClick={() => handleCardClick(item.name)}
+                        onClick={() => handleCardClick(item._id)}
                         >
                         <h2>{item.name}</h2>
                         <progress

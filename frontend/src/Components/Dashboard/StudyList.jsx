@@ -150,43 +150,36 @@ const StudyList = () => {
 
     const handleFormSubmit = async (e) => {
         e.preventDefault();
-
+    
         try {
-            const dateInput = formData.date.trim();
-            const dateParts = dateInput.split('/');
-            if (dateParts.length !== 3 || isNaN(Date.parse(dateInput))) {
-                throw new Error('Invalid date format.');
+            // Ensure the date is provided
+            if (!formData.date) {
+                throw new Error('Date is required.');
             }
-
-
-            const formattedDate = `${dateParts[2]}-${dateParts[0]}-${dateParts[1]}`;
-            const dateTimeString = formattedDate + "T00:00:00.000Z";  // Default time set to 08:17:44.334Z
-            console.log("Constructed Date-Time String:", dateTimeString);
-
-            // Create a Date object using the constructed date-time string
-            const date = new Date(dateTimeString);
-
+    
+            // Create a Date object from the selected date
+            const date = new Date(formData.date);
+    
             if (isNaN(date.getTime())) {
                 throw new Error('Invalid Date object.');
             }
     
-
-
             const requestData = {
-                date: date.toISOString(),  // Convert to ISO string with time and adjusted timezone
+                date: date.toISOString(), // Convert to ISO string
                 subject: formData.subject,
                 type: formData.type,
                 FlashCard: formData.flashcards,
                 userId: userId,
             };
+    
             console.log("Data to be submitted:", JSON.stringify(requestData, null, 2));
-
-
+    
             const response = await axios.post('http://localhost:3001/api/studylists/add', requestData, {
                 withCredentials: true
             });
+    
             console.log('Data successfully added:', response.data);
-
+    
             if (response.data.success) {
                 setStudyList((prevState) => [...prevState, response.data.data]);
                 handleCloseModal();
@@ -196,17 +189,17 @@ const StudyList = () => {
                     type: 'Quiz',
                     flashcards: flashcardOptions[0],
                 });
-
+    
                 fetchStudyList();
             } else {
                 console.error('Error adding study data:', response.data.message);
             }
-
         } catch (error) {
             console.error('Error adding data:', error);
             alert('Failed to submit the form. Please try again later.');
         }
     };
+    
 
     const handleOpenModal = () => {
         setIsModalOpen(true);
@@ -226,16 +219,16 @@ const StudyList = () => {
                     <dialog open data-modal className="input--study">
                         <div className="modal-content">
                             <form onSubmit={handleFormSubmit}>
-                                <label>
-                                    Date (mm-dd-yyyy):
-                                    <input
-                                        type="text"
-                                        name="date"
-                                        value={formData.date}
-                                        onChange={handleInputChange}
-                                        required
-                                    />
-                                </label>
+                            <label>
+                                Date:
+                                <input
+                                    type="date"
+                                    name="date"
+                                    value={formData.date}
+                                    onChange={handleInputChange}
+                                    required
+                                />
+                            </label>
                                 <label>
                                     Subject:
                                     <input

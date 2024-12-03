@@ -15,10 +15,12 @@ export const Community = ({ username }) => {
     username: username,
   });
   const [newComment, setNewComment] = useState({ body: '', commentId: null });
+  const [searchInput, setSearchInput] = useState('');
 
   useEffect(() => {
     fetchThreads(); // Fetch threads when component mounts
   }, []);
+
 
   const fetchThreads = () => {
     axios
@@ -235,7 +237,21 @@ export const Community = ({ username }) => {
       console.error('Error adding comment:', error);
     }
   };
+
+  const handleSearchChange = (e) => {
+    setSearchInput(e.target.value.toLowerCase());
+  };
+
+  const filteredThreads = threads.filter(
+    (thread) =>
+      thread.title.toLowerCase().includes(searchInput) ||
+      thread.label.toLowerCase().includes(searchInput) ||
+      thread.content.toLowerCase().includes(searchInput)
+  );
+
   
+  
+  console.log(`Threads: ${JSON.stringify(threads, null, 2)}`);
 
   return (
     <div className="community-page-container">
@@ -253,7 +269,12 @@ export const Community = ({ username }) => {
           </div>
           <hr className="borderline"/>  
             <div className="search-box">
-              <input type="text" placeholder="Search" />
+            <input
+              type="text"
+              placeholder="Search"
+              value={searchInput}
+              onChange={handleSearchChange}
+            />
               <Icon icon="radix-icons:magnifying-glass" />
             </div>
 
@@ -317,7 +338,7 @@ export const Community = ({ username }) => {
               </div>
             )}
 
-            {threads.map((thread) => (
+            {filteredThreads.map((thread) => (
               <div key={thread.id} className="community--thread">
                
                 <div className="communityuser--thread">
