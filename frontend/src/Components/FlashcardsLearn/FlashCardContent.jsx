@@ -197,7 +197,7 @@ function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId 
               </button>
 
               {/* Learn button */}
-              <Link to={`/flearn/${categoryId}/${activeSubset.id}`} >
+              <Link to={`/flearn/${categoryId}/${activeSubset.id}`} style={{ textDecoration: 'none' }} >
                 <button className="learnbtn">Learn</button>
               </Link>
 
@@ -226,4 +226,4 @@ function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId 
   );
 }
 
-export default FlashCardContent;
+export default FlashCardContent; 

@@ -242,12 +242,6 @@
   position: relative;
 }
 
-
-.learnbtn:hover {
-  text-decoration: none; 
-}
-
-
 .flearn--header button:hover {
   color: #F0F5F9;
   background-color: #52616B;
