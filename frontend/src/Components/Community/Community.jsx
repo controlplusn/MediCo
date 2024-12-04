@@ -4,9 +4,11 @@ import '../../styles/community.css';
 import { Icon } from '@iconify/react';
 import Sidebar from '../Dashboard/Sidebar';
 
-export const Community = ({ username }) => {
+export const Community = () => {
   const [threads, setThreads] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
+  const [username, setUsername] = useState('');
   const [isCommentDialogOpen, setIsCommentDialogOpen] = useState(false);
   const [newThread, setNewThread] = useState({
     label: '',
@@ -16,6 +18,42 @@ export const Community = ({ username }) => {
   });
   const [newComment, setNewComment] = useState({ body: '', commentId: null });
   const [searchInput, setSearchInput] = useState('');
+
+    useEffect(() => {
+        const fetchUser = async () => {
+          try {
+            const response = await axios.get('http://localhost:3001/api/auth/check-auth', {
+              withCredentials: true,
+            });
+            if (response.data.user) {
+              setUserId(response.data.user._id);
+            }
+          } catch (err) {
+            console.error('Error checking authentication:', err);
+          }
+        };
+    
+        fetchUser();
+      }, []);
+
+      useEffect(() => {
+        const fetchUsername = async () => {
+            if (!userId) return; // Wait for userId to be available
+
+            try {
+                const response = await axios.get(`http://localhost:3001/api/auth/get-username/${userId}`);
+                if (response.data.success) {
+                    setUsername(response.data.username);
+                } else {
+                    console.error('Failed to fetch username:', response.data.message);
+                }
+            } catch (err) {
+                console.error('Error fetching username:', err);
+            }
+        };
+
+        fetchUsername();
+    }, [userId]);
 
   useEffect(() => {
     fetchThreads(); // Fetch threads when component mounts
@@ -339,7 +377,7 @@ export const Community = ({ username }) => {
             )}
 
             {filteredThreads.map((thread) => (
-              <div key={thread.id} className="community--thread">
+              <div className="community--thread">
                
                 <div className="communityuser--thread">
                   <img src={"https://via.placeholder.com/30"} alt="User " />
@@ -376,7 +414,7 @@ export const Community = ({ username }) => {
                 <div className="community--comments">
                   {Array.isArray(thread.comments) && thread.comments.length > 0 ? (
                     thread.comments.map((comment) => (
-                      <div key={comment.id} className="community--commentsuserinfo">
+                      <div className="community--commentsuserinfo">
                         <div className="communitycomments--userinfo">
                         <h3>{comment.username}</h3>
                         <span className="comment-time">{comment.time}</span>

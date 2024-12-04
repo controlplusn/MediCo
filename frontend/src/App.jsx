@@ -86,7 +86,7 @@ function App() {
       path: '/community',
       element: (
         <ProtectedRoute>
-          <Community username={"helloWorld"} />
+          <Community />
         </ProtectedRoute>
       )
     },

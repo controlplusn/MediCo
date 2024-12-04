@@ -26,7 +26,7 @@ const Card = () => {
     
         fetchUser();
       }, []);
-
+      console.log("UserID: ",userId)
         // Fetch data from the API
   useEffect(() => {
     if (userId) {
