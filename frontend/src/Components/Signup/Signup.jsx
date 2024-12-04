@@ -10,6 +10,7 @@ const Signup = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const [localError, setLocalError] = useState('');
     const navigate = useNavigate();
 
     const { signup, error } = useAuthStore();
@@ -18,8 +19,11 @@ const Signup = () => {
         e.preventDefault();
 
         if (password !== confirmPassword) {
-            console.log('Passwords do not match');
+            setLocalError('Passwords do not match');
+            return;
         }
+
+        setLocalError('');
 
         try {
             await signup(email, username, password);
@@ -42,6 +46,9 @@ const Signup = () => {
                 <AuthInput type={"password"} placeholder={"Confirm Password"} onChange={(e) => setConfirmPassword(e.target.value)} />
              
                 <AuthButton buttonText={"SIGN UP"}/>
+                
+                {localError && <p className="error">{localError}</p>}
+
                 {error && <p className="error">{error}</p>}
             </form>
         </div>

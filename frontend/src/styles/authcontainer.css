@@ -81,6 +81,10 @@
     z-index: 2;
 }
 
+.login .error {
+    color: red;
+}
+
 .container.active .login {
     transform: translateX(100%);
 }
@@ -90,6 +94,10 @@
     width: 50%;
     opacity: 0;
     z-index: 1;
+}
+
+.signup .error {
+    color: red;
 }
 
 .container.active .signup {

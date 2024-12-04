@@ -18,7 +18,6 @@ export const useAuthStore = create((set) => ({
             set({ user: response.data.user, isAuthenticated: true });
         } catch (error) {
             set({ error: error.response.data.message || "Error signing up" });
-            throw(error);
         }
     },
 
@@ -33,7 +32,6 @@ export const useAuthStore = create((set) => ({
             });
         } catch (error) {
             set({ error: error.response.data.message || "Error signing up" });
-            throw(error);
         }
     },
 
@@ -48,7 +46,6 @@ export const useAuthStore = create((set) => ({
             });
         } catch (error) {
             set({ error: error.response.data.message || "Error logging out" });
-            throw(error);
         }
     },
 
