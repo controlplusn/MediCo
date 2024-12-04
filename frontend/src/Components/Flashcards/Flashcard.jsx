@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { toast } from 'react-toastify';
 import axios from 'axios';
 import Sidebar from '../Dashboard/Sidebar';
 import { useNavigate } from 'react-router-dom';
@@ -272,8 +273,6 @@ const handleArchiveToggle = async (category) => {
                     <ul>
                       <li onClick={(e) => {e.stopPropagation(); openRenameDialog(category)}}>Rename</li>
                       <hr className="borderline" />
-                      <li>Quiz</li>
-                      <hr className="borderline" /> 
                       <li onClick={(e) => { 
                           e.stopPropagation(); 
                           handleArchiveToggle(category); 
@@ -283,7 +282,18 @@ const handleArchiveToggle = async (category) => {
                       <hr className="borderline" />
                       <li onClick={(e) => {e.stopPropagation(); handleDelete(category._id)}}>Delete</li>
                       <hr className="borderline" />
-                      <li>Share</li>
+                      <li
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          navigator.clipboard.writeText(category._id).then(() => {
+                            alert('Category ID copied to clipboard!');
+                          }).catch(err => {
+                            console.error('Failed to copy:', err);
+                          });
+                        }}
+                      >
+                        Share
+                      </li>
                     </ul>
                   </div>
                 )}
