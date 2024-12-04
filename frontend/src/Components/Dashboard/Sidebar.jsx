@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../../store/authStore';
 import logo from '../../assets/logo.png';
 import '../../styles/sidebar.css'
+import doctorImage2 from '../../assets/50d429ea5c9afe0ef9cb3c96f784bea4.jpg';
 
 const Sidebar = () => {
     const [isCollapsed, setIsCollapsed] = useState(false);
@@ -120,7 +121,7 @@ const Sidebar = () => {
             </div>
 
             <div className="user--sidebar" onClick={toggleLogout}>
-                <img src="https://via.placeholder.com/50" alt="User" />
+                <img src={doctorImage2} alt="human doctor" />
                 <h6>{username}</h6>
                 {showLogout && (
                     <div className="logout--dropdown">
