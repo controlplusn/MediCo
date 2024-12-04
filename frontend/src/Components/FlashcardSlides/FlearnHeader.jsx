@@ -1,12 +1,17 @@
 import React from 'react';
 import {Icon} from '@iconify/react';
+import { Link } from 'react-router-dom';
 
-export const FlearnHeader = () => {
+export const FlearnHeader = ({ categoryId }) => {
   return (
     <div className="flearn--header">
         <div className="back-btn">
-          <Icon icon="weui:back-outlined"/>
+
+          <Link to={`/flashcardcontent/${categoryId}`}>
+            <Icon icon="weui:back-outlined"/>
+          </Link>
         <h6>Go back</h6>
+
       </div>
       <div className="flearn--header2">
       <h5>Flashcard</h5>

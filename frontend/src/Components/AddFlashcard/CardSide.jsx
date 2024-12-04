@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import axios from 'axios';
 import '../../styles/cardside.css';
@@ -64,9 +65,13 @@ const CardSide = ({ setActiveCard, userId, categoryId, subsetId, triggerCardUpda
     return (
         <div className="fcards-container">
           <div className="back-btn">
-          <Icon icon="weui:back-outlined"/>
-        <h6>Go back</h6>
-      </div>
+
+            <Link to={`/flashcardcontent/${categoryId}`}>
+              <Icon icon="weui:back-outlined"/>
+            </Link>
+            <h6>Go back</h6>
+          </div>
+
             <div className="fcards-header">
               <button onClick={handleAddClick}>
                 <Icon icon="material-symbols:add" />

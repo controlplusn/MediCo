@@ -12,7 +12,7 @@ export const Flearn = () => {
 
     return (
       <div>
-          <FlearnHeader />
+          <FlearnHeader categoryId={categoryId} />
           <div style={{ display: 'flex', width: '100%' }}>
               <FlearnContent categoryId={categoryId} subsetId={subsetId} />
               <FlearnSide />
