@@ -642,5 +642,56 @@ router.put('/UpdateLearn/:cardSetId/:subsetId/:cardId', verifyToken, async (req,
     }
 });
 
+router.post('/cards/duplicateDocument', verifyToken, async (req, res) => {
+    try {
+      const { documentId, userId } = req.body;
+  
+      // Validate input
+      if (!documentId || !userId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Document ID and user ID are required',
+        });
+      }
+  
+      // Fetch the document to duplicate
+      const documentToDuplicate = await Card.findOne({ _id: documentId, userId });
+      if (!documentToDuplicate) {
+        return res.status(404).json({
+          success: false,
+          message: 'Document not found or does not belong to the user',
+        });
+      }
+  
+      // Prepare the duplicate document
+      const duplicatedDocument = new Card({
+        userId: userId,
+        name: `${documentToDuplicate.name} - Copy`,
+        subsets: [...documentToDuplicate.subsets], // Duplicate subsets
+        isArchived: false, // Reset archive status for the duplicated document
+        createdAt: new Date(), // Set a new creation date
+        updatedAt: new Date(), // Set a new updated date
+      });
+  
+      // Save the duplicated document
+      const savedDuplicate = await duplicatedDocument.save();
+  
+      res.status(201).json({
+        success: true,
+        message: 'Document duplicated successfully',
+        duplicatedDocument: savedDuplicate,
+      });
+    } catch (error) {
+      console.error('Error duplicating document:', error);
+      res.status(500).json({
+        success: false,
+        message: 'Server error while duplicating document',
+      });
+    }
+  });
+  
+  
+
+
 
 export default router;

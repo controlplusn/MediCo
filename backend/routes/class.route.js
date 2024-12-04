@@ -455,9 +455,6 @@ router.delete('/unlikeDiscussion/:classId/:DiscussionId/:username', verifyToken,
       discussion.likes = discussion.likes.filter(user => user !== username);
       await classData.save();
 
-      discussion.likes = discussion.likes.filter(user => user !== username);
-      await classData.save();
-
 
       res.status(200).json({
         message: 'Like removed successfully',

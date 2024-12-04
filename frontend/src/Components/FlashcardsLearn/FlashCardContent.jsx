@@ -72,7 +72,7 @@ function FlashCardContent({ activeSubset, setActiveSubset, categoryId, subsetId 
   const toggleDropdown = () => {
       setIsDropdownOpen(!isDropdownOpen);
   };
-
+  
   const selectSubset = (subset) => {
       setActiveSubset(subset); // Update the active subset in the parent
       setIsDropdownOpen(false); // Close the dropdown

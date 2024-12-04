@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { toast } from 'react-toastify';
 import axios from 'axios';
 import Sidebar from '../Dashboard/Sidebar';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +12,12 @@ const Flashcard = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [cloneDialog, setCloneDialog] = useState(false); 
+  const [documentId, setDocumentId] = useState('');
+  const [isDuplicating, setIsDuplicating] = useState(false);
+  const [refetchFlag, setRefetchFlag] = useState(false);
+
+
 
   // rename
   const [renameDialog, setRenameDialog] = useState({ isOpen: false, currentCategory: null });
@@ -70,7 +75,7 @@ const Flashcard = () => {
   
       fetchData();
     }
-  }, [userId]);
+  }, [userId,refetchFlag]);
 
 
   const handleCreateFlashcard = async () => {// Or select from the dropdown or form field
@@ -217,6 +222,39 @@ const handleArchiveToggle = async (category) => {
 
   }
 
+  const duplicateDocument = async () => {
+    setIsDuplicating(true);
+  
+    try {
+      const response = await axios.post('http://localhost:3001/api/flashcard/cards/duplicateDocument', {
+        documentId: documentId,
+        userId: userId,
+      });
+  
+      if (!response.data.success) {
+        throw new Error(response.data.message || 'Failed to duplicate document');
+      }
+      console.log('Document duplicated successfully:', response.data.duplicatedDocument);
+  
+      // Trigger data refetch
+      setRefetchFlag((prev) => !prev);
+    } catch (error) {
+      console.error('Error duplicating document:', error.message);
+      alert('Document ID is not recognized. The card might not exist or the ID provided is invalid.');
+    } finally {
+      setIsDuplicating(false);
+    }
+  };
+  
+
+
+  const handleCloneSubmit = async () => {
+    await duplicateDocument();
+    setCloneDialog(false); // Close the dialog after submission
+    setDocumentId(''); // Clear the input field
+  };
+  
+
   // Handle card click and navigate to category page
   const handleCardClick = (categoryId) => {
     navigate(`/flashcardcontent/${categoryId}`);
@@ -256,65 +294,77 @@ const handleArchiveToggle = async (category) => {
             <Icon icon="ic:twotone-plus"  />
           </div>
         </button>
+        <button onClick={() => setCloneDialog(true)}>
+          <h5 style={{ margin: '0 5px 0 0', padding: '8px' }}>Clone</h5>
+          <div>
+            <Icon icon="prime:clone"  />
+          </div>
+        </button>
       </div>
 
       <section className="Card--section">
-        {data
-          .filter(category => (activeTab === 'active' ? !category.isArchived : category.isArchived))
-          .map((category, index) => (
-            <div className="Card" key={index} onClick={() => handleCardClick(category._id)}>
-              <div className="flashcard--head2">
-                <Icon
-                  icon="oi:ellipses"
-                  onClick={(e) => toggleDropdown(index, e)} // Pass index to toggleDropdown
-                  className="ellipsesbtn" />
-                {openDropdown === index && (
-                  <div className="dropdown-menu">
-                    <ul>
-                      <li onClick={(e) => {e.stopPropagation(); openRenameDialog(category)}}>Rename</li>
-                      <hr className="borderline" />
-                      <li onClick={(e) => { 
-                          e.stopPropagation(); 
-                          handleArchiveToggle(category); 
-                      }}>
-                        {category.isArchived ? 'Unarchive' : 'Archive'}
-                      </li>
-                      <hr className="borderline" />
-                      <li onClick={(e) => {e.stopPropagation(); handleDelete(category._id)}}>Delete</li>
-                      <hr className="borderline" />
-                      <li
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          navigator.clipboard.writeText(category._id).then(() => {
-                            alert('Category ID copied to clipboard!');
-                          }).catch(err => {
-                            console.error('Failed to copy:', err);
-                          });
-                        }}
-                      >
-                        Share
-                      </li>
-                    </ul>
+        {isDuplicating ? (
+          <div>Loading...</div> // Show loading message or nothing
+        ) : (
+          data
+            .filter(category => (activeTab === 'active' ? !category.isArchived : category.isArchived))
+            .map((category, index) => (
+              <div className="Card" key={index} onClick={() => handleCardClick(category._id)}>
+                <div className="flashcard--head2">
+                  <Icon
+                    icon="oi:ellipses"
+                    onClick={(e) => toggleDropdown(index, e)} // Pass index to toggleDropdown
+                    className="ellipsesbtn"
+                  />
+                  {openDropdown === index && (
+                    <div className="dropdown-menu">
+                      <ul>
+                        <li onClick={(e) => { e.stopPropagation(); openRenameDialog(category); }}>Rename</li>
+                        <hr className="borderline" />
+                        <li onClick={(e) => { 
+                            e.stopPropagation(); 
+                            handleArchiveToggle(category); 
+                        }}>
+                          {category.isArchived ? 'Unarchive' : 'Archive'}
+                        </li>
+                        <hr className="borderline" />
+                        <li onClick={(e) => { e.stopPropagation(); handleDelete(category._id); }}>Delete</li>
+                        <hr className="borderline" />
+                        <li
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            navigator.clipboard.writeText(category._id).then(() => {
+                              alert('Flashcard Key copied to clipboard!');
+                            }).catch(err => {
+                              console.error('Failed to copy:', err);
+                            });
+                          }}
+                        >
+                          Share
+                        </li>
+                      </ul>
+                    </div>
+                  )}
+                </div>
+                <div className="flashcard--body2">
+                  <h5>{category.name}</h5>
+                  <progress 
+                    value={category.statistics?.learnedPercentage || 0} 
+                    max={100}>
+                  </progress>
+                  <div className="content--h6">
+                    <h6>
+                      {category.subsets?.length || 0} Subsets{' '}
+                      <span className="vertical-line"></span>
+                      {category.statistics?.totalCards || 0} Flashcards
+                    </h6>
                   </div>
-                )}
-              </div>
-              <div className="flashcard--body2">
-                <h5>{category.name}</h5>
-                <progress 
-                  value={category.statistics?.learnedPercentage || 0} 
-                  max={100}>
-                </progress>
-                <div className="content--h6">
-                  <h6>
-                    {category.subsets?.length || 0} Subsets{' '}
-                    <span className="vertical-line"></span>
-                    {category.statistics?.totalCards || 0} Flashcards
-                  </h6>
                 </div>
               </div>
-            </div>
-          ))}
+            ))
+        )}
       </section>
+
 
       {/* Rename Dialog */}
       {renameDialog.isOpen && (
@@ -339,6 +389,29 @@ const handleArchiveToggle = async (category) => {
           </div>
         </div>
       )}
+      {/* clone dialog */}
+      {cloneDialog && (
+        <div className="create-dialog">
+          <div className="dialog-content">
+            <h4>Clone Flashcard</h4>
+            <label htmlFor="document-id">Flashcard ID:</label>
+            <input
+              id="document-id"
+              type="text"
+              value={documentId}
+              onChange={(e) => setDocumentId(e.target.value)}
+              placeholder="Enter Flashcard ID"
+            />
+            <div className="dialog-actions">
+              <button onClick={() => setCloneDialog(false)}>Cancel</button>
+              <button onClick={handleCloneSubmit} disabled={!documentId.trim()}>
+                Submit
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
 
       {/* Create Dialog */}
       {createDialog && (

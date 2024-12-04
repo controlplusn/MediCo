@@ -56,7 +56,7 @@ const ClassPage = ({ classId, username }) => {
             const response = await axios.get(`http://localhost:3001/api/class/${username}/${classId}`, {
                 withCredentials: true
             });
-
+            console.log(response);
             setClassData(response.data.data);
             setLoading(false);
         } catch (err) {

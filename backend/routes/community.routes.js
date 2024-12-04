@@ -1,6 +1,5 @@
 import express from 'express';
 import Post from '../model/postModel.js';
-import hearts from '../model/heartModel.js';
 import { verifyToken } from '../middleware/verifyToken.js';
 import UserModel from '../model/User.js';
 import Comment from '../model/commentModel.js';
@@ -56,69 +55,56 @@ router.post("/add", verifyToken, async (req, res) => {
 });
 
 /* --HEART-- */
-router.get("/load-heart/:heartId", async (req,res) =>{//adding likes
-    try{
-      const { heartId } = req.params; 
-      const data = await hearts.find({ heartId : heartId});
-      res.json({ success: true, data: data });
-    }catch(e){
-      console.error('Error loading data:', e);
-      res.status(404).send({ success: false, message: "Error loading data data" });
-    }
-});
+router.post('/addLike/:postId/:username', verifyToken, async (req, res) => {
+  const { postId, username } = req.params;
+  try {
+    const postData = await Post.findById(postId);
 
-router.get("/isHeart/:heartId/:username", async (req,res) =>{//checking if liked
-    try{
-      const { heartId } = req.params; 
-      const { username } = req.params;
-      const data = await hearts.find({ heartId : heartId, username : username});
-      res.json({ success: true, data: data });
-    }catch(e){
-      console.error('Error loading data:', e);
-      res.status(404).send({ success: false, message: "Error loading data data" });
-    }
-});
+    if (!postData) return res.status(404).json({ message: 'Post not found' });
 
-router.post("/addHeart", async (req, res) => { 
-    const { username, heartId } = req.body; // Extract data from request body
-    
-    try {
-      if (!username || !heartId) {
-        return res.status(400).json({ error: 'Lack of data' });
-      }
-  
-      // Create a new heart entry
-      const newHeart = new hearts({
-        username,
-        heartId,
+    if (postData.likes.includes(username)) {
+      return res.status(400).json({ message: 'You have already liked this discussion' });
+    } else {
+      postData.likes.push(username);
+      postData.likesCount = postData.likes.length;  // Increment likes count
+      await postData.save();
+      res.status(200).json({
+        message: 'Post liked successfully',
+        likes: postData.likes,
+        likesCount: postData.likesCount,
       });
-  
-      const savedHeart = await newHeart.save();
-      res.status(201).json(savedHeart);
-  
-    } catch (error) {
-      console.error('Error adding data:', error);
-      res.status(500).send({ success: false, message: "Error adding data" });
     }
+  } catch (error) {
+    console.error('Error liking post:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
 
-router.delete("/deleteHeart/:heartId/:username", async (req,res) => {
-    const { heartId } = req.params; 
-    const { username } = req.params;
-    try{
-        const result = await hearts.deleteOne({ heartId : heartId, username : username});
-  
-  
-        if (result.deletedCount === 0) {
-            return res.status(404).send({ success: false, message: "No record found to delete" });
-        }
-  
-        res.send({ success: true, message: "Data deleted successfully" });
-    }catch(e){
-      console.error('Error deleting hearts:', error);
-      res.status(500).send({ success: false, message: "Error deleting data" });
+router.delete('/deleteLike/:postId/:username', verifyToken, async (req, res) => {
+  const { postId, username } = req.params;
+  try {
+    const postData = await Post.findById(postId);
+
+    if (!postData) return res.status(404).json({ message: 'Post not found' });
+
+    if (!postData.likes.includes(username)) {
+      return res.status(400).json({ message: 'You have not liked this discussion' });
+    } else {
+      postData.likes = postData.likes.filter(user => user !== username);
+      postData.likesCount = postData.likes.length;  // Decrement likes count
+      await postData.save();
+      res.status(200).json({
+        message: 'Post unliked successfully',
+        likes: postData.likes,
+        likesCount: postData.likesCount,
+      });
     }
+  } catch (error) {
+    console.error('Error unliking post:', error);
+    res.status(500).json({ message: 'Internal Server Error' });
+  }
 });
+
 
 /* --COMMENT-- */
 router.post("/addComment", verifyToken, async (req, res) => { 

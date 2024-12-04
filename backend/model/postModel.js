@@ -22,10 +22,9 @@ const postSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     auto: true
   },
-  heartId: {
-    type: mongoose.Schema.Types.ObjectId, 
-    auto: true 
-  },
+  likes: { 
+    type: [String],
+     default: [] },
   username: {
     type: String,
     ref: 'users', 

@@ -18,6 +18,7 @@ export const Community = () => {
   });
   const [newComment, setNewComment] = useState({ body: '', commentId: null });
   const [searchInput, setSearchInput] = useState('');
+  const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -60,37 +61,42 @@ export const Community = () => {
   }, []);
 
 
-  const fetchThreads = () => {
-    axios
-      .get('http://localhost:3001/api/community/communities')
-      .then((response) => {
-        const data = response.data.data;
-        const formattedThreads = data.map((item) => ({
-          id: item._id,
-          title: item.Subject,
-          username: item.username,
-          time: calculateTimeAgo(item.PostedAt),
-          postedAt: new Date(item.PostedAt),
-          label: item.label,
-          content: item.Content,
-          heartId: item.heartId,
-          commentId: item.commentId,
-          heartCount: 0, // Initialize heart count
-          isLiked: false, // Track if current user has liked the post
-          comments: []
-        }));
-
-        setThreads(formattedThreads.sort((a, b) => b.postedAt - a.postedAt));
-        // Fetch heart counts and user likes for each thread
-        formattedThreads.forEach((thread) => {
-          fetchHeartCount(thread.heartId);
-          checkIfUserLiked(thread.heartId, username);
-          fetchCommentsForThread(thread.commentId, thread.id);
-        });
-
-      })
-      .catch((error) => console.error('Error fetching data:', error));
+  const fetchThreads = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get('http://localhost:3001/api/community/communities');
+      const data = response.data.data;
+      const formattedThreads = data.map((item) => ({
+        id: item._id,
+        title: item.Subject,
+        username: item.username,
+        time: calculateTimeAgo(item.PostedAt),
+        postedAt: new Date(item.PostedAt),
+        label: item.label,
+        content: item.Content,
+        commentId: item.commentId,
+        likes: item.likes,
+        likesCount: item.likes.length,
+        // Use includes() to check if the username is in the likes array
+        isLiked: item.likes.includes(username), 
+        comments: [],
+      }));
+  
+      // Set the threads initially
+      setThreads(formattedThreads.sort((a, b) => b.postedAt - a.postedAt));
+  
+      // Fetch comments after setting threads
+      formattedThreads.forEach((thread) => {
+        fetchCommentsForThread(thread.commentId, thread.id);
+      });
+    } catch (error) {
+      console.error("Error fetching threads:", error);
+    } finally {
+      setLoading(false);
+    }
   };
+  
+  
 
   const fetchCommentsForThread = (commentId, threadId) => {
     if (!commentId) {
@@ -101,7 +107,6 @@ export const Community = () => {
     axios
       .get(`http://localhost:3001/api/community/comment/${commentId}`)
       .then((response) => {
-        console.log("Comments fetched successfully:", response.data);
         const comments = response.data.data.map((item) => ({
           id: item.commentId,
           body: item.body,
@@ -118,34 +123,6 @@ export const Community = () => {
       .catch((error) => {
         console.error('Error fetching comments:', error);
       });
-  };
-
-  const fetchHeartCount = (heartId) => {
-    axios
-      .get(`http://localhost:3001/api/community/load-heart/${heartId}`)
-      .then((response) => {
-        const heartCount = Array.isArray(response.data.data) ? response.data.data.length : 0; // Assuming the response data is an array of hearts
-        setThreads((prevThreads) =>
-          prevThreads.map((thread) =>
-            thread.heartId === heartId ? { ...thread, heartCount } : thread
-          )
-        );
-      })
-      .catch((error) => console.error('Error fetching heart count:', error));
-  };
-
-  const checkIfUserLiked = (heartId, username) => {
-    axios
-      .get(`http://localhost:3001/api/community/isHeart/${heartId}/${username}`)
-      .then((response) => {
-        const userLiked = Array.isArray(response.data.data) && response.data.data.length > 0;
-        setThreads((prevThreads) =>
-          prevThreads.map((thread) =>
-            thread.heartId === heartId ? { ...thread, isLiked: userLiked } : thread
-          )
-        );
-      })
-      .catch((error) => console.error('Error checking if user liked:', error));
   };
 
 
@@ -206,48 +183,38 @@ export const Community = () => {
     }
   };
 
-  const toggleHeart = (heartId, isLiked) => {
-    if (isLiked) {
-      // If the user has liked, send DELETE request to remove the heart
-      axios
-        .delete(`http://localhost:3001/api/community/deleteHeart/${heartId}/${username}`)
-        .then((response) => {
-          console.log('Heart removed:', response.data);
-          // Update the heart count and isLiked status in the UI
-          setThreads((prevThreads) =>
-            prevThreads.map((thread) =>
-              thread.heartId === heartId
-                ? { ...thread, isLiked: false, heartCount: thread.heartCount - 1 }
-                : thread
-            )
-          );
-        })
-        .catch((error) => {
-          console.error('Error removing heart:', error);
-        });
-    } else {
-      // If the user hasn't liked, send POST request to add the heart
-      axios
-        .post('http://localhost:3001/api/community/addHeart', {
-          heartId,
-          username,
-        })
-        .then((response) => {
-          console.log('Heart added:', response.data);
-          // Update the heart count and isLiked status in the UI
-          setThreads((prevThreads) =>
-            prevThreads.map((thread) =>
-              thread.heartId === heartId
-                ? { ...thread, isLiked: true, heartCount: thread.heartCount + 1 }
-                : thread
-            )
-          );
-        })
-        .catch((error) => {
-          console.error('Error adding heart:', error);
-        });
+  const toggleHeart = async (postId, isLiked) => {
+    try {
+      if (isLiked) {
+        const response = await axios.delete(
+          `http://localhost:3001/api/community/deleteLike/${postId}/${username}`
+        );
+        console.log(response.data.message);
+        setThreads((prevThreads) =>
+          prevThreads.map((thread) =>
+            thread.id === postId
+              ? { ...thread, isLiked: false, likesCount: thread.likesCount - 1 }
+              : thread
+          )
+        );
+      } else {
+        const response = await axios.post(
+          `http://localhost:3001/api/community/addLike/${postId}/${username}`
+        );
+        console.log(response.data.message);
+        setThreads((prevThreads) =>
+          prevThreads.map((thread) =>
+            thread.id === postId
+              ? { ...thread, isLiked: true, likesCount: thread.likesCount + 1 }
+              : thread
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error toggling heart:", error);
     }
   };
+  
 
   const handleOpenCommentDialog = (commentId) => {
     setNewComment({ ...newComment, commentId });
@@ -289,8 +256,8 @@ export const Community = () => {
 
   
   
-  console.log(`Threads: ${JSON.stringify(threads, null, 2)}`);
-
+  console.log("Threads: ", threads)
+ if (loading) return <div>Loading...</div>;
   return (
     <div className="community-page-container">
       <Sidebar />
@@ -301,7 +268,7 @@ export const Community = () => {
           <h4>Community</h4>
           <div className="community--header">
           <img src="https://via.placeholder.com/50" alt="profile"></img> 
-            <h5>John Doe</h5>  
+            <h5>{username}</h5>  
           </div>
             
           </div>
@@ -398,13 +365,13 @@ export const Community = () => {
                 <div className="community--icon">
                   <button
                     className="heartBtn"
-                    onClick={() => toggleHeart(thread.heartId, thread.isLiked)}
+                    onClick={() => toggleHeart(thread.id,thread.isLiked)}
                   >
                     <Icon
                       icon={thread.isLiked ? "fluent-emoji-flat:heart-suit" : "fluent-mdl2:heart"}
                     />
                   </button>
-                  <h6 className="heart-count">{thread.heartCount}</h6>
+                  <h6 className="heart-count">{thread.likesCount}</h6>
                   <button onClick={() => handleOpenCommentDialog(thread.commentId)}>
                     <Icon icon="meteor-icons:message-dots" />
                   </button>
