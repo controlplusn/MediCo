@@ -189,11 +189,10 @@
 
 .modal-content {
   background-color: white;
-  padding: 20px;
   border-radius: 10px;
   width: 400px;
   max-width: 100%;
-  text-align: center;
+  text-align: flex-end;
 }
 
 .modal-header {
@@ -201,6 +200,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 15px;
+  width: 100%;
 }
 
 .modal-header h2 {
@@ -216,8 +216,14 @@
   color: #52616B;
 }
 
+.modal-body{
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
 .modal-body input {
-  width: 100%;
+  width: 300px;
+  height: 90px; /* Adjust the height as needed */
   padding: 8px;
   margin: 5px 0;
   border: 1px solid #ccc;
@@ -233,6 +239,7 @@
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
+  margin-left: auto;
 }
 
 

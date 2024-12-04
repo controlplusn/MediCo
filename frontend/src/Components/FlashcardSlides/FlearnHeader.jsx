@@ -13,6 +13,7 @@ export const FlearnHeader = ({ categoryId }) => {
         <h6>Go back</h6>
 
       </div>
+      <hr />
       <div className="flearn--header2">
       <h5>Flashcard</h5>
     </div>

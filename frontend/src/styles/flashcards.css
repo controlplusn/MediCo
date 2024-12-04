@@ -22,6 +22,13 @@
 .flashcard--header {
   text-align: left;
   margin-bottom: 5px;
+  width: 1280px;
+}
+
+hr {
+  margin: 10px 0; /* Add space above and below the horizontal rule */
+  border: none; /* Remove default border */
+  border-top: 2px solid #ddd; /* Light gray border for the <hr /> */
 }
 
 .flashcard--header h4 {
@@ -60,6 +67,47 @@
   background-color: #0F1035;
   font-size: 14px;
   cursor: pointer;
+}
+
+.nav-conbtnright {
+  display: flex;
+  justify-content: flex-end; /* Align buttons to the right */
+  gap: 15px; /* Space between buttons */
+  align-items: center; /* Vertically center the buttons */
+  padding: 10px 20px; /* Add padding to the container */
+}
+
+.nav-conbtnright button {
+  display: flex;
+  align-items: center;
+  background-color: #0F1035; /* Dark background for buttons */
+  color: white; /* White text color */
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer;
+  padding: 0 5px;
+  transition: background-color 0.3s ease; /* Smooth background color transition */
+}
+
+.nav-conbtnright button:hover {
+  background-color: #1a1d59; /* Darker background on hover */
+}
+
+.nav-conbtnright button h5 {
+  margin: 0 5px 0 0;
+  padding: 8px;
+  font-size: 16px;
+}
+
+.nav-conbtnright button div {
+  display: flex;
+  align-items: center;
+}
+
+.nav-conbtnright button div svg {
+  margin-left: 5px; /* Space between text and icon */
+  width: 18px; /* Adjust icon size */
+  height: 18px; /* Adjust icon size */
 }
 
 .flashcard--nav--con button div{

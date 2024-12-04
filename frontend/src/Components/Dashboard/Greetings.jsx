@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import '../../styles/greetings.css';
+import doctorImage from '../../assets/dd257e9257fae1120be5d13b6b5b7f74.jpg';
 
 const Greetings = () => {
 
@@ -68,7 +69,7 @@ const Greetings = () => {
                     <h3 className="greet">Check your Daily Tasks & Schedules</h3>
                 </div>
                 <div className="humandoctor">
-                    <img src="https://via.placeholder.com/100" alt="human doctor" />
+                <img src={doctorImage} alt="human doctor" />
                 </div>
             </div>
         </div>

@@ -3,6 +3,8 @@ import axios from 'axios';
 import '../../styles/community.css';
 import { Icon } from '@iconify/react';
 import Sidebar from '../Dashboard/Sidebar';
+import profile from '../../assets/50d429ea5c9afe0ef9cb3c96f784bea4.jpg';
+
 
 export const Community = () => {
   const [threads, setThreads] = useState([]);
@@ -267,8 +269,8 @@ export const Community = () => {
           <div className="community--header2">
           <h4>Community</h4>
           <div className="community--header">
-          <img src="https://via.placeholder.com/50" alt="profile"></img> 
-            <h5>{username}</h5>  
+          <img src={profile} alt="profile" />
+          <h5>{username}</h5>  
           </div>
             
           </div>

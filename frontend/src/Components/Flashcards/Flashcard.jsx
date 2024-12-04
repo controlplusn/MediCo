@@ -271,6 +271,7 @@ const handleArchiveToggle = async (category) => {
       
       <div className="flashcard--header">
         <h4>Flash Cards</h4>
+        <hr />
       </div>
 
       <div className="flashcard--nav--con">
@@ -288,6 +289,7 @@ const handleArchiveToggle = async (category) => {
             Archived
           </h6>
         </div>
+        <div className="nav-conbtnright">
         <button onClick={() => openCreateDialog({})}>
           <h5 style={{ margin: '0 5px 0 0', padding: '8px' }}>Add</h5>
           <div>
@@ -300,6 +302,8 @@ const handleArchiveToggle = async (category) => {
             <Icon icon="prime:clone"  />
           </div>
         </button>
+        </div>
+       
       </div>
 
       <section className="Card--section">

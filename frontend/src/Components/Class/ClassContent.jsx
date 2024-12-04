@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Icon } from '@iconify/react';
 import '../../styles/classcontent.css';
+import doctorImage2 from '../../assets/50d429ea5c9afe0ef9cb3c96f784bea4.jpg';
+
+
 
 const ClassContent = () => {
     const [username, setUsername] = useState('');
@@ -233,8 +236,8 @@ const ClassContent = () => {
                 <Link to={`/class/classcontent/${card._id}`}>
                     <button className="Card" key={card._id}>
                       <div className="flashcard--head">
-                        <img src={'https://via.placeholder.com/50'} alt="profile" />
-                        <button onClick={(e) =>  {
+                      <img src={doctorImage2} alt="human doctor" />
+                      <button onClick={(e) =>  {
                           e.preventDefault();
                           e.stopPropagation();
                           toggleDropdown(card._id)
