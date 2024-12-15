@@ -15,7 +15,7 @@ These challenges hinder their ability to perform and grow in their demanding aca
 ---
 
 ## **Our Solution**
-*[App Name]* centralizes essential tools and resources into one platform:
+*MediCo* centralizes essential tools and resources into one platform:
 - **Dashboard**: Manage flashcards, study lists, calendars, and to-do lists in one place.
 - **Flashcards**: Create and study flashcards using a spaced-repetition algorithm for better retention.
 - **Community**: Engage with peers and professionals to share knowledge and build connections.
@@ -60,9 +60,6 @@ Our app empowers medical students to:
 ### **Database**
 - NoSQL database using **MongoDB** for flexible and efficient data management.
 
-### **Algorithms**
-- Spaced repetition for optimized flashcard study.
-
 ### **Web Security**
 - Secure data validation and sanitization.
 
@@ -85,9 +82,10 @@ Our app empowers medical students to:
 3. Set up environment variables:
    - Create a .env file in the root directory with the following:
      ```bash
-     MONGO_URI=your-mongodb-connection-string
-     JWT_SECRET=your-jwt-secret
-     PORT=5000
+     MONGO_URI = "mongodb+srv://admin:adminuser123@cluster0.4408g.mongodb.net/MediCo?retryWrites=true&w=majority"
+     JWT_SECRET=secretkey
+     PORT=3001
+     NODE_ENV = development
 4. Start the app:
    ```bash
    npm start
