@@ -104,5 +104,5 @@ Our app empowers medical students to:
 | Name           | Role                | Responsibilities                                  |
 |----------------|---------------------|--------------------------------------------------|
 | Carle Francis L. Medina   | Full-Stack Developer| Frontend and backend development, JWT authentication, MongoDB setup |
-| Vex Ivan C. Sumang | Backend Developer                | Responsibilities                                 |
-| Dorothy C. Salva | Frontend Developer                | Responsibilities                                 |
+| Vex Ivan C. Sumang | Backend Developer                | Backend and slight frontend development, Database Administrator, Data Structure|                         
+| Dorothy C. Salva | Frontend Developer                | Frontend design and responsiveness of the project|
